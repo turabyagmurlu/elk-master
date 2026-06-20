@@ -1,0 +1,1565 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ELK MASTER — Elektrik Uzmanlık Akademisi</title>
+<style>
+  :root{
+    --bg:#0b0e13; --bg2:#0e131b; --panel:#141b25; --panel2:#1b2430; --line:#26313f;
+    --txt:#e8eef6; --muted:#8a98ab; --acc:#ffb000; --acc2:#33b1ff; --acc3:#a371ff;
+    --ok:#3fb950; --bad:#f85149; --warn:#d29922;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{font-family:"Segoe UI",system-ui,Arial,sans-serif;
+    background:radial-gradient(1400px 700px at 85% -15%,#16202e 0,transparent 55%),
+    radial-gradient(1000px 600px at 0% 110%,#15131f 0,transparent 50%),var(--bg);
+    color:var(--txt);min-height:100vh;-webkit-font-smoothing:antialiased}
+  a{color:var(--acc2)}
+  .hidden{display:none!important}
+  /* HEADER */
+  header.top{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:16px;
+    padding:12px 20px;background:rgba(13,17,24,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .brand{display:flex;align-items:center;gap:11px;cursor:pointer}
+  .logo{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;font-size:20px;
+    background:linear-gradient(135deg,#ffb000,#ff7a00);color:#1a1200;font-weight:900;box-shadow:0 4px 14px #ff8a0033}
+  .brand h1{font-size:16px;margin:0;letter-spacing:.5px}
+  .brand .sub{font-size:10.5px;color:var(--muted);letter-spacing:.5px}
+  nav.main{display:flex;gap:4px;margin-left:8px;flex-wrap:wrap}
+  nav.main button{background:transparent;border:none;color:var(--muted);font-size:13.5px;font-weight:600;
+    padding:8px 13px;border-radius:9px;cursor:pointer;transition:.15s}
+  nav.main button:hover{color:var(--txt);background:#ffffff0a}
+  nav.main button.active{color:var(--acc);background:#ffb00014}
+  .hstats{margin-left:auto;display:flex;gap:14px;align-items:center;font-size:12.5px;color:var(--muted)}
+  .hstats b{color:var(--acc)}
+  .chip{display:inline-flex;align-items:center;gap:6px;background:#0e1520;border:1px solid var(--line);
+    padding:6px 11px;border-radius:20px}
+  .wrap{max-width:1120px;margin:0 auto;padding:24px 20px 60px}
+  /* GENERIC */
+  .btn{background:var(--acc);color:#1a1200;border:none;padding:11px 20px;border-radius:10px;font-weight:700;cursor:pointer;font-size:14px;transition:.15s}
+  .btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
+  .btn.ghost{background:transparent;color:var(--txt);border:1px solid var(--line)}
+  .btn.ghost:hover{border-color:var(--acc)}
+  .btn.blue{background:var(--acc2);color:#001626}
+  .btn.purple{background:var(--acc3);color:#fff}
+  .btn.danger{background:var(--bad);color:#fff}
+  .btn.sm{padding:7px 13px;font-size:12.5px}
+  .btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px}
+  .panel2{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:16px}
+  .muted{color:var(--muted)}
+  .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+  .grid{display:grid;gap:14px}
+  .sectiontitle{display:flex;align-items:center;gap:10px;margin:26px 0 12px}
+  .sectiontitle h2{margin:0;font-size:19px}
+  .sectiontitle .ln{flex:1;height:1px;background:var(--line)}
+  /* PROGRESS RING */
+  .ring{transform:rotate(-90deg)}
+  .ring circle{fill:none;stroke-width:11}
+  .ring .bg{stroke:#1d2733}
+  /* DASHBOARD */
+  .hero{display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:center}
+  @media(max-width:680px){.hero{grid-template-columns:1fr}}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px}
+  .kpi{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:14px}
+  .kpi .v{font-size:24px;font-weight:800;color:var(--acc)}
+  .kpi .l{font-size:11.5px;color:var(--muted);margin-top:2px}
+  /* CARDS */
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;cursor:pointer;
+    position:relative;overflow:hidden;transition:.15s}
+  .card:hover{transform:translateY(-3px);border-color:var(--acc);box-shadow:0 10px 28px #0007}
+  .card .ico{font-size:24px}
+  .card h3{margin:8px 0 5px;font-size:14.5px}
+  .card p{margin:0;font-size:12px;color:var(--muted);line-height:1.5;min-height:34px}
+  .card .cat{font-size:10px;color:var(--acc2);text-transform:uppercase;letter-spacing:.6px;font-weight:700}
+  .mini{height:6px;background:#0c1219;border-radius:5px;overflow:hidden;margin-top:10px;border:1px solid var(--line)}
+  .mini > i{display:block;height:100%;background:linear-gradient(90deg,#f85149,#d29922,#3fb950);transition:.5s}
+  .cardbadge{position:absolute;top:10px;right:10px;font-size:10px;font-weight:800;padding:3px 8px;border-radius:20px}
+  .cardbadge.done{background:#0d2a3a;color:var(--acc2);border:1px solid #1c4a63}
+  .cardbadge.due{background:#3a2a0d;color:var(--warn);border:1px solid #63501c}
+  /* TABS */
+  .tabbar{display:flex;gap:4px;flex-wrap:wrap;border-bottom:1px solid var(--line);margin:14px 0 18px}
+  .tabbar button{background:transparent;border:none;border-bottom:2px solid transparent;color:var(--muted);
+    font-size:13.5px;font-weight:700;padding:10px 14px;cursor:pointer}
+  .tabbar button.active{color:var(--acc);border-bottom-color:var(--acc)}
+  .breadcrumb{font-size:12.5px;color:var(--muted);cursor:pointer;display:inline-block;margin-bottom:6px}
+  .breadcrumb:hover{color:var(--acc)}
+  /* CONTENT BLOCKS */
+  .edu{border-left:4px solid var(--acc2);background:#0f1b27;border-radius:10px;padding:16px;line-height:1.85;font-size:13px;color:#cdd7e2}
+  .edu b{color:#eaf2fb}
+  .foy{border-left:4px solid var(--ok);background:#0e1c12;border-radius:10px;padding:16px;line-height:1.9;font-size:13px;color:#d4e2d6}
+  .foy summary{cursor:pointer;font-weight:800;color:var(--ok);font-size:14px}
+  label.fld{display:block;font-size:12px;color:var(--muted);margin:12px 0 5px}
+  input[type=range]{width:100%}
+  input[type=number],input[type=text],select,textarea{background:#0c1219;color:var(--txt);border:1px solid var(--line);
+    border-radius:9px;padding:10px;font-size:14px;font-family:inherit;width:100%}
+  textarea{min-height:150px;resize:vertical;line-height:1.6}
+  .inline{width:auto;display:inline-block}
+  /* QUIZ */
+  .q{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:16px;margin:12px 0}
+  .q .qtxt{font-weight:700;font-size:14px;margin-bottom:10px}
+  .opt{display:block;width:100%;text-align:left;background:#0c1219;border:1px solid var(--line);color:var(--txt);
+    border-radius:9px;padding:11px 13px;margin:7px 0;cursor:pointer;font-size:13.5px;transition:.12s}
+  .opt:hover{border-color:var(--acc2)}
+  .opt.sel{border-color:var(--acc);background:#241d07}
+  .opt.correct{border-color:var(--ok);background:#0f2a16;color:#bdf0c8}
+  .opt.wrong{border-color:var(--bad);background:#2a1212;color:#f6b9b6}
+  .expl{margin-top:10px;font-size:12.5px;line-height:1.7;color:#cdd7e2;border-left:3px solid var(--acc2);padding:8px 12px;background:#0f1b27;border-radius:8px;display:none}
+  .expl.show{display:block}
+  .pill{padding:8px 13px;border:1px solid var(--line);border-radius:9px;background:#0c1219;cursor:pointer;user-select:none;font-size:13px}
+  .pill:hover{border-color:var(--acc2)}
+  .pill.sel{border-color:var(--acc);background:#241d07}
+  .msg{padding:12px 14px;border-radius:10px;margin-top:14px;font-size:14px;font-weight:600;display:none}
+  .msg.ok{background:#0f2a16;color:#bdf0c8;border:1px solid #1e5631;display:block}
+  .msg.bad{background:#2a1212;color:#f6b9b6;border:1px solid #5a1e1e;display:block}
+  .msg.info{background:#0d2230;color:#bfe3fb;border:1px solid #1c4a63;display:block}
+  .scorebar{height:11px;background:#0c1219;border-radius:6px;overflow:hidden;border:1px solid var(--line)}
+  .scorebar > i{display:block;height:100%;background:linear-gradient(90deg,#f85149,#d29922,#3fb950);transition:.5s}
+  .lamp{width:52px;height:52px;border-radius:50%;background:#2a2a2a;border:3px solid #444;display:grid;place-items:center;font-size:11px;color:#000;transition:.2s}
+  .lamp.on{background:radial-gradient(circle at 40% 35%,#fff6c2,#ffd400 60%,#b58a00);box-shadow:0 0 22px #ffd40099;border-color:#caa400}
+  .lamp.dead{background:#1a1a1a;border-color:#600;color:#f55}
+  .wirebox{display:flex;flex-direction:column;gap:6px}
+  .wire{display:flex;align-items:center;gap:10px;background:#0c1219;border:1px solid var(--line);border-radius:9px;padding:8px 10px}
+  .wire .sw{width:30px;height:14px;border-radius:3px;border:1px solid #0008}
+  .kc{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+  .kc .k{background:#0c1219;border:1px solid var(--line);border-radius:10px;padding:11px}
+  .kc .k span{font-size:11px;color:var(--muted)} .kc .k b{display:block;font-size:18px;margin-top:3px}
+  /* BADGES */
+  .badges{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px}
+  .badge{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:14px;text-align:center;opacity:.4;filter:grayscale(1)}
+  .badge.on{opacity:1;filter:none;border-color:var(--acc)}
+  .badge .bi{font-size:30px} .badge .bn{font-size:12px;font-weight:700;margin-top:6px} .badge .bd{font-size:10.5px;color:var(--muted);margin-top:3px}
+  /* EXAM */
+  .examtimer{font-variant-numeric:tabular-nums;font-size:26px;font-weight:800;color:var(--acc2)}
+  .cert{background:linear-gradient(160deg,#11161f,#0c1118);border:2px solid var(--acc);border-radius:16px;padding:34px;text-align:center;position:relative}
+  .cert .seal{font-size:46px}
+  .cert h2{margin:10px 0 4px;font-size:26px;letter-spacing:1px}
+  .cert .nm{font-size:30px;font-weight:800;color:var(--acc);margin:14px 0}
+  .cert .line{height:1px;background:var(--line);margin:16px 0}
+  footer{padding:24px;text-align:center;color:var(--muted);font-size:11.5px}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1b2430;border:1px solid var(--line);
+    padding:12px 18px;border-radius:11px;z-index:99;font-size:13px;box-shadow:0 8px 24px #0008}
+  @media print{ header.top,footer,nav.main,.breadcrumb,.tabbar,.hstats{display:none!important} body *{visibility:hidden} #cert,#cert *{visibility:visible} #cert{position:absolute;left:0;top:0;width:100%;border:none;box-shadow:none} #cert button{display:none} }
+
+  /* fasikül & şekil & cila */
+  .lessonhead{display:flex;gap:14px;align-items:center;background:linear-gradient(100deg,#141b25,#0f1620);border:1px solid var(--line);border-left:5px solid var(--acc2);border-radius:12px;padding:14px 16px;margin-bottom:14px}
+  .lessonhead .lh-ic{font-size:34px;filter:drop-shadow(0 3px 8px #0008)}
+  .lh-cat{font-size:11px;text-transform:uppercase;letter-spacing:.7px;font-weight:800}
+  .lh-t{font-size:17px;font-weight:800;margin-top:2px}
+  .fig{margin:0 0 14px;background:radial-gradient(circle at 30% 0%,#16202e,#0e141d);border:1px solid var(--line);border-radius:12px;padding:16px}
+  .fig svg{width:100%;height:auto;max-height:230px;display:block}
+  .fig figcaption{text-align:center;font-size:11.5px;color:var(--muted);margin-top:10px;font-style:italic}
+  .brand h1{background:linear-gradient(90deg,#ffd27a,#ffb000);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .card::after{content:"";position:absolute;left:0;top:0;height:3px;width:100%;background:linear-gradient(90deg,var(--acc),transparent);opacity:0;transition:.2s}
+  .card:hover::after{opacity:1}
+  @keyframes pop{from{transform:scale(.97);opacity:.6}to{transform:scale(1);opacity:1}}
+  #app>*{animation:pop .18s ease}
+
+  /* ===== CANLI / HAVALI GÖRSEL CİLA v6 ===== */
+  body::before{content:"";position:fixed;inset:-10%;z-index:-1;pointer-events:none;
+    background:radial-gradient(600px 420px at 14% 18%,#1b6fff26,transparent 60%),
+    radial-gradient(720px 520px at 86% 12%,#ff8a0022,transparent 60%),
+    radial-gradient(640px 520px at 72% 92%,#a371ff22,transparent 60%);
+    animation:drift 20s ease-in-out infinite alternate;filter:blur(6px)}
+  @keyframes drift{from{transform:translate3d(0,0,0) scale(1)}to{transform:translate3d(0,-26px,0) scale(1.08)}}
+  header.top::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:2px;
+    background:linear-gradient(90deg,transparent,#33b1ff,#ffb000,#a371ff,transparent);
+    background-size:220% 100%;animation:slide 7s linear infinite}
+  @keyframes slide{to{background-position:220% 0}}
+  .logo{animation:pulse 2.8s ease-in-out infinite}
+  @keyframes pulse{0%,100%{box-shadow:0 4px 14px #ff8a0033}50%{box-shadow:0 6px 26px #ffb00099,0 0 0 4px #ffb0001a}}
+  nav.main button.active{box-shadow:inset 0 -2px 0 #ffb000;text-shadow:0 0 12px #ffb00088}
+  .chip{box-shadow:inset 0 0 0 1px #ffffff0a}
+  .btn{background:linear-gradient(135deg,#ffc23d,#ff8a00);box-shadow:0 6px 18px #ff8a0033}
+  .btn.blue{background:linear-gradient(135deg,#5ec6ff,#1b8fe0);box-shadow:0 6px 18px #1b8fe033}
+  .btn.purple{background:linear-gradient(135deg,#bd93ff,#7c4dff);box-shadow:0 6px 18px #7c4dff44}
+  .btn.danger{background:linear-gradient(135deg,#ff6b63,#e23b32);box-shadow:0 6px 18px #e23b3233}
+  .btn.ghost{background:#ffffff05}
+  .btn:active{transform:translateY(1px) scale(.99)}
+  .card{background:linear-gradient(180deg,#171d28,#11161f)}
+  .card:hover{box-shadow:0 16px 36px #0009,0 0 0 1px var(--acc)}
+  .card .ico{transition:.22s;display:inline-block}
+  .card:hover .ico{transform:scale(1.18) rotate(-5deg)}
+  .kpi .v{background:linear-gradient(90deg,#ffd27a,#ffb000);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .ring{filter:drop-shadow(0 0 10px #ffb00055)}
+  .sectiontitle .ln{background:linear-gradient(90deg,var(--line),transparent)}
+  .fig{box-shadow:inset 0 0 50px #33b1ff14}
+  .lessonhead{box-shadow:0 8px 22px #0006}
+  .opt{transition:.15s}
+  .opt:hover{transform:translateX(3px)}
+  .opt.correct{box-shadow:0 0 0 1px #3fb95066,0 0 16px #3fb95033}
+  .opt.wrong{box-shadow:0 0 0 1px #f8514966}
+  .badge.on{box-shadow:0 0 20px #ffb00033}
+  .badge.on .bi{display:inline-block;animation:float 3.2s ease-in-out infinite}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+  .examtimer{text-shadow:0 0 14px #33b1ff66}
+  .scorebar>i{box-shadow:0 0 12px #3fb95055}
+  .cert{box-shadow:0 0 40px #ffb00022,inset 0 0 60px #ffb0000a}
+  .cert .seal{animation:float 3s ease-in-out infinite;display:inline-block}
+  ::-webkit-scrollbar{width:11px;height:11px}
+  ::-webkit-scrollbar-track{background:#0c1219}
+  ::-webkit-scrollbar-thumb{background:#283441;border-radius:7px;border:2px solid #0c1219}
+  ::-webkit-scrollbar-thumb:hover{background:#33b1ff}
+  .panel{position:relative;overflow:hidden}
+  .panel::before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:linear-gradient(180deg,#33b1ff,#a371ff);opacity:.35}
+  @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand" onclick="go('home')">
+    <div class="logo">⚡</div>
+    <div><h1>ELK MASTER</h1><div class="sub">Elektrik Uzmanlık Akademisi · DHMİ</div></div>
+  </div>
+  <nav class="main" id="nav">
+    <button data-v="home" onclick="go('home')">Pano</button>
+    <button data-v="modules" onclick="go('modules')">Modüller</button>
+    <button data-v="exam" onclick="go('exam')">Deneme Sınavı</button>
+    <button data-v="myk" onclick="go('myk')">🎖️ MYK Sınavı</button>
+    <button data-v="review" onclick="go('review')">Tekrar</button>
+    <button data-v="glossary" onclick="go('glossary')">Sözlük</button>
+    <button data-v="settings" onclick="go('settings')">⚙️ Veri</button>
+  </nav>
+  <div class="hstats">
+    <span class="chip">🔥 <b id="hsStreak">0</b> gün</span>
+    <span class="chip">⭐ <b id="hsXp">0</b> XP</span>
+  </div>
+</header>
+<div class="wrap" id="app"></div>
+<footer>ELK MASTER v5.0 · Teori + Uygulama + Föy + Sınav + Tekrar · İlerlemen bu cihazda saklanır.</footer>
+<script>
+/* ===================== VERİ KATMANI ===================== */
+const RULES = {
+  rj45: ["Turuncu-Beyaz","Turuncu","Yeşil-Beyaz","Mavi","Mavi-Beyaz","Yeşil","Kahverengi-Beyaz","Kahverengi"],
+  soyma:{duzEk_mm:50,fKonnektor_mm:15},
+  pcb:{perhidrol:1,tuzRuhu:3,minDk:5,maxDk:10},
+  kabloSecimi:{"Yeraltı (toprak altı)":"NYY","Sıva altı nemli ortam":"NYM","Sabit pano içi":"NYA","Titreşimli motor bağlantısı":"NYAF"},
+  atsTransferMaxSn:1,
+  akuAdimlari:["Oksidasyon Temizliği (1/2\" bakırı kes)","İzolasyon Soyma (lug derinliği)","Krimp / Sıkma (mengene/punch)","Lehimleme (sadece ucu ısıt)","Makaron (çevresel koruma)"],
+  reaktans:(f,L)=>2*Math.PI*f*L
+};
+
+const CATS = {
+  temel:{n:"Temel Elektrik",c:"#33b1ff"},
+  olcum:{n:"Ölçüm & Sinyal",c:"#3fb950"},
+  saha:{n:"Saha & Kablaj",c:"#ffb000"},
+  pano:{n:"Pano & Güç Dağıtım",c:"#a371ff"},
+  yg:{n:"Yüksek Gerilim & Koruma",c:"#f85149"},
+  yonetim:{n:"Yönetim & Havacılık",c:"#22b8cf"}
+};
+
+/* modül metası: id, başlık, kategori, ikon, açıklama, interaktif görev fonksiyonu (varsa) */
+const MODS = [
+  {id:1, t:"Elektrik Yasaları", cat:"temel", ic:"⚡", d:"Ohm kanunu, güç, seri/paralel devre.", task:"modOhm"},
+  {id:2, t:"Ek & Bağlantı (RJ45)", cat:"saha", ic:"🔌", d:"CAT6 renk dizilimi, soyma ölçüleri.", task:"modRJ45"},
+  {id:3, t:"Kablo Seçimi", cat:"temel", ic:"🧵", d:"NYY/NYM/NYA/NYAF ortam eşleştirme.", task:"modKablo"},
+  {id:4, t:"Ölçüm Aletleri", cat:"olcum", ic:"📏", d:"Multimetre & pens ampermetre.", task:"modOlcum"},
+  {id:5, t:"Pano Otomasyonu", cat:"pano", ic:"🎛️", d:"LDR + kontaktör ile aydınlatma.", task:"modPano"},
+  {id:6, t:"Fatura Optimizasyonu", cat:"pano", ic:"💡", d:"T2→T3 yük kaydırma, kompanzasyon.", task:"modFatura"},
+  {id:7, t:"YG Manevrası", cat:"yg", ic:"⚠️", d:"Kesici→Ayırıcı sırası, 5 altın kural.", task:"modYG"},
+  {id:8, t:"İdari Yönetim", cat:"yonetim", ic:"📋", d:"Adam-saat, metraj, hakediş.", task:"modIdari"},
+  {id:9, t:"Havacılık ATS", cat:"yonetim", ic:"✈️", d:"Yedek güç ≤1 sn transfer (CAT II/III).", task:"modATS"},
+  {id:10, t:"YG İletim & Koruma", cat:"yg", ic:"🗼", d:"Parafudur, topraklama < 1Ω.", task:"modYGKoruma"},
+  {id:11, t:"Osiloskop & PCB", cat:"olcum", ic:"📟", d:"Periyot/frekans, RMS, dağlama.", task:"modPCB"},
+  {id:12, t:"Birim & Ölçü Aletleri", cat:"temel", ic:"🔣", d:"Büyüklük→birim→ölçü aleti.", task:null},
+  {id:13, t:"Hata Analizi", cat:"temel", ic:"➗", d:"Mutlak ve bağıl (%) hata.", task:"modHata"},
+  {id:14, t:"Bobin & Reaktans", cat:"temel", ic:"🌀", d:"XL=2πfL, DA'da kısa devre.", task:"modReaktans"},
+  {id:15, t:"Akü Kablosu Hazırlama", cat:"saha", ic:"🔋", d:"Lehim adım sırası + güvenlik.", task:"modAku"},
+  {id:16, t:"Bağlantı Standartları", cat:"saha", ic:"🪢", d:"Solid/stranded, Nox, yank testi.", task:null},
+  {id:17, t:"Alet Sembolleri", cat:"olcum", ic:"🔠", d:"Ölçü aleti sembolleri.", task:null},
+  {id:18, t:"Güç Hesabı", cat:"olcum", ic:"🧮", d:"Tek/üç faz: P, S, Q, cosφ.", task:"modGuc"},
+  {id:19, t:"ADP Odası Panoları", cat:"pano", ic:"🗄️", d:"Ana dağıtım panosu, baralar.", task:null},
+  {id:20, t:"Jeneratör Sistemleri", cat:"pano", ic:"🔧", d:"Dizel jeneratör, ATS, senkron.", task:null},
+  {id:21, t:"Yıldırımdan Korunma", cat:"yg", ic:"🌩️", d:"Paratoner, iniş iletkeni, SPD.", task:null},
+  {id:22, t:"Peyzaj Aydınlatma", cat:"saha", ic:"🌳", d:"IP65/67, yer altı besleme, fotosel.", task:null},
+  {id:23, t:"Disiplinler Arası Koord.", cat:"yonetim", ic:"🤝", d:"İnşaat/mekanik/IT koordinasyonu.", task:null},
+];
+const modById = id => MODS.find(m=>m.id===id);
+/* ===================== TEORİ (Eğitim Notu) ===================== */
+const TEORI = {
+1:`<b>Ohm Yasası:</b> V = I × R · buradan I = V/R, R = V/I.<br><b>Güç:</b> P = V·I = I²·R = V²/R (Watt).<br><b>Seri:</b> akım sabit, gerilim bölünür; bir eleman kopsa devre açılır.<br><b>Paralel:</b> gerilim sabit, akım bölünür; kollar bağımsızdır — bir lamba patlasa diğerleri yanar (ev tesisatı paraleldir).`,
+2:`İyi ek = düşük temas direnci; gevşek ek ısınır → yangın riski. Düz/T ek için kablo <b>50 mm</b>, F (anten) konnektörde yalıtkan <b>15 mm</b> soyulur.<br><b>RJ45 T568B:</b> Turuncu-Beyaz, Turuncu, Yeşil-Beyaz, Mavi, Mavi-Beyaz, Yeşil, Kahverengi-Beyaz, Kahverengi. Çift bükümlü teller paraziti (EMI) bastırır.`,
+3:`Kablo ortama göre seçilir:<br>• <b>NYA</b> tek telli, sabit pano içi · • <b>NYAF</b> çok telli/esnek, titreşimli motor · • <b>NYM</b> nemli sıva altı · • <b>NYY</b> yer altı.<br>Kesit (mm²) taşınacak akıma göre seçilir; ince kesit + yüksek akım = aşırı ısınma.`,
+4:`<b>Ampermetre:</b> SERİ bağlanır, iç direnci çok düşüktür (≈0–1 Ω).<br><b>Voltmetre:</b> PARALEL bağlanır, iç direnci çok yüksektir.<br><b>Pens ampermetre:</b> manyetik alanı okur; içine yalnız TEK hat (faz) alınır. Faz+nötr birlikte alınırsa ekran 0 A gösterir.`,
+5:`<b>LDR</b> aydınlıkta düşük, karanlıkta yüksek dirençlidir (ışık sensörü). <b>Kontaktör</b> küçük kumanda akımıyla büyük yükü anahtarlar. Karanlık → LDR sinyali → kontaktör çeker → lambalar yanar (akşam ≈19:00 otomatik).`,
+6:`Üç zamanlı tarife: <b>T1 gündüz</b> (orta), <b>T2 puant 17–22</b> (en pahalı), <b>T3 gece 22–06</b> (en ucuz). Yüksek güçlü ertelenebilir yükleri T3'e kaydırmak faturayı düşürür. Düşük cosφ → reaktif ceza → kompanzasyon.`,
+7:`<b>Kesici</b> yük akımını güvenle keser (ark hazneli). <b>Ayırıcı</b> yalnız görünür ayrım sağlar; yük altında AÇILAMAZ (ark patlaması). Açma sırası: önce Kesici → sonra Ayırıcı. Kapama: tersi. Gerilim ıstanka/neon ile kontrol edilir.`,
+8:`<b>Adam-saat = işçi × saat.</b> <b>Metraj</b> yapılan işin ölçümü. <b>Hakediş = metraj × birim fiyat.</b> Şef puantaj tutar, metraj çıkarır, hakedişi müşavire sunar.`,
+9:`<b>ATS</b> şebeke↔jeneratör otomatik geçiş yapar; <b>UPS</b> aradaki boşluğu köprüler. Havaalanı CAT II/III pist ışıkları kritik yüktür: transfer süresi <b>≤ 1 saniye</b> olmalı, yoksa pilot pas geçer.`,
+10:`<b>Parafudur</b> aşırı gerilimi toprağa akıtıp trafoyu korur. Topraklama direnci ne kadar düşük olursa o kadar etkilidir; hedef <b>R &lt; 1 Ω</b> (bakır kazıklarla). Hava hatlarına helikopter ikaz küreleri asılır.`,
+11:`Saykıl=bir tam dalga; Periyot T; Frekans <b>f = 1/T</b>. Osiloskop dalga şeklini gösterir ve <b>maksimum</b> değeri okutur; <b>Vrms = Vmax/√2</b>. PCB dağlama: 1 Perhidrol + 3 Tuz Ruhu, 5–10 dk.`,
+12:`Her elektriksel büyüklüğün birimi ve ölçü aleti vardır: Akım→Amper→Ampermetre, Gerilim→Volt→Voltmetre, Direnç→Ohm→Ohmmetre, Frekans→Hertz→Frekansmetre, Güç→Watt→Wattmetre, Endüktans→Henry→LCRmetre.`,
+13:`<b>Mutlak hata:</b> ΔX=|Xg−X|. <b>Bağıl hata:</b> ε=ΔX/Xg (×100 ile %). Örn. Xg=220, X=216 → ΔX=4, ε=%1,82. Alet sınıfı izin verilen maksimum hatayı belirtir.`,
+14:`<b>XL = 2·π·f·L</b> (endüktif reaktans). DA'da f=0 → XL=0 → bobin kısa devre gibi davranır. Kapasitif: XC=1/(2πfC); DA'da XC→∞ (kondansatör açık devre).`,
+15:`Akü kablosu sonlandırma sırası: Oksidasyon temizliği → İzolasyon soyma → Krimp → Lehim (sadece ucu ısıt) → Makaron. Yeşil alev=bakır oksitlendi (dur). Flux abartılmaz (asidik). Makaron kötü bağlantıyı gizlemek için kullanılmaz.`,
+16:`Titreşimli yerde <b>stranded</b> (çok telli) zorunlu; solid kırılır. Ringing (yüzük atma) iletkeni zayıflatır. Farklı metaller korozyona uğrar → <b>Nox</b> pasta. Dış mekânda yüksük yukarı (shed water). Teller saat yönü bükülür. Yank testi yapılır.`,
+17:`Semboller: <b>~</b> AC, <b>—</b> DC; <b>⊥</b> dik, <b>⊓</b> yatay, <b>∠60°</b> eğik kullanım; yıldız içinde rakam = yalıtkanlık deneyi kV'si; üçgen içinde (!) = dikkat/teknik dokümana bak.`,
+18:`Tek faz P=V·I·cosφ. Üç faz: S=√3·U·I (kVA), P=√3·U·I·cosφ (kW), Q=√3·U·I·sinφ (kVAR). S²=P²+Q², cosφ=P/S. Düşük cosφ kondansatörle (kompanzasyon) düzeltilir.`,
+19:`<b>ADP</b> (Ana Dağıtım Panosu) binanın elektrik merkezi. Hiyerarşi: Ana pano → tali panolar → kat/mahal panoları. İçinde: ana şalter, bara (busbar), sigorta/otomat, kontaktör, parafudur, ölçü, kompanzasyon, topraklama barası. Ortama göre IP sınıfı.`,
+20:`Dizel jeneratör = motor + alternatör. Şebeke kesilince <b>ATS</b> jeneratöre geçer. Bileşen: günlük yakıt tankı, marş aküsü, radyatör, egzoz, yağlama. Standby=acil, Prime=sürekli. Paralel çalışma için senkronizasyon.`,
+21:`3 katman: (1) Yakalama ucu (Franklin/aktif paratoner), (2) İniş iletkeni (kısa/düz bakır), (3) düşük dirençli topraklama (hedef R&lt;1 Ω). İç koruma: parafudur (SPD Tip 1/2/3) + eşpotansiyel baralama. Geniş yapıda Faraday kafesi.`,
+22:`Dış mekân armatürü IP65/IP67, kablo UV dayanımlı. Besleme yer altından NYY ile ~60 cm derine, ikaz bandıyla. Kumanda: fotosel + zaman saati. Güvenlik için alçak gerilim (12/24 V) bahçe sistemleri. Topraklama Sınıf I veya çift yalıtım Sınıf II.`,
+23:`Elektrik ekibi: İnşaatla (beton öncesi sleeve/ankraj), mekanikle (tava↔kanal çakışması/clash), mimariyle (armatür yerleşimi), IT/zayıf akımla (EMI için ayrı tava), asansör/yangınla (ayrı besleme) koordine olur. Ortak teknik galeri + BIM clash detection.`,
+};
+/* ===================== FÖY (Detaylı Anlatım) ===================== */
+const FOY = {
+1:`<b>Özet:</b> Ohm yasası devrenin temelidir: <b>V = I × R</b>.<br><b>Güç:</b> P = V·I = I²·R = V²/R. Örnek: V=12 V, R=6 Ω → I=2 A, P=24 W.<br><b>Seri:</b> R<sub>top</sub>=R1+R2+… · akım aynı · gerilim bölünür · biri kopar→tümü söner.<br><b>Paralel:</b> 1/R<sub>top</sub>=1/R1+1/R2+… · gerilim aynı · akım bölünür · biri arızalansa diğerleri çalışır.<br><b>Sık hata:</b> Ampermetreyi paralel bağlamak kısa devre yapar.`,
+2:`<b>Özet:</b> İyi ek = düşük temas direnci; gevşek ek ısınır→yangın.<br><b>Soyma:</b> düz/T ek 50 mm, F konnektör 15 mm.<br><b>T568B:</b> Tu-Beyaz·Turuncu·Ye-Beyaz·Mavi·Mavi-Beyaz·Yeşil·Ka-Beyaz·Kahverengi.<br><b>İpucu:</b> İki uç da B → düz kablo; A-B → çapraz. Çift büküm EMI bastırır.<br><b>Yank testi:</b> her teli çek, oynayan varsa yeniden yap.`,
+3:`<b>Özet:</b> Kablo ortama+mekanik şarta göre seçilir.<br>• NYA: tek tel, sabit pano/boru · • NYAF: çok tel, esnek, motor · • NYM: nemli sıva altı · • NYY: yer altı.<br><b>Harf:</b> N=standart, Y=PVC, A=tek tel, F=ince çok tel, M=antigron.<br><b>Kesit:</b> akıma göre; ince kesit+yüksek akım = ısınma+gerilim düşümü.`,
+4:`<b>Özet:</b> Doğru bağlantı = doğru ölçüm.<br><b>Ampermetre:</b> SERİ, düşük iç direnç (≈0–1 Ω); paralelde kısa devre.<br><b>Voltmetre:</b> PARALEL, yüksek iç direnç.<br><b>Ohmmetre:</b> devre enerjisiz; büyük dirençte iki probu birden elleme.<br><b>Pens:</b> tek hat (faz); faz+nötr=0 A.`,
+5:`<b>Özet:</b> Otomatik aydınlatma LDR+kontaktör.<br><b>LDR:</b> karanlıkta yüksek dirençli, ışığı okur.<br><b>Kontaktör:</b> bobin (A1-A2) + ana kontaklar; küçük sinyalle büyük yük.<br><b>Çalışma:</b> karanlık→bobin enerjilenir→kontak kapanır→lamba yanar.<br><b>Hata:</b> mantığı ters kurmak (gündüz yakmak).`,
+6:`<b>Özet:</b> Üç zamanlı sayaç.<br>T1 (06–17) orta · T2 (17–22) EN PAHALI · T3 (22–06) EN UCUZ.<br><b>Yük kaydırma:</b> fırın/pompa/ısıtıcı gece (T3).<br><b>Reaktif:</b> düşük cosφ → ceza → kompanzasyon panosu (kondansatör).<br><b>Pratik:</b> zaman saatli programlı çalıştırma.`,
+7:`<b>Özet (ölümcül kural):</b> Kesici yük akımını keser; Ayırıcı yük altında AÇILMAZ.<br><b>Açma:</b> önce KESİCİ → sonra AYIRICI. <b>Kapama:</b> tersi.<br><b>5 altın kural:</b> 1) enerjiyi kes 2) tekrar kapanmayı önle (kilit/etiket) 3) gerilimsizliği doğrula 4) toprakla+kısa devre et 5) komşu gerilimli kısımları yalıt.`,
+8:`<b>Özet:</b> Şef işçilik+işi takip eder.<br><b>Adam-saat = işçi × saat.</b> Örn. 10×9 = 90.<br><b>Metraj:</b> yapılan işin ölçümü.<br><b>Hakediş = metraj × birim fiyat.</b> Örn. 250 m × 40 TL = 10.000 TL.<br><b>Belge:</b> puantaj, yeşil defter (metraj), hakediş raporu.`,
+9:`<b>Özet:</b> Kritik tesiste kesinti kabul edilmez.<br><b>ATS:</b> şebeke↔jeneratör otomatik geçiş.<br><b>UPS:</b> jeneratör gelene kadar kesintisiz köprü (online ≈0 geçiş).<br><b>CAT II/III:</b> pist ışıkları kritik; transfer ≤ 1 sn yoksa pas geçilir.<br><b>Kademe:</b> şebeke→UPS (anlık)→jeneratör (saniyeler).`,
+10:`<b>Özet:</b> YG'de aşırı gerilim + topraklama kritik.<br><b>Parafudur:</b> aşırı gerilimi toprağa akıtır.<br><b>Topraklama:</b> düşük direnç şart; ≥1 Ω parafuduru etkisizleştirir → hedef R&lt;1 Ω (bakır kazık, eşpotansiyel, bentonit).<br><b>İkaz küreleri:</b> hava hattında uçak/helikopter uyarısı.`,
+11:`<b>Özet:</b> AC işaret ve ölçümü.<br><b>Tanım:</b> saykıl, periyot T, <b>f=1/T</b>. T=20 ms→f=50 Hz.<br><b>Osiloskop:</b> TEPE değeri okutur; <b>Vrms=Vmax/√2</b>, Vpp=2·Vmax.<br><b>PCB dağlama:</b> 1 Perhidrol + 3 Tuz Ruhu, 5–10 dk. Az süre→bakır kalır, çok süre→yol aşınır.`,
+12:`<b>Büyüklük / Birim / Alet:</b><br>I→Amper→Ampermetre · V→Volt→Voltmetre · R→Ohm(Ω)→Ohmmetre · f→Hertz→Frekansmetre · P→Watt→Wattmetre · Q→Var→Varmetre · L→Henry→LCRmetre · C→Farad→LCRmetre · cosφ→Kosinüsfimetre.`,
+13:`<b>Mutlak:</b> ΔX=|Xg−X|. <b>Bağıl:</b> ε=ΔX/Xg×100.<br>Örn. Xg=220, X=216 → ΔX=4, ε=%1,82.<br><b>Alet sınıfı:</b> tam skalaya göre izinli maks. hata (örn. 1,5 → ±%1,5).<br><b>İpucu:</b> bağıl hata ölçümün kalitesini daha iyi anlatır.`,
+14:`<b>X<sub>L</sub> = 2πfL.</b> Frekans artarsa XL artar.<br><b>DA:</b> f=0 → XL=0 → bobin kısa devre.<br><b>Kapasitif:</b> X<sub>C</sub>=1/(2πfC); DA'da XC→∞ (açık devre).<br><b>İpucu:</b> bobin DA'yı geçirir/AC'yi zorlar; kondansatör tersi.`,
+15:`<b>Sıra:</b> Oksidasyon temizliği (½" kes) → soyma → krimp → lehim (sadece ucu ısıt) → makaron.<br><b>Yeşil alev:</b> bakır oksitlendi, DUR.<br><b>Flux:</b> abartma — asidik, kalırsa korozyon.<br><b>Makaron:</b> kötü bağlantıyı gizlemek için DEĞİL, koruma için.`,
+16:`• Titreşimde stranded zorunlu.<br>• Ringing (yüzük) iletkeni zayıflatır.<br>• Nox: bakır-nikel-çinko korozyonunu önler.<br>• Shed water: yüksük yukarı baksın.<br>• Saat yönü büküm → sıkı bağlantı.<br>• Yank testi: her teli çek.`,
+17:`• ~ AC · — DC · ikisi birlikte = DC+AC.<br>• ⊥ dik · ⊓ yatay · ∠60° eğik kullanım.<br>• Yıldız+rakam = yalıtkanlık deneyi kV'si; içi boş 5 köşeli yıldız = 500 V muayene.<br>• Üçgen içinde (!) = dikkat, dokümana bak.`,
+18:`<b>Güç üçgeni:</b> S²=P²+Q².<br>Tek faz P=V·I·cosφ. Üç faz: S=√3·U·I, P=√3·U·I·cosφ, Q=√3·U·I·sinφ.<br>Örn. U=380, I=10, cosφ=1 → P=1,732·380·10=6.581 W≈6,58 kW.<br><b>cosφ=P/S;</b> düşükse fazla akım çekilir (kayıp+ceza) → kompanzasyon.`,
+19:`<b>ADP:</b> binanın elektrik kalbi.<br><b>Hiyerarşi:</b> giriş→Ana pano→tali→kat/mahal panoları.<br><b>İçi:</b> ana şalter, bara, sigorta/otomat, kontaktör, SPD, ölçü, kompanzasyon, topraklama barası.<br><b>IP:</b> 1. rakam toz, 2. rakam su (örn. IP54).<br><b>Pratik:</b> etiketleme, faz dengesi, kısa devre dayanımı (Icw).`,
+20:`<b>Jeneratör=motor+alternatör.</b><br>Şebeke kesilir→ATS→marş→devreye girer→şebeke gelince geri transfer.<br>Bileşen: günlük yakıt tankı, akü, radyatör, egzoz, yağlama, kontrol.<br>Standby=acil, Prime=sürekli.<br>Paralel için senkron (V, f, faz). Periyodik yük testi.`,
+21:`<b>3 katman:</b> 1) yakalama ucu (Franklin/aktif ESE) 2) iniş iletkeni (kısa/düz, keskin dönüşsüz) 3) topraklama (R&lt;1 Ω).<br><b>SPD:</b> Tip 1 (ana giriş), Tip 2 (tali), Tip 3 (cihaz yanı) + eşpotansiyel baralama.<br><b>Faraday kafesi:</b> geniş yapıda örgü koruma.`,
+22:`<b>Koruma:</b> armatür IP65/67, kablo UV dayanımlı; topraklama Sınıf I veya çift yalıtım Sınıf II.<br><b>Besleme:</b> NYY yer altı, ~60 cm + ikaz bandı.<br><b>Kumanda:</b> fotosel + zaman saati.<br><b>Güvenlik:</b> ıslak/dekoratifte 12/24 V.<br><b>Armatür:</b> projektör, gömme spot, bollard, RGB.`,
+23:`• <b>İnşaat:</b> beton ÖNCESİ sleeve/ankraj bırak.<br>• <b>Mekanik:</b> tava↔kanal çakışması (clash) önle, kot paylaş.<br>• <b>Mimari:</b> armatür/priz tavan planına uyar.<br>• <b>IT:</b> veri kabloları güçten ayrı tava/mesafe (EMI).<br>• <b>Asansör/yangın:</b> ayrı besleme.<br>• <b>Araç:</b> ortak galeri/şaft + BIM clash detection + koordinasyon toplantısı.`,
+};
+/* ===================== SORU BANKASI (1-12) ===================== */
+var QBANK = {
+1:[
+ {q:"V=24 V, R=8 Ω ise akım kaç A?",opts:["2 A","3 A","4 A","6 A"],ans:1,ex:"I = V/R = 24/8 = 3 A."},
+ {q:"P = V × I bağıntısında P'nin birimi?",opts:["Volt","Amper","Watt","Ohm"],ans:2,ex:"Güç Watt (W) ile ifade edilir."},
+ {q:"Paralel devrede bir lamba patlarsa diğerleri ne olur?",opts:["Hepsi söner","Yanmaya devam eder","Daha parlak yanar ve patlar","Akım sıfırlanır"],ans:1,ex:"Paralel kollar bağımsızdır; biri arızalansa diğerleri çalışır."},
+ {q:"Seri devrede sabit kalan büyüklük?",opts:["Akım","Gerilim","Güç","Direnç"],ans:0,ex:"Seri devrede akım her elemandan aynı geçer; gerilim bölünür."},
+ {q:"R=10 Ω, I=2 A ise harcanan güç (P=I²R)?",opts:["20 W","40 W","80 W","100 W"],ans:1,ex:"P = I²·R = 2²·10 = 40 W."},
+ {q:"Ev tesisatı neden paralel bağlanır?",opts:["Daha ucuz olduğu için","Her cihaz aynı gerilimi görüp bağımsız çalışsın diye","Akım artsın diye","Kablo azalsın diye"],ans:1,ex:"Paralelde her cihaz aynı 230 V'u görür ve bağımsız çalışır."}
+],
+2:[
+ {q:"Düz/T ek için kablo ne kadar soyulur?",opts:["15 mm","25 mm","50 mm","100 mm"],ans:2,ex:"Düz ve T ek için 50 mm (5 cm) soyulur."},
+ {q:"F (anten) konnektörde yalıtkan ne kadar soyulur?",opts:["5 mm","15 mm","30 mm","50 mm"],ans:1,ex:"Koaksiyel F konnektörde yalıtkan 15 mm soyulur."},
+ {q:"T568B sırasında 1. kablo rengi?",opts:["Turuncu","Turuncu-Beyaz","Yeşil-Beyaz","Mavi"],ans:1,ex:"T568B: Turuncu-Beyaz ile başlar."},
+ {q:"Gevşek/kötü ekin en büyük riski?",opts:["Renk solması","Isınma ve yangın","Kablonun uzaması","Hız kaybı"],ans:1,ex:"Yüksek temas direnci ısınmaya ve yangına yol açar."},
+ {q:"İki ucu da T568B olan kablo türü?",opts:["Çapraz kablo","Düz kablo","Koaksiyel","Topraklama"],ans:1,ex:"Her iki uç aynı standartta ise düz (straight) kablodur."},
+ {q:"Ağ kablosunda çift bükümün amacı?",opts:["Görsellik","Parazit (EMI) bastırma","Maliyet","Uzatma"],ans:1,ex:"Çift bükümlü teller elektromanyetik paraziti bastırır."}
+],
+3:[
+ {q:"Yeraltı (toprak altı) tesisat için uygun kablo?",opts:["NYA","NYM","NYY","NYAF"],ans:2,ex:"NYY yer altı için mekanik dayanımlı kablodur."},
+ {q:"Titreşimli motor bağlantısı için uygun kablo?",opts:["NYA","NYAF","NYY","NYM"],ans:1,ex:"NYAF çok telli/esnektir, titreşime dayanır."},
+ {q:"Nemli sıva altı iç mekan için?",opts:["NYM (antigron)","NYY","NYA","NYAF"],ans:0,ex:"NYM (antigron) nemli sıva altı ortam içindir."},
+ {q:"Sabit pano içi sert tek telli kablo?",opts:["NYAF","NYA","NYY","NYM"],ans:1,ex:"NYA tek telli, sabit pano/boru içi kullanılır."},
+ {q:"Kablo kesiti (mm²) neye göre seçilir?",opts:["Renge","Taşınacak akıma","Marka","Uzunluğa hiç bakılmaz"],ans:1,ex:"Kesit taşınacak akıma göre seçilir; aksi halde ısınır."},
+ {q:"İnce kesit + yüksek akım sonucu?",opts:["Sorun olmaz","Aşırı ısınma ve gerilim düşümü","Akım azalır","Direnç sıfırlanır"],ans:1,ex:"Yetersiz kesit ısınma ve gerilim düşümüne yol açar."}
+],
+4:[
+ {q:"Ampermetre devreye nasıl bağlanır?",opts:["Seri","Paralel","Çapraz","Toprağa"],ans:0,ex:"Ampermetre seri bağlanır; iç direnci çok düşüktür."},
+ {q:"Voltmetre devreye nasıl bağlanır?",opts:["Seri","Paralel","Toprağa","Fark etmez"],ans:1,ex:"Voltmetre paralel bağlanır; iç direnci çok yüksektir."},
+ {q:"Pens ampermetre içine ne alınır?",opts:["Faz + nötr birlikte","Sadece tek hat (faz)","Toprak hattı","Üç faz birden"],ans:1,ex:"Tek hat alınır; faz+nötr birlikte 0 A okutur."},
+ {q:"Direnç (ohmmetre) ölçümünde devre nasıl olmalı?",opts:["Enerjili","Enerjisiz","Yarı yüklü","Kısa devre"],ans:1,ex:"Ohm ölçümü devre enerjisizken yapılır."},
+ {q:"Ampermetrenin iç direnci nasıldır?",opts:["Çok yüksek","Çok düşük (≈0–1 Ω)","Sonsuz","Negatif"],ans:1,ex:"Devreyi etkilememesi için çok düşüktür."},
+ {q:"Pens ampermetreye faz+nötr birlikte alınırsa ekran?",opts:["İki katı gösterir","0 A gösterir","Yanar","Değişmez"],ans:1,ex:"Zıt yönlü alanlar birbirini götürür → 0 A."}
+],
+5:[
+ {q:"LDR'nin direnci karanlıkta nasıldır?",opts:["Düşük","Yüksek","Sıfır","Değişmez"],ans:1,ex:"LDR karanlıkta yüksek dirençlidir."},
+ {q:"Büyük yükü küçük sinyalle anahtarlayan eleman?",opts:["Direnç","Kontaktör","Sigorta","Kondansatör"],ans:1,ex:"Kontaktör bobiniyle büyük gücü anahtarlar."},
+ {q:"Çevre aydınlatması ne zaman yanmalı?",opts:["Gündüz","Karanlıkta (akşam)","Sürekli","Hiç"],ans:1,ex:"Otomatik aydınlatma karanlıkta devreye girer."},
+ {q:"Kontaktör hangi parçayla çeker?",opts:["Ana kontak","Bobin (A1-A2)","Sigorta","Klemens"],ans:1,ex:"Bobin enerjilenince kontaklar kapanır."},
+ {q:"Akşam ~19:00'da sistem ne yapmalı?",opts:["Lambaları söndürmeli","Kontaktör çekip lambaları yakmalı","Hiçbir şey","Sigortayı atmalı"],ans:1,ex:"Karanlık algılanır, kontaktör çeker, lambalar yanar."},
+ {q:"Kontaktör hangi cihaza benzer ama yüksek akım içindir?",opts:["Röle","Direnç","Diyot","Trafo"],ans:0,ex:"Kontaktör röleye benzer; büyük güç yükleri içindir."}
+],
+6:[
+ {q:"Üç zamanlı tarifede en pahalı dilim?",opts:["T1 gündüz","T2 puant","T3 gece","Hepsi eşit"],ans:1,ex:"T2 (puant, 17–22) en pahalı dilimdir."},
+ {q:"En ucuz dilim hangisidir?",opts:["T1","T2","T3 gece","Fark etmez"],ans:2,ex:"T3 (gece, 22–06) en ucuz dilimdir."},
+ {q:"Yüksek güçlü yükler hangi dilime kaydırılmalı?",opts:["T2","T3 gece","T1","Kaydırılmaz"],ans:1,ex:"Ertelenebilir büyük yükler ucuz T3 dilimine alınır."},
+ {q:"Düşük güç faktörü (cosφ) sanayide neye yol açar?",opts:["İndirim","Reaktif ceza","Daha az akım","Hiçbir şey"],ans:1,ex:"Düşük cosφ reaktif güç cezası doğurur."},
+ {q:"Reaktif gücü düzelten yöntem?",opts:["Kompanzasyon (kondansatör)","Sigorta büyütme","Kablo kısaltma","Topraklama"],ans:0,ex:"Kompanzasyon panosu (kondansatör) cosφ'yi düzeltir."},
+ {q:"T2 puant dilimi yaklaşık hangi saatler?",opts:["22–06","06–17","17–22","00–06"],ans:2,ex:"Puant genelde akşam 17–22 arasıdır."}
+],
+7:[
+ {q:"Yük akımını güvenle kesebilen cihaz?",opts:["Ayırıcı","Kesici","Sigorta yuvası","Klemens"],ans:1,ex:"Kesici ark söndürme hazneli olup yük akımını keser."},
+ {q:"Yük altında AÇILMAMASI gereken cihaz?",opts:["Kesici","Ayırıcı","Röle","Kontaktör"],ans:1,ex:"Ayırıcı yük altında açılırsa ark patlaması olur."},
+ {q:"Doğru açma (enerji kesme) sırası?",opts:["Önce Ayırıcı sonra Kesici","Önce Kesici sonra Ayırıcı","Aynı anda","Sırası önemsiz"],ans:1,ex:"Önce Kesici, sonra Ayırıcı açılır."},
+ {q:"Enerji verme (kapama) sırası?",opts:["Önce Ayırıcı sonra Kesici","Önce Kesici sonra Ayırıcı","Sadece Kesici","Sadece Ayırıcı"],ans:0,ex:"Kapamada tersine: önce Ayırıcı, sonra Kesici."},
+ {q:"Gerilim olup olmadığını kontrol için?",opts:["El ile dokunarak","Neon lambalı ıstanka","Koklayarak","Tahminle"],ans:1,ex:"Gerilim ıstanka/neon ile kontrol edilir."},
+ {q:"İşçi güvenliğinde 5 altın kuralın ilki?",opts:["Toprakla","Enerjiyi kes","Yalıt","Etiketle"],ans:1,ex:"Önce enerji kesilir; ardından kilitle/etiketle vb."}
+],
+8:[
+ {q:"10 işçi 9 saat çalıştı. Adam-saat?",opts:["19","90","109","900"],ans:1,ex:"Adam-saat = 10 × 9 = 90."},
+ {q:"Hakediş nasıl hesaplanır?",opts:["İşçi × saat","Metraj × birim fiyat","Sadece metraj","Sadece fiyat"],ans:1,ex:"Hakediş = metraj × birim fiyat."},
+ {q:"250 m kablo, 40 TL/m. Hakediş?",opts:["2.900 TL","6.250 TL","10.000 TL","12.500 TL"],ans:2,ex:"250 × 40 = 10.000 TL."},
+ {q:"Metraj nedir?",opts:["İşçi sayısı","Yapılan işin ölçülmesi","Maliyet","Saatlik ücret"],ans:1,ex:"Metraj, yapılan işin (örn. kablo uzunluğu) ölçümüdür."},
+ {q:"Puantaj defteri neyi tutar?",opts:["Malzeme fiyatı","İşçi çalışma saatleri","Hava durumu","Metraj"],ans:1,ex:"Puantaj işçi çalışma saatlerinin kaydıdır."},
+ {q:"Hakediş kime sunulur?",opts:["İşçiye","Müşavire/işverene","Tedarikçiye","Hiç kimseye"],ans:1,ex:"Hakediş müşavire/işverene sunulur."}
+],
+9:[
+ {q:"Şebeke↔jeneratör otomatik geçişi yapan cihaz?",opts:["UPS","ATS","LDR","SPD"],ans:1,ex:"ATS (Otomatik Transfer Şalteri) geçişi yapar."},
+ {q:"Jeneratör gelene kadar kesintisiz köprüleyen?",opts:["UPS","ATS","Kontaktör","Sigorta"],ans:0,ex:"UPS aradaki boşluğu kesintisiz köprüler."},
+ {q:"CAT II/III pist ışıklarında transfer süresi?",opts:["≤ 1 saniye","≤ 10 saniye","1 dakika","Önemli değil"],ans:0,ex:"Pist ışıkları için transfer ≤ 1 sn olmalı."},
+ {q:"Transfer 1 sn'yi aşarsa ne olur?",opts:["Sorun olmaz","Pilot pas geçer","Daha iyi olur","Jeneratör durur"],ans:1,ex:"Pist kararır, pilot pas geçer; görev başarısız."},
+ {q:"Pist ışıkları nasıl yük sınıfındadır?",opts:["Önemsiz","Kritik yük","Aydınlatma dışı","Reaktif"],ans:1,ex:"Pist ışıkları kritik yüktür, kesinti kabul edilmez."},
+ {q:"Online UPS'in geçiş süresi yaklaşık?",opts:["Sıfıra yakın","5 sn","30 sn","2 dk"],ans:0,ex:"Online UPS'te geçiş pratikte ≈0'dır."}
+],
+10:[
+ {q:"Aşırı gerilimi toprağa akıtıp trafoyu koruyan eleman?",opts:["Sigorta","Parafudur","Sayaç","Kontaktör"],ans:1,ex:"Parafudur (surge arrester) aşırı gerilimi toprağa akıtır."},
+ {q:"Yıldırım topraklamasında hedef direnç?",opts:["Yüksek","R < 1 Ω","10 kΩ","Önemsiz"],ans:1,ex:"Hassas tesiste hedef R < 1 Ω'dur."},
+ {q:"Topraklama direnci nasıl düşürülür?",opts:["Kablo inceltilir","Ek bakır kazık çakılır","Sigorta büyütülür","Boya atılır"],ans:1,ex:"Ek bakır kazık/çubuk ve eşpotansiyel ile düşürülür."},
+ {q:"Hava hattındaki turuncu küreler ne işe yarar?",opts:["Süs","Helikopter/uçak uyarısı","İzolasyon","Topraklama"],ans:1,ex:"İkaz küreleri hava aracı çarpmasını önler."},
+ {q:"Topraklama direnci yüksekse parafudur ne yapar?",opts:["Daha iyi çalışır","Görev yapamaz","Patlar","Fark etmez"],ans:1,ex:"Yüksek direnç parafudurun işini yapmasını engeller."},
+ {q:"Şalt sahasının gerilim seviyesi örneği?",opts:["12 V","220 V","154 kV","1.5 V"],ans:2,ex:"Örnekte 154 kV YG şalt sahası ele alınır."}
+],
+11:[
+ {q:"T = 20 ms ise frekans (f=1/T)?",opts:["20 Hz","50 Hz","100 Hz","500 Hz"],ans:1,ex:"f = 1/0,02 s = 50 Hz."},
+ {q:"Osiloskop hangi değeri gösterir?",opts:["Etkin (RMS)","Maksimum (tepe)","Ortalama","Sıfır"],ans:1,ex:"Osiloskop tepe (maksimum) değeri okutur."},
+ {q:"Vmax=100 V ise Vrms (=Vmax/√2)?",opts:["50 V","≈70,7 V","100 V","141 V"],ans:1,ex:"Vrms = 100/√2 ≈ 70,7 V."},
+ {q:"Bir saykıl nedir?",opts:["Yarım dalga","Bir tam dalga","İki dalga","Sabit değer"],ans:1,ex:"Saykıl bir tam dalgadır (pozitif+negatif alternans)."},
+ {q:"PCB dağlamada doğru oran?",opts:["3 Perhidrol + 1 Tuz Ruhu","1 Perhidrol + 3 Tuz Ruhu","1 + 1","Sadece su"],ans:1,ex:"1 ölçek Perhidrol + 3 ölçek Tuz Ruhu."},
+ {q:"PCB banyosu çok uzun sürerse?",opts:["Bakır kalır","Devre yolları aşınır/plaket yanar","Hiçbir şey","Bakır artar"],ans:1,ex:"Aşırı süre yolları aşındırır; 5–10 dk idealdir."}
+],
+12:[
+ {q:"Akımın birimi ve ölçü aleti?",opts:["Volt — Voltmetre","Amper — Ampermetre","Watt — Wattmetre","Ohm — Ohmmetre"],ans:1,ex:"Akım: Amper (A), Ampermetre ile ölçülür."},
+ {q:"Direnç birimi ve aleti?",opts:["Ohm — Ohmmetre","Farad — LCRmetre","Hertz — Frekansmetre","Var — Varmetre"],ans:0,ex:"Direnç: Ohm (Ω), Ohmmetre."},
+ {q:"Frekansın birimi?",opts:["Joule","Hertz","Var","Henry"],ans:1,ex:"Frekans Hertz (Hz) ile ifade edilir."},
+ {q:"Endüktans (L) birimi ve aleti?",opts:["Farad — LCRmetre","Henry — LCRmetre","Watt — Wattmetre","Volt — Voltmetre"],ans:1,ex:"Endüktans: Henry (H), LCRmetre."},
+ {q:"Reaktif gücün birimi?",opts:["Watt","Var","Joule","Hertz"],ans:1,ex:"Reaktif güç Var ile ifade edilir."},
+ {q:"Güç faktörünü ölçen alet?",opts:["Wattmetre","Kosinüsfimetre","Frekansmetre","Sayaç"],ans:1,ex:"cosφ Kosinüsfimetre ile ölçülür."}
+]
+};
+/* ===================== SORU BANKASI (13-23) ===================== */
+Object.assign(QBANK, {
+13:[
+ {q:"Mutlak hata nasıl bulunur?",opts:["Xg + X","|Xg − X|","Xg × X","Xg / X"],ans:1,ex:"Mutlak hata ΔX = |Xg − X| (gerçek − ölçülen)."},
+ {q:"Bağıl hata formülü?",opts:["ΔX × Xg","ΔX / Xg","Xg / ΔX","ΔX − Xg"],ans:1,ex:"Bağıl hata ε = ΔX / Xg (×100 ile %)."},
+ {q:"Xg=200, X=196 → mutlak hata?",opts:["2","4","6","8"],ans:1,ex:"ΔX = |200−196| = 4."},
+ {q:"Xg=200, X=196 → bağıl hata (%)?",opts:["%1","%2","%4","%8"],ans:1,ex:"ε = 4/200 = 0,02 = %2."},
+ {q:"Alet sınıfı (doğruluk) neyi belirtir?",opts:["Rengini","İzin verilen maksimum hatayı","Ağırlığını","Markasını"],ans:1,ex:"Sınıf, tam skalaya göre izinli maks. hatayı belirtir."},
+ {q:"Hangi hata ölçümün kalitesini daha iyi anlatır?",opts:["Mutlak hata","Bağıl hata","İkisi de aynı","Hiçbiri"],ans:1,ex:"Bağıl (yüzde) hata kaliteyi daha iyi yansıtır."}
+],
+14:[
+ {q:"Endüktif reaktans formülü?",opts:["XL = 2πfL","XL = 1/(2πfL)","XL = R·L","XL = f/L"],ans:0,ex:"XL = 2·π·f·L."},
+ {q:"DA'da (f=0) bobinin reaktansı?",opts:["Sonsuz","Sıfır","1 Ω","Negatif"],ans:1,ex:"f=0 → XL=0; bobin kısa devre gibi davranır."},
+ {q:"Frekans artarsa XL nasıl değişir?",opts:["Artar","Azalır","Değişmez","Sıfırlanır"],ans:0,ex:"XL frekansla doğru orantılıdır, artar."},
+ {q:"Kapasitif reaktans formülü?",opts:["XC = 2πfC","XC = 1/(2πfC)","XC = R/C","XC = fC"],ans:1,ex:"XC = 1/(2πfC); frekans artarsa azalır."},
+ {q:"Kondansatör DA'da nasıl davranır?",opts:["Kısa devre","Açık devre","Direnç","Bobin gibi"],ans:1,ex:"DA'da XC→∞; kondansatör açık devredir."},
+ {q:"Bobin hangi akımı zorlar?",opts:["DA'yı","AA'yı (yüksek frekansı)","Hiçbirini","Sadece sabit"],ans:1,ex:"Bobin AA'ya zorluk gösterir, DA'yı geçirir."}
+],
+15:[
+ {q:"Akü kablosu hazırlamada ilk adım?",opts:["Lehim","Makaron","Oksidasyon temizliği","Krimp"],ans:2,ex:"Önce uçtaki oksitli bakır kesilir (½\")."},
+ {q:"Isıtmada yeşil alev neyi gösterir?",opts:["Lehim hazır","Bakır oksitlendi (dur)","Doğru sıcaklık","Flux bitti"],ans:1,ex:"Yeşil alev bakırın oksitlendiğini gösterir."},
+ {q:"Makaron ne için KULLANILMAZ?",opts:["Çevresel koruma","Kötü krimpi gizlemek","Yalıtım","Kozmetik"],ans:1,ex:"Makaron hatalı bağlantıyı gizlemek için kullanılmaz."},
+ {q:"Lehimde nereyi ısıtmalı?",opts:["Kabloyu doğrudan","Terminalin ucunu","Makaronu","Eldiveni"],ans:1,ex:"Sadece terminal ucu ısıtılır; kablo doğrudan ısıtılırsa oksitlenir."},
+ {q:"Flux için doğru ifade?",opts:["Bol kullan","Abartma, asidiktir","Su ile karıştır","Hiç kullanma"],ans:1,ex:"Rosin flux abartılmaz; kalırsa korozyon yapar."},
+ {q:"Doğru adım sırası?",opts:["Krimp→Soyma→Lehim","Oksidasyon→Soyma→Krimp→Lehim→Makaron","Lehim→Krimp→Makaron","Soyma→Makaron→Krimp"],ans:1,ex:"Oksidasyon → Soyma → Krimp → Lehim → Makaron."}
+],
+16:[
+ {q:"Titreşimli motor bağlantısında kablo?",opts:["Solid","Stranded","İkisi de olur","Önemsiz"],ans:1,ex:"Stranded (çok telli) esnektir, titreşime dayanır."},
+ {q:"'Ringing' (yüzük atma) neden zararlı?",opts:["İletkeni zayıflatır, kırılır","İzolasyonu güçlendirir","Hızı artırır","Zararsız"],ans:0,ex:"İletkende zayıf nokta açar, titreşimle kopar."},
+ {q:"Nox (anti-oksidan) neyi önler?",opts:["Isınmayı","Elektroliz/korozyonu","Kısa devreyi","Gevşemeyi"],ans:1,ex:"Farklı metallerde nem+akım korozyonunu önler."},
+ {q:"Dış mekânda yüksük hangi yöne bakmalı?",opts:["Aşağı","Yukarı","Yana","Önemsiz"],ans:1,ex:"Shed water: yukarı baksın, su içine dolmasın."},
+ {q:"Yüksük öncesi teller hangi yöne bükülür?",opts:["Saat yönü","Tersine","Düz bırakılır","Çapraz"],ans:0,ex:"Saat yönü büküm yüksük dişiyle uyumlu, sıkı bağlantı sağlar."},
+ {q:"Yank testi nedir?",opts:["Gerilim ölçme","Her teli sertçe çekme","Isıtma","Renk kontrolü"],ans:1,ex:"Bağlantı sonrası her tel çekilerek kontrol edilir."}
+],
+17:[
+ {q:"'~' sembolü neyi belirtir?",opts:["DC","AC","Topraklama","Sigorta"],ans:1,ex:"Dalgalı çizgi sadece AC içindir."},
+ {q:"'—' (düz çizgi) sembolü?",opts:["AC","DC","Hem DC hem AC","Faz"],ans:1,ex:"Düz çizgi sadece DC içindir."},
+ {q:"⊥ (ters T) sembolü?",opts:["Yatay kullan","Dik (dikey) kullan","60° eğik","AC"],ans:1,ex:"Alet dikey konumda kullanılmalıdır."},
+ {q:"⊓ (U) sembolü?",opts:["Dik kullan","Yatay kullan","DC","Topraklama"],ans:1,ex:"Alet yatay konumda kullanılmalıdır."},
+ {q:"Yıldız içinde '2' rakamı?",opts:["2 V muayene","Yalıtkanlık deneyi 2 kV","2 yıl garanti","2 faz"],ans:1,ex:"Yalıtkanlık deneyi 2 kV ile yapılmıştır."},
+ {q:"Üçgen içinde ünlem (!) işareti?",opts:["Tehlike yok","Dikkat, teknik dokümana bak","Sadece AC","Topraklama"],ans:1,ex:"Çalışma tertibatına dikkat; dokümana bakınız."}
+],
+18:[
+ {q:"Üç fazlı görünür güç formülü?",opts:["S=U·I","S=√3·U·I","S=U·I·cosφ","S=3·U·I"],ans:1,ex:"S = √3·U·I (kVA)."},
+ {q:"Üç fazlı aktif güç formülü?",opts:["P=√3·U·I·cosφ","P=U·I","P=√3·U·I","P=U·I·sinφ"],ans:0,ex:"P = √3·U·I·cosφ (kW)."},
+ {q:"Güç üçgeninde doğru bağıntı?",opts:["S=P+Q","S²=P²+Q²","P=S+Q","Q=S+P"],ans:1,ex:"S² = P² + Q²."},
+ {q:"U=380 V, I=10 A, cosφ=1 → P ≈ ? (√3≈1,732)",opts:["3,8 kW","6,58 kW","13 kW","380 W"],ans:1,ex:"P=1,732·380·10/1000 ≈ 6,58 kW."},
+ {q:"Güç faktörü cosφ nasıl bulunur?",opts:["P/S","S/P","P·S","Q/P"],ans:0,ex:"cosφ = P/S."},
+ {q:"Düşük cosφ'yi düzelten yöntem?",opts:["Sigorta büyütme","Kompanzasyon (kondansatör)","Kablo kısaltma","Topraklama"],ans:1,ex:"Kondansatörlü kompanzasyon cosφ'yi 1'e yaklaştırır."}
+],
+19:[
+ {q:"ADP neyin kısaltması?",opts:["Ana Dağıtım Panosu","Acil Durum Panosu","Alçak Direnç Panosu","Ana Direnç Plakası"],ans:0,ex:"ADP = Ana Dağıtım Panosu."},
+ {q:"Panoda akımı dağıtan iletken çubuk?",opts:["Bara (busbar)","Sigorta","Klemens","Kontaktör"],ans:0,ex:"Bara (busbar) büyük akımı dağıtır."},
+ {q:"Doğru pano hiyerarşisi?",opts:["Tali→Ana→Kat","Ana→Tali→Kat/mahal","Kat→Ana→Tali","Hepsi eşit"],ans:1,ex:"Ana pano → tali panolar → kat/mahal panoları."},
+ {q:"IP koruma sınıfının 2. rakamı neyi belirtir?",opts:["Toz","Su","Darbe","Sıcaklık"],ans:1,ex:"1. rakam katı/toz, 2. rakam su korumasıdır."},
+ {q:"Düşük güç faktörünü düzelten pano?",opts:["Kompanzasyon panosu","Yangın panosu","Aydınlatma panosu","Zayıf akım"],ans:0,ex:"Kompanzasyon panosu reaktifi karşılar."},
+ {q:"Her panoda bulunması gereken bara?",opts:["Veri barası","Topraklama barası","Su barası","Yakıt barası"],ans:1,ex:"Güvenlik için topraklama barası şarttır."}
+],
+20:[
+ {q:"Dizel jeneratörde elektriği üreten kısım?",opts:["Radyatör","Alternatör","Susturucu","Akü"],ans:1,ex:"Alternatör elektrik üretir."},
+ {q:"Şebeke kesilince geçişi sağlayan?",opts:["ATS","UPS yok","LDR","SPD"],ans:0,ex:"ATS otomatik transfer şalteridir."},
+ {q:"Standby jeneratör ne zaman çalışır?",opts:["Sürekli","Acil/kesinti durumunda","Sadece gündüz","Hiç"],ans:1,ex:"Standby yalnız acil durumda devreye girer."},
+ {q:"Jeneratörleri paralel çalıştırmak için?",opts:["Topraklama","Senkronizasyon","Kompanzasyon","Soğutma"],ans:1,ex:"Gerilim, frekans ve faz eşitlenir (senkron)."},
+ {q:"Günlük yakıt tankının görevi?",opts:["Soğutma","Motora yakıt sağlamak","Susturma","Şarj"],ans:1,ex:"Motora sürekli yakıt sağlar."},
+ {q:"Soğutmayı sağlayan eleman?",opts:["Radyatör","Alternatör","Akü","Egzoz"],ans:0,ex:"Radyatör motor soğutmasını yapar."}
+],
+21:[
+ {q:"Yıldırımı yakalayan en üst eleman?",opts:["İniş iletkeni","Yakalama ucu (paratoner)","Topraklama barası","SPD"],ans:1,ex:"Yakalama ucu (Franklin/aktif paratoner) en üstte."},
+ {q:"Yakalama ucunu toprağa bağlayan?",opts:["İniş iletkeni","Faz","Nötr","Bara"],ans:0,ex:"İniş iletkeni (kalın bakır) toprağa bağlar."},
+ {q:"Yıldırım topraklamasında hedef?",opts:["Yüksek direnç","Düşük direnç","Önemsiz","Sonsuz"],ans:1,ex:"Düşük direnç (hassas tesiste R<1 Ω)."},
+ {q:"İç tesisatı aşırı gerilimden koruyan?",opts:["Parafudur (SPD)","Sayaç","Sigorta yuvası","Klemens"],ans:0,ex:"SPD (parafudur) aşırı gerilimi sınırlar."},
+ {q:"Ana girişte kullanılan SPD tipi?",opts:["Tip 1","Tip 2","Tip 3","Hiçbiri"],ans:0,ex:"Tip 1 ana girişte yıldırım akımına karşı kullanılır."},
+ {q:"Geniş yapıda örgü koruma yöntemi?",opts:["Faraday kafesi","Yıldız bağlantı","Delta","Kompanzasyon"],ans:0,ex:"Faraday kafesi örgü ile yüzey koruması sağlar."}
+],
+22:[
+ {q:"Dış mekân armatüründe aranan koruma?",opts:["IP20","IP65/IP67","IP00","Yok"],ans:1,ex:"Su/toz koruması için IP65/IP67."},
+ {q:"Bahçede yer altı besleme kablosu?",opts:["NYA","NYY","NYAF","Telefon kablosu"],ans:1,ex:"NYY yer altı için uygundur."},
+ {q:"Yer altı kablosu yaklaşık kaç cm derine gömülür?",opts:["~5 cm","~60 cm","Yüzeye","2 m"],ans:1,ex:"~60 cm, üzerine ikaz bandı konur."},
+ {q:"Peyzaj aydınlatmasını otomatik yakan?",opts:["Fotosel + zaman saati","Sadece sigorta","Manuel zorunlu","Termostat"],ans:0,ex:"Fotosel karanlığı, zaman saati saati yönetir."},
+ {q:"Islak/dekoratif alanda güvenli gerilim?",opts:["12/24 V (alçak gerilim)","380 V","1000 V","Önemsiz"],ans:0,ex:"Güvenlik için alçak gerilim 12/24 V tercih edilir."},
+ {q:"Sınıf II armatürün özelliği?",opts:["Topraklamasız çift yalıtım","Topraklı","Yüksek gerilim","Susuz"],ans:0,ex:"Sınıf II çift yalıtımlıdır, koruma topraklaması gerekmez."}
+],
+23:[
+ {q:"Beton dökümünden ÖNCE elektrikçi ne bırakır?",opts:["Armatür","Boru/sleeve ve ankraj","Sayaç","Pano"],ans:1,ex:"Sonradan kırım olmasın diye sleeve/ankraj bırakılır."},
+ {q:"Kablo tavası hangi grupla çakışmamalı?",opts:["Mekanik (HVAC/boru)","Hiçbiri","Sadece kendisi","Mimari boya"],ans:0,ex:"Tava ile mekanik kanal/borular çakışmamalı (clash)."},
+ {q:"Veri kabloları güçten neden ayrı tutulur?",opts:["Renk","Parazit (EMI)","Maliyet","Ağırlık"],ans:1,ex:"EMI/paraziti önlemek için ayrı tava ve mesafe."},
+ {q:"Çakışmaların önceden tespiti?",opts:["Clash detection","Kompanzasyon","Senkronizasyon","Metraj"],ans:0,ex:"BIM ile clash detection çakışmaları önceden bulur."},
+ {q:"Armatür/priz yerleşimi hangi plana uyar?",opts:["Yakıt planı","Mimari tavan/yerleşim planı","Yok","Hava durumu"],ans:1,ex:"Mimari tavan ve yerleşim planına uyulur."},
+ {q:"Asansör ve yangın grupları nasıl beslenir?",opts:["Ortak hat","Ayrı, güvenilir besleme","Beslenmez","Jeneratörsüz"],ans:1,ex:"Kritik sistemler ayrı ve güvenilir beslenir."}
+]
+});
+/* ===================== KALICILIK + SRS + ROZET ===================== */
+const SKEY='elkmaster_v5';
+let MEM=null;
+function _read(){ try{return JSON.parse(localStorage.getItem(SKEY))||{};}catch(e){return MEM||{};} }
+function _write(o){ try{localStorage.setItem(SKEY,JSON.stringify(o));}catch(e){MEM=o;} }
+let DB=_read();
+DB.scores=DB.scores||{};
+DB.notes=DB.notes||{};
+DB.srs=DB.srs||{};
+DB.exams=DB.exams||[];
+DB.days=DB.days||[];
+DB.name=DB.name||'';
+DB.xp=DB.xp||0;
+function persist(){ _write(DB); }
+
+function todayStr(){ const d=new Date(); d.setMinutes(d.getMinutes()-d.getTimezoneOffset()); return d.toISOString().slice(0,10); }
+function markToday(){ const t=todayStr(); if(!DB.days.includes(t)){ DB.days.push(t); persist(); } }
+function streak(){
+  if(!DB.days.length) return 0;
+  const set=new Set(DB.days); let s=0; const d=new Date();
+  while(true){ d.setMinutes(d.getMinutes()-d.getTimezoneOffset());
+    const k=d.toISOString().slice(0,10);
+    if(set.has(k)){ s++; d.setDate(d.getDate()-1); d.setMinutes(d.getMinutes()+d.getTimezoneOffset()); }
+    else break;
+  }
+  return s;
+}
+function addXp(n){ DB.xp=(DB.xp||0)+n; persist(); refreshHeader(); }
+
+function setScore(id,pct){ pct=Math.round(pct); if(!(DB.scores[id]>=pct)) DB.scores[id]=pct; markToday(); persist(); refreshHeader(); }
+function moduleDone(){ return Object.keys(DB.scores).length; }
+function moduleProgressPct(){ return Math.round(moduleDone()/MODS.length*100); }
+function avgScore(){ const v=Object.values(DB.scores); return v.length?Math.round(v.reduce((a,b)=>a+b,0)/v.length):0; }
+function totalQuestions(){ let n=0; for(const k in QBANK) n+=QBANK[k].length; return n; }
+
+/* SRS — Leitner kutuları */
+const SRS_INT=[1,2,4,7,15,30];
+function srsAnswer(qid,correct){
+  let s=DB.srs[qid]||{box:0,due:todayStr()};
+  s.box = correct ? Math.min(SRS_INT.length-1,(s.box||0)+1) : 0;
+  const days = correct ? SRS_INT[s.box] : 1;
+  const d=new Date(); d.setDate(d.getDate()+days); d.setMinutes(d.getMinutes()-d.getTimezoneOffset());
+  s.due=d.toISOString().slice(0,10);
+  DB.srs[qid]=s; persist();
+}
+function dueReviews(){ const t=todayStr(); const out=[]; for(const qid in DB.srs){ if(DB.srs[qid].due<=t) out.push(qid); } return out; }
+function parseQid(qid){ const p=qid.split('.'); return {mod:+p[0], idx:+p[1]}; }
+
+/* ROZETLER */
+const BADGES=[
+ {id:'first',ic:'🌱',n:'İlk Adım',d:'1 modül tamamla',f:()=>moduleDone()>=1},
+ {id:'cirak',ic:'🔧',n:'Çırak',d:'5 modül tamamla',f:()=>moduleDone()>=5},
+ {id:'kalfa',ic:'🛠️',n:'Kalfa',d:'12 modül tamamla',f:()=>moduleDone()>=12},
+ {id:'usta',ic:'🏅',n:'Usta',d:'Tüm 23 modül',f:()=>moduleDone()>=23},
+ {id:'mukemmel',ic:'💯',n:'Mükemmeliyet',d:'5 modülde 100 puan',f:()=>Object.values(DB.scores).filter(x=>x>=100).length>=5},
+ {id:'sinav',ic:'🎓',n:'Sınav Şampiyonu',d:'Sınavdan ≥90',f:()=>DB.exams.some(e=>e.pct>=90)},
+ {id:'streak7',ic:'🔥',n:'7 Gün Seri',d:'7 gün üst üste',f:()=>streak()>=7},
+ {id:'streak30',ic:'⚡',n:'Azimli',d:'30 gün seri',f:()=>streak()>=30},
+];
+function earnedBadges(){ return BADGES.filter(b=>{try{return b.f();}catch(e){return false;}}); }
+
+function refreshHeader(){
+  const s=document.getElementById('hsStreak'); if(s) s.textContent=streak();
+  const x=document.getElementById('hsXp'); if(x) x.textContent=DB.xp||0;
+}
+/* ===================== ARAYÜZ / ROUTER ===================== */
+const el=id=>document.getElementById(id);
+const app=()=>el('app');
+function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function toast(t){ const d=document.createElement('div'); d.className='toast'; d.textContent=t; document.body.appendChild(d); setTimeout(()=>d.remove(),2200); }
+
+function ringSVG(pct,size){
+  size=size||130; const r=(size-16)/2, c=2*Math.PI*r, off=c*(1-pct/100);
+  return `<svg class="ring" width="${size}" height="${size}"><circle class="bg" cx="${size/2}" cy="${size/2}" r="${r}"></circle>
+   <circle cx="${size/2}" cy="${size/2}" r="${r}" stroke="url(#rg)" stroke-linecap="round" stroke-dasharray="${c.toFixed(1)}" stroke-dashoffset="${off.toFixed(1)}"></circle>
+   <defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffb000"/><stop offset="100%" stop-color="#ff7a00"/></linearGradient></defs></svg>`;
+}
+function nextModule(){ const m=MODS.find(x=>DB.scores[x.id]==null); return m?m.id:1; }
+
+function go(view,arg){
+  document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('active', b.dataset.v===view));
+  window.scrollTo(0,0);
+  if(view==='home') renderHome();
+  else if(view==='modules') renderModules();
+  else if(view==='module') openModule(arg);
+  else if(view==='exam') renderExam();
+  else if(view==='review') renderReview();
+  else if(view==='glossary') renderGlossary();
+}
+
+/* ---------- PANO (HOME) ---------- */
+function renderHome(){
+  const pct=moduleProgressPct(), due=dueReviews().length, eb=earnedBadges();
+  const nm=DB.name?esc(DB.name):'';
+  app().innerHTML=`
+   <div class="panel hero">
+     <div style="position:relative;width:150px;height:150px;display:grid;place-items:center">
+       ${ringSVG(pct,150)}
+       <div style="position:absolute;text-align:center"><div style="font-size:30px;font-weight:800;color:var(--acc)">%${pct}</div><div class="muted" style="font-size:11px">tamamlandı</div></div>
+     </div>
+     <div>
+       <h2 style="margin:0 0 4px">Merhaba${nm?', '+nm:''} 👋</h2>
+       <div class="muted" style="font-size:13px;margin-bottom:14px">Elektrik uzmanlık yolculuğun — ${moduleDone()}/${MODS.length} modül, ${totalQuestions()} soru, ${BADGES.length} rozet.</div>
+       <div class="kpis">
+         <div class="kpi"><div class="v">${moduleDone()}</div><div class="l">Tamamlanan modül</div></div>
+         <div class="kpi"><div class="v">%${avgScore()}</div><div class="l">Ortalama puan</div></div>
+         <div class="kpi"><div class="v">${streak()}</div><div class="l">Gün seri 🔥</div></div>
+         <div class="kpi"><div class="v">${eb.length}/${BADGES.length}</div><div class="l">Rozet</div></div>
+       </div>
+       <div class="row" style="margin-top:16px">
+         <button class="btn" onclick="go('module',${nextModule()})">▶ Çalışmaya devam et</button>
+         <button class="btn blue" onclick="go('exam')">📝 Deneme sınavı</button>
+         <button class="btn ghost" onclick="go('review')">🔁 Tekrar ${due?'('+due+')':''}</button>
+       </div>
+     </div>
+   </div>
+
+   <div class="panel2" style="margin-top:14px">
+     <div class="row" style="justify-content:space-between">
+       <div><b>Sertifika adı</b><div class="muted" style="font-size:12px">Sınav sertifikanda görünecek isim.</div></div>
+       <div class="row"><input type="text" class="inline" id="nameIn" style="width:230px" placeholder="Ad Soyad" value="${nm}"><button class="btn sm" onclick="saveName()">Kaydet</button></div>
+     </div>
+   </div>
+
+   ${due?`<div class="panel2" style="margin-top:14px;border-left:4px solid var(--warn)"><b>🔁 Bugün ${due} soru tekrar edilmeli.</b> <button class="btn sm" style="margin-left:8px" onclick="go('review')">Tekrara başla</button></div>`:''}
+
+   <div class="sectiontitle"><h2>Rozetler</h2><div class="ln"></div></div>
+   <div class="badges">${BADGES.map(b=>{const on=eb.some(x=>x.id===b.id);return `<div class="badge ${on?'on':''}"><div class="bi">${b.ic}</div><div class="bn">${b.n}</div><div class="bd">${b.d}</div></div>`;}).join('')}</div>
+
+   <div class="sectiontitle"><h2>Kategoriler</h2><div class="ln"></div><button class="btn ghost sm" onclick="go('modules')">Tümünü gör →</button></div>
+   <div class="cards">${Object.keys(CATS).map(k=>{
+      const ms=MODS.filter(m=>m.cat===k); const d=ms.filter(m=>DB.scores[m.id]!=null).length;
+      return `<div class="card" onclick="go('modules')"><div class="cat" style="color:${CATS[k].c}">${CATS[k].n}</div>
+        <h3>${d}/${ms.length} modül</h3><div class="mini"><i style="width:${Math.round(d/ms.length*100)}%"></i></div></div>`;
+   }).join('')}</div>`;
+  refreshHeader();
+}
+function saveName(){ DB.name=el('nameIn').value.trim(); persist(); toast('İsim kaydedildi'); }
+
+/* ---------- MODÜLLER ---------- */
+function renderModules(){
+  let h=`<div class="sectiontitle"><h2>Tüm Modüller</h2><div class="ln"></div><span class="muted" style="font-size:12.5px">${moduleDone()}/${MODS.length} tamamlandı</span></div>`;
+  for(const k of Object.keys(CATS)){
+    const ms=MODS.filter(m=>m.cat===k); if(!ms.length) continue;
+    h+=`<div class="sectiontitle" style="margin-top:18px"><h2 style="font-size:15px;color:${CATS[k].c}">${CATS[k].n}</h2><div class="ln"></div></div><div class="cards">`;
+    for(const m of ms){
+      const sc=DB.scores[m.id], dueN=dueReviews().filter(q=>parseQid(q).mod===m.id).length;
+      const badge = sc!=null?`<span class="cardbadge done">%${sc}</span>`:(dueN?`<span class="cardbadge due">🔁${dueN}</span>`:'');
+      h+=`<div class="card" onclick="go('module',${m.id})">${badge}<div class="ico">${m.ic}</div>
+        <div class="cat">Modül ${m.id}</div><h3>${m.t}</h3><p>${m.d}</p>
+        <div class="mini"><i style="width:${sc||0}%"></i></div></div>`;
+    }
+    h+=`</div>`;
+  }
+  app().innerHTML=h;
+}
+
+/* ---------- MODÜL SAYFASI (SEKMELER) ---------- */
+function openModule(id){
+  const m=modById(id);
+  let tabs=[['teori','📖 Teori']];
+  if(m.task) tabs.push(['uygulama','🎯 Uygulama']);
+  tabs.push(['quiz','📝 Quiz'],['foy','📘 Föy'],['not','✏️ Notlar']);
+  const sc=DB.scores[id]!=null?` · En iyi: %${DB.scores[id]}`:'';
+  app().innerHTML=`<span class="breadcrumb" onclick="go('modules')">← Modüller</span>
+   <div class="panel">
+     <h2 style="margin:0">${m.ic} Modül ${m.id}: ${m.t}</h2>
+     <div class="muted" style="font-size:12.5px;margin-top:3px">${CATS[m.cat].n}${sc}</div>
+     <div class="tabbar" id="tabbar">${tabs.map(t=>`<button data-t="${t[0]}" onclick="showTab(${id},'${t[0]}')">${t[1]}</button>`).join('')}</div>
+     <div id="mtab"></div>
+   </div>`;
+  showTab(id,'teori');
+}
+function showTab(id,tab){
+  const m=modById(id);
+  document.querySelectorAll('#tabbar button').forEach(b=>b.classList.toggle('active',b.dataset.t===tab));
+  const c=el('mtab');
+  if(tab==='teori') c.innerHTML=`<div class="edu">${TEORI[id]||''}</div>
+     <div class="row" style="margin-top:14px">${m.task?`<button class="btn" onclick="showTab(${id},'uygulama')">🎯 Uygulamaya geç</button>`:''}<button class="btn blue" onclick="showTab(${id},'quiz')">📝 Quiz çöz</button></div>`;
+  else if(tab==='foy') c.innerHTML=`<details class="foy" open><summary>📘 Detaylı Anlatım — Föy</summary><div style="margin-top:10px">${FOY[id]||''}</div></details>`;
+  else if(tab==='not') c.innerHTML=noteHTML(id);
+  else if(tab==='quiz') startModuleQuiz(id);
+  else if(tab==='uygulama'){ if(m.task && window[m.task]) window[m.task](m); else c.innerHTML='<div class="muted">Bu modülde interaktif uygulama yok.</div>'; }
+}
+function noteHTML(id){
+  return `<div class="panel2"><b>✏️ Kişisel Notların</b>
+   <div class="muted" style="font-size:12px;margin:4px 0 8px">Bu cihazda kalıcı saklanır.</div>
+   <textarea id="noteArea" placeholder="Bu modülle ilgili kendi notların, formüller, hatırlatmalar...">${esc(DB.notes[id]||'')}</textarea>
+   <div class="row" style="margin-top:10px"><button class="btn sm" onclick="saveNote(${id})">Kaydet</button><span id="noteMsg" class="muted" style="font-size:12px"></span></div></div>`;
+}
+function saveNote(id){ DB.notes[id]=el('noteArea').value; persist(); el('noteMsg').textContent=' Kaydedildi ✓'; setTimeout(()=>{const e=el('noteMsg');if(e)e.textContent='';},1500); }
+
+/* ---------- QUIZ MOTORU (paylaşımlı) ---------- */
+let QS=null;
+function startQuiz(container, items, srs, finishLabel, onFinish){
+  QS={items, picks:{}, checked:false, srs:srs, onFinish:onFinish};
+  let h='';
+  items.forEach((it,i)=>{
+    h+=`<div class="q" id="q${i}"><div class="qtxt">${i+1}. ${it.q}</div>`+
+      it.opts.map((o,j)=>`<button class="opt" id="o${i}_${j}" onclick="pick(${i},${j})">${o}</button>`).join('')+
+      `<div class="expl" id="e${i}"></div></div>`;
+  });
+  h+=`<div class="row" style="margin-top:8px"><button class="btn blue" id="qSubmit" onclick="submitQuiz()">${finishLabel||'Cevapları Kontrol Et'}</button></div><div id="qresult"></div>`;
+  el(container).innerHTML=h;
+}
+function pick(i,j){ if(QS.checked) return; QS.picks[i]=j;
+  document.querySelectorAll('#q'+i+' .opt').forEach(o=>o.classList.remove('sel'));
+  el('o'+i+'_'+j).classList.add('sel'); }
+function submitQuiz(){
+  if(QS.checked) return; QS.checked=true; let correct=0;
+  QS.items.forEach((it,i)=>{
+    const p=QS.picks[i];
+    el('o'+i+'_'+it.ans).classList.add('correct');
+    if(p!=null && p!==it.ans) el('o'+i+'_'+p).classList.add('wrong');
+    const ok=p===it.ans; if(ok) correct++;
+    const e=el('e'+i); e.className='expl show'; e.innerHTML=(ok?'✔ ':'✗ ')+it.ex;
+    if(QS.srs && it.qid) srsAnswer(it.qid, ok);
+  });
+  const total=QS.items.length, pct=Math.round(correct/total*100);
+  const r=el('qresult'); if(r) r.innerHTML=`<div class="panel2" style="margin-top:14px"><div class="row" style="justify-content:space-between"><b>Sonuç</b><b style="font-size:20px;color:var(--acc)">${correct}/${total} · %${pct}</b></div><div class="scorebar" style="margin:8px 0"><i style="width:${pct}%"></i></div></div>`;
+  const sb=el('qSubmit'); if(sb) sb.disabled=true;
+  markToday(); refreshHeader();
+  if(QS.onFinish) QS.onFinish(correct,total,pct);
+}
+function startModuleQuiz(id){
+  const items=QBANK[id].map((x,i)=>Object.assign({qid:id+'.'+i},x));
+  startQuiz('mtab', items, true, 'Cevapları Kontrol Et', (c,t,pct)=>{
+    setScore(id,pct); addXp(c*2);
+    el('qresult').innerHTML+=`<div class="row" style="margin-top:12px"><button class="btn sm" onclick="showTab(${id},'foy')">📘 Föy ile pekiştir</button><button class="btn ghost sm" onclick="startModuleQuiz(${id})">↻ Tekrar çöz</button></div>`;
+  });
+}
+
+/* ---------- SÖZLÜK / ARAMA ---------- */
+const GLOSSARY=[
+ ["Ohm Yasası","V = I × R; gerilim, akım ve direnç ilişkisi."],
+ ["Güç (P)","P = V·I = I²R = V²/R, birimi Watt."],
+ ["Seri devre","Akım sabit, gerilim bölünür; biri kopar tümü söner."],
+ ["Paralel devre","Gerilim sabit, akım bölünür; kollar bağımsız."],
+ ["Ampermetre","Akım ölçer, SERİ bağlanır, düşük iç direnç."],
+ ["Voltmetre","Gerilim ölçer, PARALEL bağlanır, yüksek iç direnç."],
+ ["Pens ampermetre","Manyetik alanla akım ölçer; içine tek hat alınır."],
+ ["Mutlak hata","ΔX = |Xg − X|."],
+ ["Bağıl hata","ε = ΔX / Xg (×100 ile %)."],
+ ["Reaktans (XL)","XL = 2πfL; DA'da (f=0) sıfırdır."],
+ ["Reaktans (XC)","XC = 1/(2πfC); DA'da sonsuzdur."],
+ ["NYA / NYAF / NYM / NYY","Sırasıyla: pano içi tek tel / esnek motor / nemli sıva altı / yer altı kablosu."],
+ ["RJ45 T568B","Ağ kablosu renk sırası standardı."],
+ ["Kesici (Breaker)","Yük akımını güvenle kesen, ark hazneli cihaz."],
+ ["Ayırıcı (Isolator)","Görünür ayrım sağlar; yük altında açılamaz."],
+ ["Istanka / Neon","Gerilim olup olmadığını kontrol aracı."],
+ ["Kontaktör","Bobinle büyük yükü anahtarlayan elektromekanik şalter."],
+ ["LDR","Işığa duyarlı direnç (foto direnç)."],
+ ["Kompanzasyon","Kondansatörle güç faktörünü (cosφ) düzeltme."],
+ ["Güç faktörü (cosφ)","P/S oranı; 1'e yakın olması istenir."],
+ ["Görünür/Aktif/Reaktif güç","S (kVA) / P (kW) / Q (kVAR); S²=P²+Q²."],
+ ["ATS","Otomatik Transfer Şalteri (şebeke↔jeneratör)."],
+ ["UPS","Kesintisiz güç kaynağı; jeneratöre kadar köprüler."],
+ ["Parafudur (SPD)","Aşırı gerilimi toprağa akıtan koruma."],
+ ["Topraklama direnci","Düşük olmalı; yıldırım korumasında hedef R<1 Ω."],
+ ["Faraday kafesi","Örgü ile yapı yüzeyi yıldırım koruması."],
+ ["ADP","Ana Dağıtım Panosu."],
+ ["Bara (busbar)","Pano içinde akımı dağıtan bakır çubuk."],
+ ["IP koruma sınıfı","Toz/su koruma derecesi (örn. IP65)."],
+ ["Alternatör","Jeneratörde elektrik üreten kısım."],
+ ["Nox","Korozyonu önleyen anti-oksidan pasta."],
+ ["Shed water","Dış mekânda yüksüğü yukarı yerleştirme prensibi."],
+ ["Yank testi","Bağlantı sonrası teli çekerek sağlamlık kontrolü."],
+ ["Periyot / Frekans","T süresi; f = 1/T (Hz)."],
+ ["RMS","Etkin değer; Vrms = Vmax/√2."],
+ ["Clash detection","Disiplinler arası çakışma tespiti (BIM)."],
+];
+function renderGlossary(){
+  app().innerHTML=`<div class="sectiontitle"><h2>Sözlük & Arama</h2><div class="ln"></div></div>
+   <input type="text" id="gsearch" placeholder="Terim veya modül ara... (örn. reaktans, topraklama, RJ45)" oninput="filterGlossary()">
+   <div id="gres" style="margin-top:14px"></div>`;
+  filterGlossary();
+}
+function filterGlossary(){
+  const q=(el('gsearch').value||'').toLocaleLowerCase('tr');
+  const terms=GLOSSARY.filter(t=>!q||t[0].toLocaleLowerCase('tr').includes(q)||t[1].toLocaleLowerCase('tr').includes(q));
+  const mods=MODS.filter(m=>q && (m.t.toLocaleLowerCase('tr').includes(q)||(TEORI[m.id]||'').toLocaleLowerCase('tr').includes(q)));
+  let h='';
+  if(mods.length){ h+=`<div class="muted" style="font-size:12px;margin-bottom:6px">Modüller</div><div class="cards" style="margin-bottom:18px">`+
+    mods.map(m=>`<div class="card" onclick="go('module',${m.id})"><div class="ico">${m.ic}</div><div class="cat">Modül ${m.id}</div><h3>${m.t}</h3><p>${m.d}</p></div>`).join('')+`</div>`; }
+  h+=`<div class="muted" style="font-size:12px;margin-bottom:6px">Terimler (${terms.length})</div>`;
+  h+=terms.map(t=>`<div class="panel2" style="margin:8px 0"><b style="color:var(--acc2)">${t[0]}</b><div style="font-size:13px;margin-top:4px;line-height:1.6">${t[1]}</div></div>`).join('')||'<div class="muted">Sonuç yok.</div>';
+  el('gres').innerHTML=h;
+}
+/* ===================== İNTERAKTİF UYGULAMALAR ===================== */
+function showMsg(id,type,txt){ const e=el(id); if(e){e.className='msg '+type; e.innerHTML=txt;} }
+function taskDone(id,pct,type,msg){
+  pct=Math.round(pct); setScore(id,pct); addXp(Math.round(pct/10));
+  return `<div class="msg ${type}">${msg}</div>
+   <div class="panel2" style="margin-top:10px"><div class="row" style="justify-content:space-between"><b>Uygulama Sonucu</b><b style="color:var(--acc);font-size:20px">%${pct}</b></div>
+   <div class="scorebar" style="margin:8px 0"><i style="width:${pct}%"></i></div>
+   <div class="row" style="margin-top:8px"><button class="btn sm" onclick="showTab(${id},'foy')">📘 Föy</button><button class="btn ghost sm" onclick="showTab(${id},'quiz')">📝 Quiz</button></div></div>`;
+}
+
+/* M1 OHM */
+let lampState=[true,true,true], lampsBlown=0;
+function modOhm(m){
+  lampState=[true,true,true]; lampsBlown=0;
+  el('mtab').innerHTML=`
+   <div class="panel2"><b>Görev 1A — Ohm Kanunu (V = I × R)</b>
+     <label class="fld">Gerilim V (Volt): <span id="vV">12</span></label><input type="range" id="V" min="0" max="48" value="12" oninput="ohmCalc()">
+     <label class="fld">Direnç R (Ohm): <span id="vR">6</span></label><input type="range" id="R" min="1" max="48" value="6" oninput="ohmCalc()">
+     <div class="kc"><div class="k"><span>Akım I = V / R</span><b id="vI">2.00 A</b></div><div class="k"><span>Güç P = V × I</span><b id="vP">24.0 W</b></div></div>
+   </div>
+   <div class="panel2"><b>Görev 1B — Paralel Devre</b>
+     <div class="muted" style="font-size:12px;margin:6px 0">3 lamba paralel. Birini patlat — diğerleri yanmaya devam etmeli (paralel kural).</div>
+     <div class="row" id="lamps" style="margin:12px 0"></div>
+     <div class="row"><button class="btn danger sm" onclick="blow()">Bir Lambayı Patlat</button><button class="btn ghost sm" onclick="modOhm()">Sıfırla</button><button class="btn blue sm" onclick="ohmFinish()">Bitir & Değerlendir</button></div>
+   </div>
+   <div id="ohmMsg" class="msg"></div><div id="res1"></div>`;
+  ohmCalc(); drawLamps();
+}
+function ohmCalc(){const V=+el('V').value,R=+el('R').value;el('vV').textContent=V;el('vR').textContent=R;const I=V/R;el('vI').textContent=I.toFixed(2)+' A';el('vP').textContent=(V*I).toFixed(1)+' W';}
+function drawLamps(){el('lamps').innerHTML=lampState.map((o,i)=>`<div class="lamp ${o?'on':'dead'}">${o?'L'+(i+1):'✕'}</div>`).join('');}
+function blow(){const a=lampState.map((v,i)=>v?i:-1).filter(i=>i>=0);if(!a.length)return;lampState[a[0]]=false;lampsBlown++;drawLamps();const r=lampState.filter(v=>v).length;showMsg('ohmMsg','info',`1 lamba patladı. Kalan ${r} lamba hâlâ yanıyor ✔ (Seri olsaydı hepsi sönerdi).`);}
+function ohmFinish(){const pct=lampsBlown>0?100:70;el('res1').innerHTML=taskDone(1,pct,pct>=100?'ok':'info',pct>=100?'✔ Ohm hesabı ve paralel devre davranışını gözlemledin.':'Paralel kuralı görmek için bir lamba patlat.');}
+
+/* M2 RJ45 */
+const RJ_COLORS={"Turuncu-Beyaz":"#ff9b54","Turuncu":"#ff6b00","Yeşil-Beyaz":"#7bdc7b","Mavi":"#2f6bff","Mavi-Beyaz":"#9db8ff","Yeşil":"#1f9d1f","Kahverengi-Beyaz":"#c8a07a","Kahverengi":"#7a4a23"};
+let rjOrder=[];
+function modRJ45(m){
+  rjOrder=[...RULES.rj45].sort(()=>Math.random()-.5);
+  el('mtab').innerHTML=`
+   <div class="panel2"><b>Görev 2A — Soyma Ölçüsü</b>
+     <label class="fld">Düz/T ek için soyma (mm):</label><input type="number" id="strip" class="inline" style="width:120px" placeholder="mm">
+     <div class="muted" style="font-size:12px;margin-top:6px">İpucu: Düz/T ek = 50 mm · F konnektör = 15 mm</div></div>
+   <div class="panel2"><b>Görev 2B — RJ45 (T568B) Renk Sırası</b>
+     <div class="muted" style="font-size:12px;margin:4px 0">▲▼ ile doğru sıraya diz.</div>
+     <div class="wirebox" id="rj" style="margin-top:8px"></div></div>
+   <div class="row"><button class="btn blue sm" onclick="rjCheck()">CableTest Çalıştır</button><button class="btn ghost sm" onclick="modRJ45()">Karıştır</button></div>
+   <div id="rjMsg" class="msg"></div><div id="res2"></div>`;
+  drawRJ();
+}
+function drawRJ(){el('rj').innerHTML=rjOrder.map((c,i)=>`<div class="wire"><span style="width:20px;color:var(--muted)">${i+1}</span><span class="sw" style="background:${RJ_COLORS[c]}"></span><span style="flex:1">${c}</span><button class="pill" onclick="rjMove(${i},-1)">▲</button><button class="pill" onclick="rjMove(${i},1)">▼</button></div>`).join('');}
+function rjMove(i,d){const j=i+d;if(j<0||j>=rjOrder.length)return;[rjOrder[i],rjOrder[j]]=[rjOrder[j],rjOrder[i]];drawRJ();}
+function rjCheck(){const strip=+el('strip').value,sOk=strip===50,oOk=rjOrder.every((c,i)=>c===RULES.rj45[i]);
+  let pct=oOk&&sOk?100:(oOk?60:20),msg=oOk?(sOk?'CableTest = PASS ✔ Sıra ve soyma doğru!':'Sıra doğru; soyma 50 mm olmalı.'):'CableTest = FAIL — renk sırası yanlış.';
+  el('res2').innerHTML=taskDone(2,pct,pct>=100?'ok':'bad',msg);}
+
+/* M3 KABLO */
+let kabloAns={};
+function modKablo(m){
+  kabloAns={};const or=Object.keys(RULES.kabloSecimi),sec=["NYY","NYM","NYA","NYAF"];
+  el('mtab').innerHTML=`<div class="panel2"><b>Görev 3 — Doğru Kabloyu Eşle</b>
+   <div class="muted" style="font-size:12px;margin:4px 0">NYY: yeraltı · NYM: nemli sıva altı · NYA: pano içi · NYAF: titreşimli/esnek</div>
+   ${or.map(o=>`<div class="row" style="justify-content:space-between;border-bottom:1px solid var(--line);padding:9px 0"><span style="flex:1">${o}</span>
+     <select class="inline" style="width:130px" onchange="kabloAns['${o}']=this.value"><option value="">— seç —</option>${sec.map(s=>`<option>${s}</option>`).join('')}</select></div>`).join('')}
+   </div><button class="btn blue sm" onclick="kabloCheck()">Kontrol Et</button><div id="kbMsg" class="msg"></div><div id="res3"></div>`;
+}
+function kabloCheck(){const ks=Object.keys(RULES.kabloSecimi);let d=0;ks.forEach(k=>{if(kabloAns[k]===RULES.kabloSecimi[k])d++;});const pct=Math.round(d/ks.length*100);
+  el('res3').innerHTML=taskDone(3,pct,pct>=100?'ok':'bad',`${d}/${ks.length} doğru. ${pct>=100?'Mükemmel ✔':'Yanlış eşleşmeler var.'}`);}
+
+/* M4 ÖLÇÜM */
+let olcumStep={a:null,v:null,p:null};
+function modOlcum(m){
+  olcumStep={a:null,v:null,p:null};
+  el('mtab').innerHTML=`
+   <div class="panel2"><b>Görev 4A — Multimetre</b>
+     <label class="fld">Akım nasıl ölçülür?</label><div class="row"><span class="pill" onclick="olc('a',1,this)">SERİ</span><span class="pill" onclick="olc('a',0,this)">PARALEL</span></div>
+     <label class="fld">Gerilim nasıl ölçülür?</label><div class="row"><span class="pill" onclick="olc('v',0,this)">SERİ</span><span class="pill" onclick="olc('v',1,this)">PARALEL</span></div></div>
+   <div class="panel2"><b>Görev 4B — Pens Ampermetre</b>
+     <div class="row" style="margin-top:6px"><span class="pill" onclick="olc('p',1,this)">Tek hat (faz)</span><span class="pill" onclick="olc('p',0,this)">Faz + Nötr</span></div>
+     <div id="pensRead" class="muted" style="font-size:12px;margin-top:8px"></div></div>
+   <button class="btn blue sm" onclick="olcumCheck()">Değerlendir</button><div id="res4"></div>`;
+}
+function olc(k,v,e){olcumStep[k]=v;e.parentNode.querySelectorAll('.pill').forEach(p=>p.classList.remove('sel'));e.classList.add('sel');
+  if(k==='p')el('pensRead').textContent=v?'Ekran: 4.2 A — doğru okuma ✔':'Ekran: 0 A — faz ve nötr birbirini götürdü!';}
+function olcumCheck(){let c=(olcumStep.a===1?1:0)+(olcumStep.v===1?1:0)+(olcumStep.p===1?1:0);const pct=Math.round(c/3*100);
+  el('res4').innerHTML=taskDone(4,pct,pct>=100?'ok':'bad',`${c}/3 doğru. Akım SERİ, gerilim PARALEL, pense tek hat.`);}
+
+/* M5 PANO */
+let panoLogic=null;
+function modPano(m){
+  panoLogic=null;
+  el('mtab').innerHTML=`
+   <div class="panel2"><b>Görev 5A — Kontaktör Mantığı</b><div class="row" style="margin-top:8px"><span class="pill" onclick="panoSet('dark',this)">Işık AZALINCA çek</span><span class="pill" onclick="panoSet('light',this)">Işık ARTINCA çek</span></div></div>
+   <div class="panel2"><b>Görev 5B — Saat Testi</b><label class="fld">Saat: <span id="saatV">12</span>:00</label><input type="range" id="saat" min="0" max="23" value="12" oninput="panoTest()">
+     <div class="kc"><div class="k"><span>Ortam</span><b id="ortamV">—</b></div><div class="k"><span>Lamba</span><b id="kontV">—</b></div></div></div>
+   <button class="btn blue sm" onclick="panoFinish()">Değerlendir</button><div id="res5"></div>`;
+  panoTest();
+}
+function panoSet(v,e){panoLogic=v;e.parentNode.querySelectorAll('.pill').forEach(p=>p.classList.remove('sel'));e.classList.add('sel');panoTest();}
+function panoTest(){const s=+el('saat').value;el('saatV').textContent=s;const dark=(s>=19||s<6);el('ortamV').textContent=dark?'Karanlık':'Aydınlık';let on=panoLogic==='dark'?dark:(panoLogic==='light'?!dark:false);el('kontV').textContent=panoLogic?(on?'ÇEKTİ — YANIYOR':'sönük'):'— mantık seç —';}
+function panoFinish(){const ok=panoLogic==='dark';el('res5').innerHTML=taskDone(5,ok?100:30,ok?'ok':'bad',ok?'✔ LDR karanlığı algılar, 19:00\'da kontaktör çeker.':'Aydınlatma karanlıkta yanmalı — "ışık azalınca çek".');}
+
+/* M6 FATURA */
+const FY=[{a:"Sanayi Fırını",k:20},{a:"Büyük Motor",k:15},{a:"Aydınlatma",k:5}],FP={T1:1.5,T2:3.0,T3:0.9};
+let faturaSel=[];
+function modFatura(m){
+  faturaSel=FY.map(()=> 'T2');
+  el('mtab').innerHTML=`<div class="panel2"><b>Görev 6 — Yükleri Zaman Dilimine Ata</b>
+   ${FY.map((y,i)=>`<div class="row" style="justify-content:space-between;border-bottom:1px solid var(--line);padding:9px 0"><span style="flex:1">${y.a} (${y.k} kWh/gün)</span>
+     <select class="inline" style="width:150px" onchange="faturaSel[${i}]=this.value;faturaCalc()"><option value="T1">T1 Gündüz (1.5)</option><option value="T2" selected>T2 Puant (3.0)</option><option value="T3">T3 Gece (0.9)</option></select></div>`).join('')}
+   <div class="kc" style="margin-top:10px"><div class="k"><span>Günlük Maliyet</span><b id="costV">—</b></div><div class="k"><span>Tasarruf</span><b id="saveV">—</b></div></div></div>
+   <button class="btn blue sm" onclick="faturaFinish()">Değerlendir</button><div id="res6"></div>`;
+  faturaCalc();
+}
+function faturaCalc(){let c=0,b=0;FY.forEach((y,i)=>{c+=y.k*FP[faturaSel[i]];b+=y.k*FP.T2;});el('costV').textContent=c.toFixed(2)+' TL';el('saveV').textContent=(b-c).toFixed(2)+' TL';}
+function faturaFinish(){const ok=faturaSel[0]==='T3'&&faturaSel[1]==='T3';el('res6').innerHTML=taskDone(6,ok?100:50,ok?'ok':'bad',ok?'✔ Yüksek yükler gece (T3) dilimine alındı.':'Fırın ve motoru en ucuz dilim T3\'e kaydır.');}
+
+/* M7 YG MANEVRA */
+let ygSeq=[],ygDead=false;
+function modYG(m){
+  ygSeq=[];ygDead=false;
+  el('mtab').innerHTML=`<div class="panel2"><b>Görev 7 — Akım Kesme Manevrası</b>
+   <div class="muted" style="font-size:12px;margin:6px 0">Önce Kesici → sonra Ayırıcı. Yük altında ayırıcı açılırsa ark patlaması!</div>
+   <div class="row" style="margin:10px 0"><button class="btn ghost sm" onclick="ygAct('Kesici')">🔴 Kesiciyi Aç</button><button class="btn ghost sm" onclick="ygAct('Ayırıcı')">🔶 Ayırıcıyı Aç</button><button class="btn blue sm" onclick="ygNeon()">💡 Istanka Kontrol</button></div>
+   <div id="ygLog" class="muted" style="font-size:12px">Sıra: (boş)</div></div><div id="ygMsg" class="msg"></div><div id="res7"></div>`;
+}
+function ygAct(x){if(ygDead)return;ygSeq.push(x);el('ygLog').textContent='Sıra: '+ygSeq.join('  →  ');if(ygSeq.length===1&&x==='Ayırıcı'){ygDead=true;showMsg('ygMsg','bad','💥 ARK PATLAMASI! Yük altında ayırıcı açıldı.');el('res7').innerHTML=taskDone(7,0,'bad','Görev başarısız — yanlış sıra.');}}
+function ygNeon(){if(ygDead)return;const ok=ygSeq[0]==='Kesici'&&ygSeq[1]==='Ayırıcı';if(ok){showMsg('ygMsg','ok','✔ Doğru sıra. Istanka sönük — hat enerjisiz.');el('res7').innerHTML=taskDone(7,100,'ok','Doğru manevra: Kesici → Ayırıcı.');}else showMsg('ygMsg','bad','Sıra eksik/yanlış. Önce Kesici sonra Ayırıcı.');}
+
+/* M9 ATS */
+function modATS(m){
+  el('mtab').innerHTML=`<div class="panel2"><b>Görev 9 — Otomatik Transfer Şalteri</b>
+   <div class="muted" style="font-size:12px;margin:6px 0">Pist ışıkları sönmeden yedek güce geç: ATS ≤ 1 sn.</div>
+   <label class="fld">TransitionTime: <span id="atsV">1.0</span> sn</label><input type="range" id="ats" min="0.2" max="3" step="0.1" value="1" oninput="el('atsV').textContent=(+this.value).toFixed(1)">
+   <button class="btn blue sm" style="margin-top:10px" onclick="atsRun()">Şebeke Kes & Test Et</button></div><div id="res9"></div>`;
+}
+function atsRun(){const t=+el('ats').value,ok=t<=1;el('res9').innerHTML=taskDone(9,ok?100:40,ok?'ok':'bad',ok?`✔ ${t.toFixed(1)} sn — pist sönmeden jeneratör girdi.`:`✗ ${t.toFixed(1)} sn — 1 sn aşıldı, pilot pas geçti.`);}
+
+/* M10 YG KORUMA */
+let ygR=2,ygKure=false,ygPf=false;
+function modYGKoruma(m){
+  ygR=2;ygKure=false;ygPf=false;
+  el('mtab').innerHTML=`<div class="panel2"><b>Görev 10 — Topraklama & Koruma</b>
+   <div class="kc"><div class="k"><span>Topraklama R</span><b id="ygRV">2.00 Ω</b></div><div class="k"><span>Durum</span><b id="ygStat">Yetersiz</b></div></div>
+   <div class="row" style="margin-top:12px"><button class="btn ghost sm" onclick="ygKazik()">⛏️ Bakır Kazık Çak</button><button class="btn ghost sm" onclick="ygAsKure()">🔴 İkaz Küresi As</button><button class="btn blue sm" onclick="ygPfTak()">⚡ Parafuduru Devreye Al</button></div></div>
+   <div id="ygkMsg" class="msg"></div><div id="res10"></div>`;
+}
+function ygKazik(){ygR=Math.max(0.4,ygR-0.45);el('ygRV').textContent=ygR.toFixed(2)+' Ω';el('ygStat').textContent=ygR<1?'Yeterli (R<1Ω)':'Yetersiz';showMsg('ygkMsg','info',`Kazık çakıldı. R = ${ygR.toFixed(2)} Ω.`);}
+function ygAsKure(){ygKure=true;showMsg('ygkMsg','info','🔴 İkaz küreleri asıldı.');}
+function ygPfTak(){if(ygR>=1){ygPf=false;showMsg('ygkMsg','bad','✗ R≥1Ω. Parafudur görev yapmaz — daha fazla kazık çak.');return;}ygPf=true;const ok=ygPf&&ygKure;el('res10').innerHTML=taskDone(10,ok?100:70,ok?'ok':'info',ok?'✔ R<1Ω, parafudur devrede, ikaz küreleri asılı.':'Parafudur devrede ama ikaz küresini de as.');}
+
+/* M11 PCB+OSİLOSKOP */
+let pcbOk=false,oscOk=false;
+function modPCB(m){
+  pcbOk=false;oscOk=false;
+  el('mtab').innerHTML=`<div class="panel2"><b>Görev 11A — PCB Asit Banyosu</b>
+   <label class="fld">Perhidrol: <span id="phV">1</span></label><input type="range" id="ph" min="0" max="5" value="1" oninput="el('phV').textContent=this.value">
+   <label class="fld">Tuz Ruhu: <span id="trV">3</span></label><input type="range" id="tr" min="0" max="6" value="3" oninput="el('trV').textContent=this.value">
+   <label class="fld">Süre (dk): <span id="dkV">7</span></label><input type="range" id="dk" min="1" max="15" value="7" oninput="el('dkV').textContent=this.value">
+   <button class="btn blue sm" style="margin-top:10px" onclick="pcbRun()">Banyoya Daldır</button></div>
+   <div class="panel2"><b>Görev 11B — Osiloskop (f = 1/T)</b><div class="muted" style="font-size:12px;margin:4px 0">T = <b id="Tval"></b> ms. Frekansı hesapla.</div>
+   <input type="number" id="freq" class="inline" style="width:120px" placeholder="Hz"><button class="btn blue sm" style="margin-left:8px" onclick="oscRun()">Kontrol</button></div>
+   <div id="pcbMsg" class="msg"></div><div id="res11"></div>`;
+  const o=[20,10,5,4,2];window._oscT=o[Math.floor(Math.random()*o.length)];el('Tval').textContent=window._oscT;
+}
+function pcbRun(){const ph=+el('ph').value,tr=+el('tr').value,dk=+el('dk').value,oOk=(ph===1&&tr===3),sOk=(dk>=5&&dk<=10);pcbOk=oOk&&sOk;
+  let msg=!oOk?'✗ Oran yanlış (1 Perhidrol + 3 Tuz Ruhu).':(dk<5?'✗ Süre kısa — bakır kaldı.':(dk>10?'✗ Süre uzun — yollar aşındı.':'✔ Banyo başarılı.'));showMsg('pcbMsg',pcbOk?'ok':'bad',msg);evalPCB();}
+function oscRun(){const T=window._oscT/1000,b=1/T,f=+el('freq').value;oscOk=Math.abs(f-b)<0.5;showMsg('pcbMsg',oscOk?'ok':'bad',oscOk?`✔ f = 1/T = ${b.toFixed(0)} Hz.`:`✗ f = 1/(${window._oscT} ms) = ${b.toFixed(0)} Hz olmalı.`);evalPCB();}
+function evalPCB(){const pct=(pcbOk?50:0)+(oscOk?50:0);el('res11').innerHTML=taskDone(11,pct,pct>=100?'ok':'info',`Kimya ${pcbOk?'✔':'✗'} · Osiloskop ${oscOk?'✔':'✗'}`);}
+
+/* M13 HATA */
+let hataXg,hataX;
+function modHata(m){
+  hataXg=[100,200,220,380,50][Math.floor(Math.random()*5)];hataX=hataXg-[1,2,3,4,5][Math.floor(Math.random()*5)];
+  el('mtab').innerHTML=`<div class="panel2"><b>Görev 13 — Hata Hesabı</b>
+   <div class="kc"><div class="k"><span>Gerçek (Xg)</span><b>${hataXg}</b></div><div class="k"><span>Ölçülen (X)</span><b>${hataX}</b></div></div>
+   <label class="fld">Mutlak Hata ΔX:</label><input type="number" id="mh" class="inline" style="width:120px">
+   <label class="fld">Bağıl Hata ε (%):</label><input type="number" id="bh" step="0.01" class="inline" style="width:120px">
+   <div style="margin-top:10px"><button class="btn blue sm" onclick="hataCheck()">Kontrol</button></div></div><div id="res13"></div>`;
+}
+function hataCheck(){const dM=Math.abs(hataXg-hataX),dB=dM/hataXg*100,mOk=Math.abs(+el('mh').value-dM)<0.01,bOk=Math.abs(+el('bh').value-dB)<0.05,c=(mOk?1:0)+(bOk?1:0);
+  el('res13').innerHTML=taskDone(13,Math.round(c/2*100),c===2?'ok':'bad',`Mutlak ${mOk?'✔':'✗'} (${dM}) · Bağıl ${bOk?'✔':'✗'} (${dB.toFixed(2)}%)`);}
+
+/* M14 REAKTANS */
+let reaktQ=null;
+function modReaktans(m){
+  reaktQ=null;
+  el('mtab').innerHTML=`<div class="panel2"><b>Görev 14A — Reaktans Hesabı</b>
+   <label class="fld">Frekans f (Hz): <span id="rfV">50</span></label><input type="range" id="rf" min="0" max="100" value="50" oninput="reaktCalc()">
+   <label class="fld">Endüktans L (mH): <span id="rlV">100</span></label><input type="range" id="rl" min="1" max="500" value="100" oninput="reaktCalc()">
+   <div class="kc"><div class="k"><span>XL = 2πfL</span><b id="rxV">—</b></div><div class="k"><span>Davranış</span><b id="rbV">—</b></div></div>
+   <div class="muted" style="font-size:12px;margin-top:6px">f'yi 0'a çek ve XL'i gözlemle.</div></div>
+   <div class="panel2"><b>Görev 14B:</b> Bobin DA (f=0) devresinde nasıl davranır?
+   <div class="row" style="margin-top:8px"><span class="pill" onclick="reaktAns(0,this)">Açık devre</span><span class="pill" onclick="reaktAns(1,this)">Kısa devre (XL=0)</span></div></div>
+   <button class="btn blue sm" onclick="reaktFinish()">Değerlendir</button><div id="res14"></div>`;
+  reaktCalc();
+}
+function reaktCalc(){const f=+el('rf').value,L=+el('rl').value/1000;el('rfV').textContent=f;el('rlV').textContent=L*1000;const x=RULES.reaktans(f,L);el('rxV').textContent=x.toFixed(2)+' Ω';el('rbV').textContent=f===0?'Kısa devre':'Reaktans var';}
+function reaktAns(v,e){reaktQ=v;e.parentNode.querySelectorAll('.pill').forEach(p=>p.classList.remove('sel'));e.classList.add('sel');}
+function reaktFinish(){const ok=reaktQ===1;el('res14').innerHTML=taskDone(14,ok?100:50,ok?'ok':'bad',ok?'✔ DA\'da XL=0 → bobin kısa devre gibi.':'DA\'da f=0 → XL=0 → kısa devre.');}
+
+/* M15 AKÜ */
+let akuOrder=[],akuQA={};
+function modAku(m){
+  akuOrder=RULES.akuAdimlari.map((s,i)=>({s,i})).sort(()=>Math.random()-.5);akuQA={};
+  el('mtab').innerHTML=`<div class="panel2"><b>Görev 15A — Adımları Sırala (▲▼)</b><div class="wirebox" id="aku" style="margin-top:8px"></div></div>
+   <div class="panel2"><b>Görev 15B — Güvenlik</b><div style="margin-top:6px;font-size:13px">Yeşil alev neyi gösterir?</div>
+   <div class="row" style="margin-top:6px"><span class="pill" onclick="akuQ('q1',0,this)">Lehim hazır</span><span class="pill" onclick="akuQ('q1',1,this)">Bakır oksitlendi</span></div>
+   <div style="margin-top:10px;font-size:13px">Makaron ne için KULLANILMAZ?</div>
+   <div class="row" style="margin-top:6px"><span class="pill" onclick="akuQ('q2',0,this)">Koruma</span><span class="pill" onclick="akuQ('q2',1,this)">Kötü krimpi gizlemek</span></div></div>
+   <button class="btn blue sm" onclick="akuCheck()">Değerlendir</button><div id="res15"></div>`;
+  drawAku();
+}
+function akuQ(k,v,e){akuQA[k]=v;e.parentNode.querySelectorAll('.pill').forEach(p=>p.classList.remove('sel'));e.classList.add('sel');}
+function drawAku(){el('aku').innerHTML=akuOrder.map((o,i)=>`<div class="wire"><span style="width:20px;color:var(--muted)">${i+1}</span><span style="flex:1">${o.s}</span><button class="pill" onclick="akuMove(${i},-1)">▲</button><button class="pill" onclick="akuMove(${i},1)">▼</button></div>`).join('');}
+function akuMove(i,d){const j=i+d;if(j<0||j>=akuOrder.length)return;[akuOrder[i],akuOrder[j]]=[akuOrder[j],akuOrder[i]];drawAku();}
+function akuCheck(){const oOk=akuOrder.every((o,i)=>o.i===i),c=(oOk?1:0)+(akuQA.q1===1?1:0)+(akuQA.q2===1?1:0);
+  el('res15').innerHTML=taskDone(15,Math.round(c/3*100),c===3?'ok':'bad',`Sıra ${oOk?'✔':'✗'} · Yeşil alev ${akuQA.q1===1?'✔':'✗'} · Makaron ${akuQA.q2===1?'✔':'✗'}`);}
+
+/* M18 GÜÇ */
+function modGuc(m){
+  el('mtab').innerHTML=`<div class="panel2"><b>Görev 18A — Üç Fazlı Güç Hesaplayıcı</b>
+   <label class="fld">U (V): <span id="guV">400</span></label><input type="range" id="gu" min="100" max="400" value="400" oninput="gucCalc()">
+   <label class="fld">I (A): <span id="giV">20</span></label><input type="range" id="gi" min="1" max="100" value="20" oninput="gucCalc()">
+   <label class="fld">cosφ: <span id="gcV">0.80</span></label><input type="range" id="gc" min="0.5" max="1" step="0.01" value="0.8" oninput="gucCalc()">
+   <div class="kc"><div class="k"><span>S (kVA)</span><b id="gsV">—</b></div><div class="k"><span>P (kW)</span><b id="gpV">—</b></div><div class="k"><span>Q (kVAR)</span><b id="gqV">—</b></div><div class="k"><span>cosφ</span><b id="gfV">—</b></div></div></div>
+   <div class="panel2"><b>Görev 18B — Hesapla</b><div class="muted" style="font-size:12px;margin:4px 0">U=380 V, I=10 A, cosφ=1 üç fazlı aktif güç (kW)? (√3≈1.732)</div>
+   <input type="number" id="gans" step="0.01" class="inline" style="width:120px" placeholder="kW"><button class="btn blue sm" style="margin-left:8px" onclick="gucCheck()">Kontrol</button></div><div id="res18"></div>`;
+  gucCalc();
+}
+function gucCalc(){const U=+el('gu').value,I=+el('gi').value,c=+el('gc').value;el('guV').textContent=U;el('giV').textContent=I;el('gcV').textContent=c.toFixed(2);const S=Math.sqrt(3)*U*I/1000,P=S*c,Q=Math.sqrt(Math.max(0,S*S-P*P));el('gsV').textContent=S.toFixed(2);el('gpV').textContent=P.toFixed(2);el('gqV').textContent=Q.toFixed(2);el('gfV').textContent=c.toFixed(2);}
+function gucCheck(){const b=Math.sqrt(3)*380*10/1000,ok=Math.abs(+el('gans').value-b)<0.1;el('res18').innerHTML=taskDone(18,ok?100:40,ok?'ok':'bad',ok?`✔ P=√3·U·I·cosφ ≈ ${b.toFixed(2)} kW.`:`✗ P=√3·380·10·1/1000 ≈ ${b.toFixed(2)} kW.`);}
+/* ===================== SINAV + SERTİFİKA + TEKRAR ===================== */
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function fmt(s){const m=Math.floor(s/60),x=s%60;return (m<10?'0':'')+m+':'+(x<10?'0':'')+x;}
+
+let EX=null;
+function renderExam(){
+  let hist='';
+  if(DB.exams.length){
+    hist=`<div class="sectiontitle" style="margin-top:18px"><h2 style="font-size:15px">Geçmiş Denemeler</h2><div class="ln"></div></div>`+
+      DB.exams.slice(0,6).map(e=>`<div class="panel2" style="margin:8px 0"><div class="row" style="justify-content:space-between"><span>${e.date}</span><b style="color:${e.pass?'var(--ok)':'var(--bad)'}">%${e.pct} · ${e.correct}/${e.total} ${e.pass?'GEÇTİ':'KALDI'}</b></div></div>`).join('');
+  }
+  app().innerHTML=`<div class="panel"><h2 style="margin:0">📝 Deneme Sınavı</h2>
+   <div class="muted" style="font-size:13px;margin-top:6px">20 rastgele soru · 15 dakika · Geçme notu %70. Tüm modüllerden karışık. Geçersen sertifika alırsın.</div>
+   ${DB.name?'':'<div class="msg info" style="display:block">İpucu: Sertifikada isminin görünmesi için Pano sayfasından adını kaydet.</div>'}
+   <div class="row" style="margin-top:14px"><button class="btn" onclick="startExam()">▶ Sınava Başla</button><button class="btn ghost" onclick="go('home')">Pano</button></div>
+   </div>${hist}`;
+}
+function startExam(){
+  const pool=[]; for(const mod in QBANK) QBANK[mod].forEach((q,i)=>pool.push(Object.assign({qid:mod+'.'+i},q)));
+  shuffle(pool); const items=pool.slice(0,20);
+  EX={items, start:Date.now(), dur:15*60, timer:null};
+  app().innerHTML=`<div class="panel"><div class="row" style="justify-content:space-between"><h2 style="margin:0">📝 Deneme Sınavı</h2><div class="examtimer" id="examTimer">15:00</div></div><div id="examBody" style="margin-top:12px"></div></div>`;
+  startQuiz('examBody', items, true, 'Sınavı Bitir', examFinish);
+  EX.timer=setInterval(tickExam,1000);
+}
+function tickExam(){
+  if(!EX) return;
+  const left=EX.dur-Math.floor((Date.now()-EX.start)/1000);
+  const t=el('examTimer'); if(!t){clearInterval(EX.timer);return;}
+  if(left<=0){ clearInterval(EX.timer); t.textContent='00:00'; if(QS && !QS.checked) submitQuiz(); return; }
+  t.textContent=fmt(left); if(left<=60) t.style.color='var(--bad)';
+}
+function examFinish(c,t,pct){
+  if(EX&&EX.timer) clearInterval(EX.timer);
+  const pass=pct>=70;
+  DB.exams.unshift({date:todayStr(),correct:c,total:t,pct,pass}); DB.exams=DB.exams.slice(0,20); persist();
+  addXp(c*3); markToday(); refreshHeader();
+  let out=`<div class="panel2" style="margin-top:14px;border-left:4px solid ${pass?'var(--ok)':'var(--bad)'}"><b style="font-size:16px">${pass?'🎉 Tebrikler, geçtin!':'Bu sefer olmadı — tekrar dene.'}</b> · %${pct} (${c}/${t})</div>`;
+  if(pass) out+=certHTML(pct);
+  out+=`<div class="row" style="margin-top:12px"><button class="btn" onclick="go('exam')">↻ Tekrar dene</button><button class="btn ghost" onclick="go('review')">Yanlışları tekrar et</button><button class="btn ghost" onclick="go('home')">Pano</button></div>`;
+  const r=el('qresult'); if(r) r.insertAdjacentHTML('beforeend', out);
+}
+function certHTML(pct){
+  const nm=DB.name?esc(DB.name):'(Pano\'dan isim ekleyebilirsin)';
+  return `<div class="cert" id="cert"><div class="seal">🏅</div><h2>BAŞARI SERTİFİKASI</h2>
+   <div class="muted">DHMİ Elektrik Uzmanlık Akademisi · ELK MASTER</div>
+   <div class="nm">${nm}</div>
+   <div style="font-size:14px">genel deneme sınavını <b style="color:var(--acc)">%${pct}</b> başarı ile tamamlamıştır.</div>
+   <div class="line"></div>
+   <div class="muted" style="font-size:12px">Tarih: ${todayStr()} · Belge No: ELK-${Date.now().toString().slice(-6)}</div>
+   <div class="row" style="justify-content:center;margin-top:14px"><button class="btn sm" onclick="window.print()">🖨️ Yazdır / PDF kaydet</button></div></div>`;
+}
+
+function renderReview(){
+  const due=dueReviews();
+  if(!due.length){
+    app().innerHTML=`<div class="panel"><h2 style="margin:0">🔁 Tekrar</h2>
+     <div class="muted" style="font-size:13px;margin-top:8px">Bugün tekrar edilecek soru yok 🎉<br>Quiz çözdükçe yanlış cevapladığın sorular, aralıklı tekrar (spaced repetition) sistemiyle zamanı gelince burada belirir.</div>
+     <button class="btn" style="margin-top:14px" onclick="go('modules')">Modüllere git</button></div>`;
+    return;
+  }
+  const items=due.slice(0,20).map(qid=>{const p=parseQid(qid);const q=QBANK[p.mod][p.idx];return Object.assign({qid},q);});
+  app().innerHTML=`<div class="panel"><h2 style="margin:0">🔁 Tekrar — ${items.length} soru</h2>
+   <div class="muted" style="font-size:13px;margin-top:6px">Zamanı gelen tekrar soruları. Doğru bildiklerin uzar, yanlışlar yakında tekrar gelir.</div>
+   <div id="revBody" style="margin-top:14px"></div></div>`;
+  startQuiz('revBody', items, true, 'Tekrarı Bitir', (c,t,pct)=>{
+    addXp(c);
+    const r=el('qresult'); if(r) r.insertAdjacentHTML('beforeend',`<div class="row" style="margin-top:12px"><button class="btn" onclick="go('review')">↻ Kalan tekrarlar</button><button class="btn ghost" onclick="go('home')">Pano</button></div>`);
+  });
+}
+
+/* ===================== BAŞLAT ===================== */
+/* ===== EK: kategori, yeni modüller, TEORI, FOY (24-29) ===== */
+CATS.mak={n:"Makineler & Güç",c:"#22c55e"};
+MODS.push(
+  {id:24, t:"Transformatörler", cat:"mak", ic:"🔁", d:"Dönüştürme oranı, kayıplar, bağlantılar.", task:"modTrafo"},
+  {id:25, t:"Elektrik Makineleri", cat:"mak", ic:"⚙️", d:"Asenkron/senkron/DA motor, yol verme.", task:null},
+  {id:26, t:"Topraklama & Kaçak Akım", cat:"yg", ic:"🌍", d:"TN/TT/IT sistemleri, RCD (30 mA).", task:null},
+  {id:27, t:"Koruma, Seçicilik & Hesap", cat:"yg", ic:"🛡️", d:"Sigorta eğrileri, kısa devre, gerilim düşümü.", task:null},
+  {id:28, t:"Aydınlatma Tekniği", cat:"saha", ic:"🔆", d:"Lüks/lümen, verim, aydınlatma hesabı.", task:"modLux"},
+  {id:29, t:"Mevzuat & İSG", cat:"yonetim", ic:"📜", d:"Yönetmelikler, 5 altın kural, KKD, LOTO.", task:null}
+);
+Object.assign(TEORI,{
+24:`Transformatör elektromanyetik indüksiyonla gerilim seviyesini değiştirir (yalnız AC; DA'da çalışmaz çünkü değişken akı gerekir).<br><b>Dönüştürme oranı:</b> N1/N2 = V1/V2 = I2/I1. N2&gt;N1 → yükseltici, N2&lt;N1 → düşürücü.<br>İdeal trafoda güç korunur (S1≈S2). <b>Kayıplar:</b> bakır (I²R) + demir (histerezis/girdap). Soğutmaya göre yağlı/kuru. Üç fazda yıldız (Y) / üçgen (Δ) bağlantı.`,
+25:`<b>Asenkron (endüksiyon) motor</b> en yaygındır: sağlam, ucuz, az bakım. <b>Senkron motor</b> sabit hızda döner, kompanzasyona yardımcı olur. <b>DA motor</b> kolay hız kontrolü sağlar.<br>Senkron hız: <b>n = 120·f / p</b> (p: kutup sayısı). Yol alma akımını düşürmek için <b>yıldız-üçgen</b> yol verme, soft starter veya sürücü (VFD) kullanılır.`,
+26:`<b>Topraklama sistemleri</b> (1. harf kaynak, 2. harf gövde): TN-S (N ve PE ayrı), TN-C-S (önce birleşik sonra ayrık), TT (gövde ayrı topraklayıcı), IT (kaynak izole).<br><b>Kaçak akım rölesi (RCD/FI):</b> faz-nötr akım farkını ölçer; <b>30 mA can güvenliği</b>, ~300 mA yangın koruması. Eşpotansiyel baralama dokunma gerilimini azaltır.`,
+27:`<b>Aşırı akım koruması:</b> sigorta/otomat. Açma eğrileri: <b>B 3–5·In</b> (aydınlatma), <b>C 5–10·In</b> (priz/motor), <b>D 10–20·In</b> (yüksek başlangıç akımı).<br><b>Seçicilik:</b> arıza en yakın koruma elemanında temizlenmeli, üst kademe açmamalı. Kısa devre akımı, kesicinin kesme kapasitesinden (kA) küçük olmalı.<br><b>Gerilim düşümü:</b> aydınlatmada ≤%3, kuvvette ≤%5; hat uzunluğu ve akımla artar.`,
+28:`<b>Işık akısı:</b> lümen (lm). <b>Aydınlık düzeyi:</b> lüks (lx = lm/m²). <b>Armatür verimi:</b> lm/W (LED en verimli).<br>Lümen yöntemi: E = (Φ·n·η·d) / A. Önerilen düzeyler: ofis ~500 lx, koridor ~100 lx, hassas iş ~750–1000 lx. Konfor için renk sıcaklığı (K) ve renksel geriverim (CRI/Ra) önemlidir.`,
+29:`Temel düzenlemeler: <b>Elektrik İç Tesisleri Yönetmeliği</b>, Elektrik Tesislerinde Topraklamalar Yönetmeliği, Elektrik Kuvvetli Akım Tesisleri Yönetmeliği, İSG mevzuatı; havacılıkta <b>SHT/HES</b> kuralları.<br>Yetkisiz müdahale yasaktır. Çalışma öncesi <b>5 altın kural</b>, KKD (baret, yalıtkan eldiven/ayakkabı), iş izni ve <b>etiket-kilit (LOTO)</b> zorunludur.`
+});
+Object.assign(FOY,{
+24:`<b>Özet:</b> Trafo AC gerilimini indüksiyonla dönüştürür.<br><b>Oran:</b> N1/N2 = V1/V2 = I2/I1. Gerilim artarsa akım düşer (güç sabit).<br>Örn. N1=1000, N2=100, V1=220 V → V2 = 220·(100/1000) = 22 V (düşürücü).<br><b>Kayıplar:</b> bakır (sargı, I²R) + demir (nüve: histerezis+girdap akımı).<br><b>DA'da çalışmaz:</b> sabit akı indüksiyon üretmez.`,
+25:`<b>Asenkron motor:</b> en yaygın; sağlam, ucuz.<br><b>Senkron hız:</b> n=120·f/p. Örn. f=50 Hz, p=4 → n=1500 d/d.<br><b>Yıldız-üçgen:</b> yolverme akımını düşürür (önce yıldız, sonra üçgen).<br><b>VFD/sürücü:</b> hızı kademesiz ayarlar.<br><b>Senkron motor</b> ayrıca güç faktörü düzeltir.`,
+26:`<b>Sistemler:</b> TN-S (N/PE ayrı), TN-C-S, TT (gövde ayrı topraklı), IT (izole kaynak).<br><b>RCD:</b> faz-nötr akım farkını ölçer; fark eşiği aşarsa keser.<br>Can güvenliği: <b>30 mA</b>; yangın: ~300 mA.<br><b>Eşpotansiyel baralama</b> tüm iletken kısımları aynı potansiyele getirir.<br><b>Amaç:</b> insanı çarpılmaktan korumak.`,
+27:`<b>Eğriler:</b> B 3–5·In, C 5–10·In, D 10–20·In.<br><b>Seçicilik:</b> sadece arızaya en yakın koruma açar; üst kademe devrede kalır.<br><b>Kesme kapasitesi (kA):</b> beklenen kısa devre akımından büyük olmalı.<br><b>Gerilim düşümü:</b> aydınlatma ≤%3, kuvvet ≤%5; uzun hat+yüksek akım = büyük düşüm → kesit büyüt.`,
+28:`<b>Birimler:</b> Φ lümen (lm), E lüks (lx=lm/m²), verim lm/W.<br><b>Lümen yöntemi:</b> E = Φ·n·η·d / A (n armatür, η verim, d bakım faktörü).<br>Örn. 10 armatür × 4000 lm, η=0,6, d=0,8, A=40 m² → E=480 lx.<br>Hedefler: ofis ~500 lx, koridor ~100 lx.<br><b>CRI (Ra)</b> renkleri gerçekçi gösterme ölçüsüdür.`,
+29:`<b>Yönetmelikler:</b> İç Tesisler, Topraklamalar, Kuvvetli Akım Tesisleri; İSG.<br><b>Havacılık:</b> SHT/HES (SHGM denetimi).<br><b>5 altın kural:</b> kes → kilitle/etiketle → gerilimsizliği doğrula → toprakla/kısa devre → yalıt.<br><b>LOTO:</b> Lockout-Tagout (kilitle-etiketle).<br>Yetkisiz kişi YG'de çalışamaz; KKD ve iş izni zorunlu.`
+});
+
+/* ===== EK: soru bankası (24-29) ===== */
+Object.assign(QBANK,{
+24:[
+ {q:"Transformatör hangi akımda çalışır?",opts:["Sadece DC","Sadece AC","Hem AC hem DC","Hiçbiri"],ans:1,ex:"Trafo değişken akı (indüksiyon) gerektirir; yalnız AC'de çalışır."},
+ {q:"Dönüştürme oranı bağıntısı?",opts:["N1/N2 = V1/V2","N1·N2 = V1·V2","N1/N2 = I1/I2","N1+N2 = V1"],ans:0,ex:"N1/N2 = V1/V2 = I2/I1."},
+ {q:"N2 > N1 olan trafo nedir?",opts:["Düşürücü","Yükseltici","Yalıtım","Ölçü"],ans:1,ex:"Sekonder sarımı fazlaysa gerilim yükselir → yükseltici."},
+ {q:"İdeal trafoda korunan büyüklük?",opts:["Akım","Gerilim","Güç (S1≈S2)","Direnç"],ans:2,ex:"İdeal trafoda giriş gücü ≈ çıkış gücü."},
+ {q:"Nüve (demir) kaybı türü?",opts:["Bakır kaybı","Histerezis ve girdap akımı","Temas direnci","Sürtünme"],ans:1,ex:"Demir kayıpları histerezis + girdap akımı kayıplarıdır."},
+ {q:"1000 sarım/220 V primer, 100 sarım sekonder → V2?",opts:["2200 V","22 V","110 V","220 V"],ans:1,ex:"V2 = 220·(100/1000) = 22 V."},
+ {q:"Üç fazda Δ sembolü neyi gösterir?",opts:["Yıldız","Üçgen","Toprak","Nötr"],ans:1,ex:"Δ üçgen, Y yıldız bağlantıyı gösterir."},
+ {q:"Trafo DA'da neden çalışmaz?",opts:["Çok ısınır","Sabit akı indüksiyon üretmez","Aşırı akım","Frekans yüksek"],ans:1,ex:"DA'da akı sabit kalır, sekonderde gerilim indüklenmez."}
+],
+25:[
+ {q:"En yaygın endüstriyel motor?",opts:["DA motor","Asenkron (endüksiyon)","Senkron","Step motor"],ans:1,ex:"Asenkron motor sağlam, ucuz ve az bakımlıdır."},
+ {q:"Yol alma akımını düşüren klasik yöntem?",opts:["Yıldız-üçgen","Kompanzasyon","Topraklama","Parafudur"],ans:0,ex:"Yıldız-üçgen yolverme başlangıç akımını azaltır."},
+ {q:"f=50 Hz, p=4 kutup → senkron hız (n=120f/p)?",opts:["750 d/d","1500 d/d","3000 d/d","1000 d/d"],ans:1,ex:"n = 120·50/4 = 1500 d/d."},
+ {q:"Motor hızını kademesiz ayarlayan cihaz?",opts:["Sürücü (VFD)","Sigorta","Kontaktör","Trafo"],ans:0,ex:"Frekans konvertörü (VFD) hızı kademesiz ayarlar."},
+ {q:"Senkron motorun ek faydası?",opts:["Ucuzluk","Güç faktörü düzeltme","Susuz çalışma","Yüksek kayıp"],ans:1,ex:"Aşırı uyartımlı senkron motor cosφ'yi düzeltir."},
+ {q:"DA motorun avantajı?",opts:["Bakımsızlık","Kolay hız kontrolü","Ucuzluk","Sessizlik"],ans:1,ex:"DA motorda hız kontrolü kolaydır."},
+ {q:"Yıldız-üçgen yolvermede başlangıç bağlantısı?",opts:["Üçgen","Yıldız","Karışık","Seri"],ans:1,ex:"Önce yıldız (düşük akım), sonra üçgen."},
+ {q:"Asenkron motorda dönen kısım?",opts:["Stator","Rotor","Nüve","Klemens"],ans:1,ex:"Rotor döner; stator sabit manyetik alanı oluşturur."}
+],
+26:[
+ {q:"Kaçak akım rölesi (RCD) neyi ölçer?",opts:["Toplam akımı","Faz-nötr akım farkını","Gerilimi","Frekansı"],ans:1,ex:"Faz ve nötr akımı eşit değilse fark kaçaktır → keser."},
+ {q:"Can güvenliği için RCD eşiği?",opts:["30 mA","300 mA","3 A","30 A"],ans:0,ex:"İnsan koruması için 30 mA kullanılır."},
+ {q:"TN-S sisteminde N ve PE?",opts:["Birleşik","Ayrı","Yok","Aynı şey"],ans:1,ex:"TN-S'de nötr (N) ve koruma (PE) ayrıdır."},
+ {q:"IT sisteminde kaynak nasıldır?",opts:["Doğrudan topraklı","Topraktan izole","Kısa devreli","Nötrsüz değil"],ans:1,ex:"IT'de kaynak topraktan izoledir (veya yüksek empedansla)."},
+ {q:"Eşpotansiyel baralamanın amacı?",opts:["Hız artırma","Dokunma gerilimini azaltma","Aydınlatma","Kompanzasyon"],ans:1,ex:"İletken kısımları aynı potansiyele getirir, çarpılmayı azaltır."},
+ {q:"Yangın koruması için RCD eşiği?",opts:["10 mA","30 mA","~300 mA","30 A"],ans:2,ex:"Yangın koruması tipik olarak ~300 mA'dir."},
+ {q:"TT sisteminde gövde nasıl bağlanır?",opts:["Nötre","Ayrı topraklayıcıya","Faza","Bağlanmaz"],ans:1,ex:"TT'de gövde kendi topraklayıcısına bağlanır."},
+ {q:"Topraklamanın temel amacı?",opts:["Hız","İnsanı çarpılmaktan korumak","Aydınlatma","Tasarruf"],ans:1,ex:"Arıza akımını toprağa akıtıp dokunma gerilimini düşürür."}
+],
+27:[
+ {q:"C tipi otomatın açma aralığı?",opts:["3–5·In","5–10·In","10–20·In","1–2·In"],ans:1,ex:"C eğrisi 5–10·In; priz/motor devrelerinde yaygın."},
+ {q:"Seçicilik (selektivite) nedir?",opts:["Tüm korumalar açar","Sadece arızaya en yakın koruma açar","Hiçbiri açmaz","Sigorta erir"],ans:1,ex:"Arıza en yakın elemanda temizlenir, üst kademe açmaz."},
+ {q:"Kesicinin kesme kapasitesi birimi?",opts:["A","kA","V","Hz"],ans:1,ex:"Kesme kapasitesi kiloamper (kA) ile verilir."},
+ {q:"Aydınlatma devresinde önerilen maks. gerilim düşümü?",opts:["%3","%5","%10","%1"],ans:0,ex:"Aydınlatmada genelde ≤%3 önerilir."},
+ {q:"Kuvvet (motor) devresinde gerilim düşümü?",opts:["≤%3","≤%5","≤%15","Sınır yok"],ans:1,ex:"Kuvvet devrelerinde ≤%5 hedeflenir."},
+ {q:"Kısa devre akımı kesme kapasitesinden nasıl olmalı?",opts:["Büyük","Küçük","Eşit","Önemsiz"],ans:1,ex:"Beklenen kısa devre akımı kesicinin kesme kapasitesinden küçük olmalı."},
+ {q:"B tipi otomat hangi yük için uygun?",opts:["Yüksek başlangıç akımlı","Dirençsel/aydınlatma","Sadece motor","Trafo"],ans:1,ex:"B eğrisi düşük açma akımı; aydınlatma/dirençsel yükler için."},
+ {q:"Gerilim düşümü neyle artar?",opts:["Kısa hat","Hat uzunluğu ve akım","Düşük akım","Kalın kesit"],ans:1,ex:"Uzun hat ve yüksek akımda gerilim düşümü artar."}
+],
+28:[
+ {q:"Aydınlık düzeyinin birimi?",opts:["Lümen","Lüks (lx)","Watt","Kelvin"],ans:1,ex:"Aydınlık düzeyi lüks (lx) ile ölçülür."},
+ {q:"Işık akısının birimi?",opts:["Lüks","Lümen (lm)","Amper","Hz"],ans:1,ex:"Işık akısı lümen (lm)."},
+ {q:"1 lüks kaça eşittir?",opts:["1 lm/m²","1 W/m²","1 cd","1 lm·m²"],ans:0,ex:"1 lx = 1 lm/m²."},
+ {q:"Ofis için önerilen aydınlık düzeyi?",opts:["~100 lx","~500 lx","~50 lx","~2000 lx"],ans:1,ex:"Ofis çalışması için ~500 lx önerilir."},
+ {q:"Armatür verimi hangi birimle ifade edilir?",opts:["lm/W","W/lm","lx/m","cd/W"],ans:0,ex:"Verim lümen/Watt (lm/W) ile ifade edilir."},
+ {q:"En verimli ışık kaynağı?",opts:["Akkor","Floresan","LED","Halojen"],ans:2,ex:"LED en yüksek lm/W verime sahiptir."},
+ {q:"Renkleri gerçekçi gösterme ölçüsü?",opts:["CRI (Ra)","Lümen","Kelvin","Lüks"],ans:0,ex:"CRI (Ra) renksel geriverim indeksidir."},
+ {q:"Bakım faktörü (d) neden kullanılır?",opts:["Maliyet","Kirlenme/yaşlanmayla ışık azalır","Renk için","Hız için"],ans:1,ex:"Zamanla kirlenme ve yaşlanma ışığı azaltır; tasarımda hesaba katılır."}
+],
+29:[
+ {q:"İç tesisat kurallarını belirleyen yönetmelik?",opts:["Elektrik İç Tesisleri Yönetmeliği","Trafik Yönetmeliği","İmar Yönetmeliği","Yok"],ans:0,ex:"İç tesisat kuralları Elektrik İç Tesisleri Yönetmeliği'nde yer alır."},
+ {q:"Çalışma öncesi kaç altın kural vardır?",opts:["3","5","7","10"],ans:1,ex:"İş güvenliğinde 5 altın kural uygulanır."},
+ {q:"LOTO ne anlama gelir?",opts:["Etiketle-kilitle (enerji izolasyonu)","Ölçüm","Topraklama","Aydınlatma"],ans:0,ex:"Lockout-Tagout: enerjiyi kilitle ve etiketle."},
+ {q:"Havacılık elektrik işlerini düzenleyen?",opts:["SHT/HES (SHGM)","Belediye","TSE","Yok"],ans:0,ex:"Havacılıkta SHT/HES kuralları ve SHGM denetimi geçerlidir."},
+ {q:"Yetkisiz kişi YG'de müdahale edebilir mi?",opts:["Evet","Hayır","Sadece gündüz","İzinle herkes"],ans:1,ex:"YG'de yalnız yetkili/eğitimli personel çalışabilir."},
+ {q:"KKD örneği hangisidir?",opts:["Yalıtkan eldiven/baret","Cep telefonu","Anahtar","Kalem"],ans:0,ex:"Kişisel koruyucu donanım: baret, yalıtkan eldiven/ayakkabı vb."},
+ {q:"Topraklama esaslarını veren yönetmelik?",opts:["Topraklamalar Yönetmeliği","Gürültü Yönetmeliği","Su Yönetmeliği","Yok"],ans:0,ex:"Elektrik Tesislerinde Topraklamalar Yönetmeliği."},
+ {q:"İş izni (work permit) ne zaman gerekir?",opts:["Hiçbir zaman","Riskli/YG çalışmaları öncesi","Sadece tatilde","Ofiste"],ans:1,ex:"Riskli ve YG çalışmaları öncesi iş izni alınır."}
+]
+});
+
+/* ===== EK: interaktif görevler, karıştırma, yedekleme, ayarlar ===== */
+/* M24 TRAFO */
+function modTrafo(m){
+  el('mtab').innerHTML=`<div class="panel2"><b>Görev 24A — Trafo Hesaplayıcı</b>
+   <label class="fld">Primer sarım N1: <span id="n1V">1000</span></label><input type="range" id="n1" min="100" max="2000" step="50" value="1000" oninput="trafoCalc()">
+   <label class="fld">Sekonder sarım N2: <span id="n2V">500</span></label><input type="range" id="n2" min="50" max="2000" step="50" value="500" oninput="trafoCalc()">
+   <label class="fld">Primer gerilim V1 (V): <span id="v1V">220</span></label><input type="range" id="v1" min="12" max="380" step="2" value="220" oninput="trafoCalc()">
+   <div class="kc"><div class="k"><span>Sekonder V2</span><b id="v2V">—</b></div><div class="k"><span>Oran N1/N2</span><b id="orV">—</b></div><div class="k"><span>Tip</span><b id="tpV">—</b></div></div></div>
+   <div class="panel2"><b>Görev 24B — Hesapla</b><div class="muted" style="font-size:12px;margin:4px 0">N1=1000, N2=100, V1=220 V → Sekonder V2 = ? (V)</div>
+   <input type="number" id="tans" class="inline" style="width:120px" placeholder="V"><button class="btn blue sm" style="margin-left:8px" onclick="trafoCheck()">Kontrol</button></div><div id="res24"></div>`;
+  trafoCalc();
+}
+function trafoCalc(){const n1=+el('n1').value,n2=+el('n2').value,v1=+el('v1').value,v2=v1*n2/n1;el('n1V').textContent=n1;el('n2V').textContent=n2;el('v1V').textContent=v1;el('v2V').textContent=v2.toFixed(1)+' V';el('orV').textContent=(n1/n2).toFixed(2);el('tpV').textContent=n2>n1?'Yükseltici':(n2<n1?'Düşürücü':'1:1');}
+function trafoCheck(){const b=220*100/1000,ok=Math.abs(+el('tans').value-b)<0.5;el('res24').innerHTML=taskDone(24,ok?100:40,ok?'ok':'bad',ok?`✔ V2 = V1·N2/N1 = 220·100/1000 = ${b} V (düşürücü).`:`✗ V2 = V1·N2/N1 = 220·100/1000 = ${b} V olmalı.`);}
+
+/* M28 AYDINLATMA */
+function modLux(m){
+  el('mtab').innerHTML=`<div class="panel2"><b>Görev 28 — Aydınlatma Hesabı (lümen yöntemi)</b>
+   <div class="muted" style="font-size:12px;margin:4px 0">Hedef: Ofisi ~500 lx aydınlat. E = Φ·n·η·d / A (η=0,6 · d=0,8)</div>
+   <label class="fld">Armatür sayısı n: <span id="lnV">10</span></label><input type="range" id="ln" min="1" max="40" value="10" oninput="luxCalc()">
+   <label class="fld">Armatür başına lümen Φ: <span id="lfV">4000</span></label><input type="range" id="lf" min="1000" max="6000" step="100" value="4000" oninput="luxCalc()">
+   <label class="fld">Oda alanı A (m²): <span id="laV">40</span></label><input type="range" id="la" min="10" max="200" value="40" oninput="luxCalc()">
+   <div class="kc"><div class="k"><span>Aydınlık E</span><b id="leV">—</b></div><div class="k"><span>Ofis hedefi 500 lx</span><b id="ltV">—</b></div></div>
+   <button class="btn blue sm" style="margin-top:10px" onclick="luxFinish()">Değerlendir</button></div><div id="res28"></div>`;
+  luxCalc();
+}
+function luxCalc(){const n=+el('ln').value,f=+el('lf').value,a=+el('la').value,E=n*f*0.6*0.8/a;el('lnV').textContent=n;el('lfV').textContent=f;el('laV').textContent=a;el('leV').textContent=Math.round(E)+' lx';el('ltV').textContent=E>=500?'Yeterli ✔':'Yetersiz';return E;}
+function luxFinish(){const E=luxCalc();const pct=(E>=450&&E<=900)?100:(E>=300?60:30);el('res28').innerHTML=taskDone(28,pct,pct>=100?'ok':'info',`Aydınlık ≈ ${Math.round(E)} lx. ${pct>=100?'Hedef sağlandı (aşırı parlama da yok).':(E<500?'500 lx için armatür veya lümeni artır.':'500 lx üstü ama fazla; dengele.')}`);}
+
+/* SORU KARIŞTIRMA — quiz/sınav/tekrar yeniden tanımlanır */
+function shuffleItems(items){return shuffle(items.map(it=>{const idx=it.opts.map((_,i)=>i);shuffle(idx);return Object.assign({},it,{opts:idx.map(i=>it.opts[i]),ans:idx.indexOf(it.ans)});}));}
+function startModuleQuiz(id){const items=shuffleItems(QBANK[id].map((x,i)=>Object.assign({qid:id+'.'+i},x)));startQuiz('mtab',items,true,'Cevapları Kontrol Et',(c,t,pct)=>{setScore(id,pct);addXp(c*2);el('qresult').innerHTML+=`<div class="row" style="margin-top:12px"><button class="btn sm" onclick="showTab(${id},'foy')">📘 Föy ile pekiştir</button><button class="btn ghost sm" onclick="startModuleQuiz(${id})">↻ Tekrar çöz</button></div>`;});}
+function startExam(){const pool=[];for(const mod in QBANK)QBANK[mod].forEach((q,i)=>pool.push(Object.assign({qid:mod+'.'+i},q)));const items=shuffleItems(pool).slice(0,20);EX={items,start:Date.now(),dur:15*60,timer:null};app().innerHTML=`<div class="panel"><div class="row" style="justify-content:space-between"><h2 style="margin:0">📝 Deneme Sınavı</h2><div class="examtimer" id="examTimer">15:00</div></div><div id="examBody" style="margin-top:12px"></div></div>`;startQuiz('examBody',items,true,'Sınavı Bitir',examFinish);EX.timer=setInterval(tickExam,1000);}
+function renderReview(){const due=dueReviews();if(!due.length){app().innerHTML=`<div class="panel"><h2 style="margin:0">🔁 Tekrar</h2><div class="muted" style="font-size:13px;margin-top:8px">Bugün tekrar edilecek soru yok 🎉<br>Quiz çözdükçe yanlış cevapların aralıklı tekrar (spaced repetition) ile zamanı gelince burada belirir.</div><button class="btn" style="margin-top:14px" onclick="go('modules')">Modüllere git</button></div>`;return;}const items=shuffleItems(due.slice(0,20).map(qid=>{const p=parseQid(qid);return Object.assign({qid},QBANK[p.mod][p.idx]);}));app().innerHTML=`<div class="panel"><h2 style="margin:0">🔁 Tekrar — ${items.length} soru</h2><div class="muted" style="font-size:13px;margin-top:6px">Zamanı gelen tekrar soruları. Doğru bildiklerin uzar, yanlışlar yakında tekrar gelir.</div><div id="revBody" style="margin-top:14px"></div></div>`;startQuiz('revBody',items,true,'Tekrarı Bitir',(c,t,pct)=>{addXp(c);const r=el('qresult');if(r)r.insertAdjacentHTML('beforeend',`<div class="row" style="margin-top:12px"><button class="btn" onclick="go('review')">↻ Kalan tekrarlar</button><button class="btn ghost" onclick="go('home')">Pano</button></div>`);});}
+
+/* YEDEKLEME / GERİ YÜKLEME / SIFIRLAMA + AYARLAR */
+function exportData(){try{const blob=new Blob([JSON.stringify(DB,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='elkmaster-yedek-'+todayStr()+'.json';document.body.appendChild(a);a.click();a.remove();toast('Yedek indirildi');}catch(e){toast('Yedek alınamadı');}}
+function importData(input){const f=input.files&&input.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const o=JSON.parse(r.result);DB=Object.assign({scores:{},notes:{},srs:{},exams:[],days:[],name:'',xp:0},o);persist();refreshHeader();toast('Yedek geri yüklendi');go('home');}catch(e){toast('Geçersiz dosya');}};r.readAsText(f);}
+function resetData(){if(!confirm('Tüm ilerlemen kalıcı olarak silinecek. Emin misin?'))return;DB={scores:{},notes:{},srs:{},exams:[],days:[],name:'',xp:0};persist();refreshHeader();toast('İlerleme sıfırlandı');go('home');}
+function renderSettings(){app().innerHTML=`<div class="panel"><h2 style="margin:0">⚙️ Veri & Ayarlar</h2>
+ <div class="muted" style="font-size:13px;margin-top:8px">İlerlemen bu cihazın tarayıcısında saklanır. Başka cihaza taşımak veya veri kaybetmemek için düzenli yedek al.</div>
+ <div class="row" style="margin-top:16px"><button class="btn" onclick="exportData()">⬇️ Yedek Al (JSON)</button>
+ <label class="btn ghost" style="cursor:pointer">⬆️ Geri Yükle<input type="file" accept="application/json,.json" style="display:none" onchange="importData(this)"></label>
+ <button class="btn danger" onclick="resetData()">🗑️ İlerlemeyi Sıfırla</button></div>
+ <div class="panel2" style="margin-top:16px"><b>Mevcut Durum</b><div class="muted" style="font-size:12.5px;margin-top:6px">Tamamlanan: ${moduleDone()}/${MODS.length} modül · Ortalama: %${avgScore()} · XP: ${DB.xp||0} · Seri: ${streak()} gün · Tekrar bekleyen: ${dueReviews().length} · Sınav denemesi: ${DB.exams.length}</div></div></div>`;}
+function go(view,arg){document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('active',b.dataset.v===view));window.scrollTo(0,0);if(view==='home')renderHome();else if(view==='modules')renderModules();else if(view==='module')openModule(arg);else if(view==='exam')renderExam();else if(view==='review')renderReview();else if(view==='glossary')renderGlossary();else if(view==='settings')renderSettings();}
+
+
+/* ===== EK: SVG ŞEMA KÜTÜPHANESİ ===== */
+const DIAG = {
+1:`<svg viewBox="0 0 420 170"><rect x="60" y="30" width="300" height="110" rx="4" fill="none" stroke="#8a98ab" stroke-width="2"/>
+ <line x1="55" y1="60" x2="55" y2="110" stroke="#ffb000" stroke-width="3"/><line x1="65" y1="70" x2="65" y2="100" stroke="#ffb000" stroke-width="6"/>
+ <text x="30" y="92" fill="#ffb000" font-size="13">V</text>
+ <polyline points="170,30 180,18 200,42 220,18 240,42 250,30" fill="none" stroke="#33b1ff" stroke-width="3"/><text x="195" y="14" fill="#33b1ff" font-size="13">R</text>
+ <polygon points="350,80 342,72 342,88" fill="#3fb950"/><text x="300" y="160" fill="#3fb950" font-size="13">I (akım yönü)</text>
+ <text x="120" y="105" fill="#e8eef6" font-size="18" font-weight="700">V = I · R</text></svg>`,
+2:`<svg viewBox="0 0 420 150">${["#ff9b54","#ff6b00","#7bdc7b","#2f6bff","#9db8ff","#1f9d1f","#c8a07a","#7a4a23"].map((c,i)=>`<rect x="${40+i*44}" y="40" width="30" height="60" fill="${c}" stroke="#0008"/><text x="${55+i*44}" y="120" fill="#cdd7e2" font-size="12" text-anchor="middle">${i+1}</text>`).join('')}
+ <path d="M30,40 h360 v-14 h-360 z" fill="none" stroke="#8a98ab" stroke-width="2"/><text x="150" y="20" fill="#e8eef6" font-size="13">RJ45 — T568B sırası</text></svg>`,
+4:`<svg viewBox="0 0 420 170"><rect x="50" y="40" width="320" height="90" rx="4" fill="none" stroke="#8a98ab" stroke-width="2"/>
+ <circle cx="150" cy="40" r="16" fill="none" stroke="#3fb950" stroke-width="2"/><text x="150" y="45" fill="#3fb950" font-size="13" text-anchor="middle">A</text><text x="120" y="22" fill="#3fb950" font-size="12">SERİ</text>
+ <circle cx="300" cy="130" r="16" fill="none" stroke="#ffb000" stroke-width="2"/><text x="300" y="135" fill="#ffb000" font-size="13" text-anchor="middle">V</text><line x1="300" y1="114" x2="300" y2="40" stroke="#ffb000" stroke-width="2" stroke-dasharray="4"/><line x1="300" y1="146" x2="300" y2="130" stroke="#ffb000" stroke-width="2"/><text x="318" y="120" fill="#ffb000" font-size="12">PARALEL</text>
+ <polyline points="220,40 228,32 244,48 252,40" fill="none" stroke="#33b1ff" stroke-width="3"/></svg>`,
+7:`<svg viewBox="0 0 420 150"><text x="20" y="30" fill="#e8eef6" font-size="13">Açma sırası:</text>
+ <rect x="40" y="50" width="120" height="46" rx="6" fill="#11331c" stroke="#3fb950" stroke-width="2"/><text x="100" y="78" fill="#bdf0c8" font-size="13" text-anchor="middle">1 · KESİCİ</text>
+ <polygon points="180,73 200,63 200,83" fill="#ffb000"/>
+ <rect x="210" y="50" width="120" height="46" rx="6" fill="#332a11" stroke="#ffb000" stroke-width="2"/><text x="270" y="78" fill="#ffd089" font-size="13" text-anchor="middle">2 · AYIRICI</text>
+ <text x="40" y="125" fill="#f85149" font-size="12">Yük altında ayırıcı açılırsa → ARK PATLAMASI</text></svg>`,
+10:`<svg viewBox="0 0 420 170"><line x1="60" y1="30" x2="60" y2="120" stroke="#8a98ab" stroke-width="3"/>
+ <polygon points="50,120 70,120 60,150" fill="#7a4a23"/><line x1="40" y1="150" x2="80" y2="150" stroke="#8a98ab" stroke-width="2"/><line x1="46" y1="156" x2="74" y2="156" stroke="#8a98ab" stroke-width="2"/><line x1="52" y1="162" x2="68" y2="162" stroke="#8a98ab" stroke-width="2"/>
+ <rect x="120" y="50" width="80" height="50" rx="4" fill="none" stroke="#f85149" stroke-width="2"/><text x="160" y="80" fill="#f85149" font-size="11" text-anchor="middle">Parafudur</text>
+ <line x1="60" y1="55" x2="120" y2="55" stroke="#ffb000" stroke-width="2"/>
+ <text x="240" y="80" fill="#3fb950" font-size="15">Hedef: R &lt; 1 Ω</text><text x="240" y="100" fill="#8a98ab" font-size="11">ek bakır kazıklarla düşür</text></svg>`,
+11:`<svg viewBox="0 0 420 160"><line x1="20" y1="80" x2="400" y2="80" stroke="#26313f" stroke-width="1"/>
+ <path d="M30,80 Q70,10 110,80 T190,80 T270,80 T350,80" fill="none" stroke="#33b1ff" stroke-width="3"/>
+ <line x1="30" y1="80" x2="30" y2="25" stroke="#ffb000" stroke-width="1" stroke-dasharray="3"/><line x1="190" y1="80" x2="190" y2="25" stroke="#ffb000" stroke-width="1" stroke-dasharray="3"/>
+ <text x="95" y="20" fill="#ffb000" font-size="12">T (periyot)</text><text x="20" y="45" fill="#3fb950" font-size="12">Vmax</text>
+ <text x="250" y="40" fill="#e8eef6" font-size="14">f = 1 / T · Vrms = Vmax/√2</text></svg>`,
+14:`<svg viewBox="0 0 420 160"><path d="M40,120 L40,40" stroke="#8a98ab" stroke-width="2"/><path d="M40,40 L380,40" stroke="#8a98ab" stroke-width="2"/>
+ <path d="M70,110 q14,-20 28,0 q14,20 28,0 q14,-20 28,0 q14,20 28,0" fill="none" stroke="#a371ff" stroke-width="3"/><text x="80" y="135" fill="#a371ff" font-size="12">Bobin (L)</text>
+ <text x="210" y="80" fill="#e8eef6" font-size="14">XL = 2·π·f·L</text><text x="210" y="105" fill="#f85149" font-size="12">DA (f=0) → XL=0 (kısa devre)</text></svg>`,
+18:`<svg viewBox="0 0 420 170"><polygon points="60,140 320,140 60,40" fill="none" stroke="#8a98ab" stroke-width="2"/>
+ <line x1="60" y1="140" x2="320" y2="140" stroke="#3fb950" stroke-width="4"/><text x="170" y="158" fill="#3fb950" font-size="13">P (kW)</text>
+ <line x1="320" y1="140" x2="60" y2="40" stroke="#ffb000" stroke-width="4"/><text x="200" y="85" fill="#ffb000" font-size="13">S (kVA)</text>
+ <line x1="60" y1="140" x2="60" y2="40" stroke="#f85149" stroke-width="4"/><text x="14" y="95" fill="#f85149" font-size="13">Q</text>
+ <text x="80" y="132" fill="#cdd7e2" font-size="12">φ</text><text x="250" y="30" fill="#e8eef6" font-size="12">S²=P²+Q²</text></svg>`,
+21:`<svg viewBox="0 0 420 170"><polygon points="40,40 60,10 80,40" fill="#ffb000"/><line x1="60" y1="40" x2="60" y2="140" stroke="#8a98ab" stroke-width="3"/>
+ <line x1="40" y1="140" x2="80" y2="140" stroke="#8a98ab" stroke-width="2"/><line x1="48" y1="148" x2="72" y2="148" stroke="#8a98ab" stroke-width="2"/>
+ <text x="100" y="30" fill="#ffb000" font-size="12">1· Yakalama ucu</text><text x="100" y="90" fill="#33b1ff" font-size="12">2· İniş iletkeni</text><text x="100" y="150" fill="#3fb950" font-size="12">3· Topraklama (R&lt;1Ω)</text></svg>`,
+24:`<svg viewBox="0 0 420 170"><line x1="60" y1="30" x2="60" y2="140" stroke="#33b1ff" stroke-width="2"/>${[0,1,2,3].map(i=>`<path d="M60,${45+i*22} a8,8 0 0 1 0,16" fill="none" stroke="#33b1ff" stroke-width="3"/>`).join('')}
+ <rect x="180" y="30" width="14" height="110" fill="#26313f"/>
+ <line x1="320" y1="30" x2="320" y2="140" stroke="#ffb000" stroke-width="2"/>${[0,1].map(i=>`<path d="M320,${60+i*30} a8,8 0 0 0 0,16" fill="none" stroke="#ffb000" stroke-width="3"/>`).join('')}
+ <text x="30" y="160" fill="#33b1ff" font-size="12">N1 / V1</text><text x="300" y="160" fill="#ffb000" font-size="12">N2 / V2</text><text x="150" y="20" fill="#e8eef6" font-size="12">N1/N2 = V1/V2</text></svg>`,
+25:`<svg viewBox="0 0 420 160"><circle cx="120" cy="80" r="45" fill="none" stroke="#8a98ab" stroke-width="2"/><text x="120" y="85" fill="#22c55e" font-size="16" text-anchor="middle">M</text><text x="95" y="145" fill="#cdd7e2" font-size="12">Asenkron motor</text>
+ <line x1="250" y1="50" x2="290" y2="50" stroke="#33b1ff" stroke-width="3"/><line x1="270" y1="50" x2="270" y2="30" stroke="#33b1ff" stroke-width="3"/><text x="300" y="55" fill="#33b1ff" font-size="12">Yıldız (Y) — yolverme</text>
+ <polygon points="255,95 285,95 270,75" fill="none" stroke="#ffb000" stroke-width="3"/><text x="300" y="100" fill="#ffb000" font-size="12">Üçgen (Δ) — çalışma</text></svg>`,
+26:`<svg viewBox="0 0 420 160"><text x="20" y="25" fill="#e8eef6" font-size="13">TN-S</text><line x1="20" y1="40" x2="120" y2="40" stroke="#3fb950" stroke-width="2"/><text x="125" y="44" fill="#3fb950" font-size="11">PE (ayrı)</text><line x1="20" y1="58" x2="120" y2="58" stroke="#33b1ff" stroke-width="2"/><text x="125" y="62" fill="#33b1ff" font-size="11">N (ayrı)</text>
+ <text x="20" y="100" fill="#e8eef6" font-size="13">RCD</text><rect x="20" y="110" width="100" height="34" rx="4" fill="none" stroke="#f85149" stroke-width="2"/><text x="70" y="132" fill="#f85149" font-size="11" text-anchor="middle">30 mA</text><text x="135" y="132" fill="#8a98ab" font-size="11">can güvenliği</text></svg>`,
+28:`<svg viewBox="0 0 420 160"><circle cx="100" cy="40" r="16" fill="#ffd400"/>${[0,1,2,3,4].map(i=>`<line x1="100" y1="60" x2="${60+i*20}" y2="120" stroke="#ffd400" stroke-width="2" opacity="0.7"/>`).join('')}
+ <line x1="40" y1="125" x2="160" y2="125" stroke="#8a98ab" stroke-width="2"/><text x="60" y="145" fill="#cdd7e2" font-size="12">Alan A (m²)</text>
+ <text x="230" y="60" fill="#e8eef6" font-size="13">E = Φ·n·η·d / A</text><text x="230" y="84" fill="#8a98ab" font-size="11">lüks = lümen / m²</text><text x="230" y="104" fill="#3fb950" font-size="11">Ofis ≈ 500 lx</text></svg>`,
+};
+function figureFor(id){ return DIAG[id]?`<figure class="fig">${DIAG[id]}<figcaption>Şekil — ${esc((modById(id)||{}).t||'')}</figcaption></figure>`:''; }
+
+/* ===== EK: FASİKÜL düzeni + MYK sınav bölümü ===== */
+DB.myk = DB.myk || [];
+
+/* showTab yeniden tanımlanır — Teori sekmesi fasikül düzeni + şekil */
+function showTab(id,tab){
+  const m=modById(id);
+  document.querySelectorAll('#tabbar button').forEach(b=>b.classList.toggle('active',b.dataset.t===tab));
+  const c=el('mtab');
+  if(tab==='teori'){
+    c.innerHTML=`<div class="lesson">
+      <div class="lessonhead" style="border-left-color:${CATS[m.cat].c}">
+        <div class="lh-ic">${m.ic}</div>
+        <div><div class="lh-cat" style="color:${CATS[m.cat].c}">${CATS[m.cat].n}</div>
+        <div class="lh-t">Fasikül ${m.id} — ${m.t}</div></div></div>
+      ${figureFor(id)}
+      <div class="edu">${TEORI[id]||''}</div>
+      <div class="row" style="margin-top:14px">${m.task?`<button class="btn" onclick="showTab(${id},'uygulama')">🎯 Uygulama</button>`:''}<button class="btn blue" onclick="showTab(${id},'quiz')">📝 Quiz çöz</button><button class="btn ghost" onclick="showTab(${id},'foy')">📘 Föy</button></div>
+    </div>`;
+  }
+  else if(tab==='foy') c.innerHTML=`<details class="foy" open><summary>📘 Detaylı Anlatım — Föy</summary><div style="margin-top:10px">${FOY[id]||''}</div></details>`;
+  else if(tab==='not') c.innerHTML=noteHTML(id);
+  else if(tab==='quiz') startModuleQuiz(id);
+  else if(tab==='uygulama'){ if(m.task && window[m.task]) window[m.task](m); else c.innerHTML='<div class="muted">Bu modülde interaktif uygulama yok.</div>'; }
+}
+
+/* ---------- MYK ---------- */
+const MYK_INFO=`<b>MYK Mesleki Yeterlilik — Elektrik Tesisatçısı (15UY0241)</b> sınavı iki aşamalıdır:
+<br>• <b>Teorik sınav:</b> en az 25 çoktan seçmeli (4 şıklı) soru, soru başına ~2 dakika, yanlış cevap doğruyu götürmez.
+<br>• <b>Performans (uygulama) sınavı:</b> gerçek/gerçeğe yakın iş ortamında yapılır; kritik adımların tamamı + genelde asgari %80 başarı gerekir.
+<br>• <b>Geçme notu:</b> Teorikte Seviye 3 için ≥ %70, Seviye 4 için ≥ %80. A1 (İSG, Çevre, İş Organizasyonu) birimi için ≥ 70.
+<br>• <b>Birimler:</b> A1 (zorunlu — İSG/Çevre/Organizasyon), B1 (Elektrik İç Tesisat Projesi Hazırlama), B2 (Elektrik İç Tesisat Uygulaması). Seçmelilerden en az biri.`;
+
+const MYK_Q = {
+isg:[
+ {q:"Gerilim altındaki bir tesiste çalışmaya başlamadan önce yapılması gereken İLK iş?",opts:["Enerjiyi kesmek","Ölçüm almak","Eldiven giymek","Etiket asmak"],ans:0,ex:"5 altın kuralın ilki: enerjiyi kes."},
+ {q:"İş güvenliğinde 'beş altın kural'dan biri DEĞİLDİR?",opts:["Enerjiyi kesmek","Gerilimsizliği doğrulamak","Topraklama ve kısa devre etmek","Sigortayı büyütmek"],ans:3,ex:"Kurallar: kes, tekrar kapanmayı önle, gerilimsizliği doğrula, toprakla/kısa devre et, yalıt."},
+ {q:"LOTO (Lockout-Tagout) ne anlama gelir?",opts:["Ölçüm-kontrol","Kilitle-etiketle","Topraklama-yalıtım","Kesme-bağlama"],ans:1,ex:"Enerji izolasyonunu kilitleyip etiketlemek."},
+ {q:"Elektrik yangınında KULLANILMAMASI gereken söndürücü?",opts:["CO2","Kuru kimyevi toz","Su","Karbondioksit"],ans:2,ex:"İletken olduğu için su elektrik yangınında kullanılmaz."},
+ {q:"Akıma kapılmış bir kişiye ilk müdahale?",opts:["Hemen elinden çekmek","Önce enerjiyi/akımı kesmek","Su dökmek","Beklemek"],ans:1,ex:"Önce kişiyi akımdan ayır/enerjiyi kes, sonra müdahale et."},
+ {q:"Yüksekte çalışmada zorunlu KKD?",opts:["Emniyet kemeri/paraşüt tipi","Sadece eldiven","Gözlük yeterli","Maske"],ans:0,ex:"Düşmeye karşı tam vücut emniyet kemeri kullanılır."},
+ {q:"İSG birimi (A1) için MYK teorik geçme notu?",opts:["50","60","70","80"],ans:2,ex:"A1 birimi geçme notu 70'tir."},
+ {q:"Yalıtkan eldivenin amacı?",opts:["Sıcaktan korunma","Elektrik çarpmasından korunma","Kesilmeyi önleme","Kir tutmama"],ans:1,ex:"Yalıtkan eldiven çarpılmaya karşı korur; periyodik test edilir."},
+ {q:"Atık kablo/kılıfların doğru yönetimi?",opts:["Çöpe atmak","Yakmak","Ayrı toplayıp geri dönüşüme vermek","Gömme"],ans:2,ex:"Çevre koruma: atıklar ayrıştırılıp geri dönüşüme verilir."},
+ {q:"Riskli/YG çalışmasına başlamadan önce hangi belge alınır?",opts:["Fatura","İş izni (work permit)","Garanti","İrsaliye"],ans:1,ex:"Riskli işlerde iş izni/çalışma izni alınır."},
+ {q:"Baret hangi riske karşı kullanılır?",opts:["Gürültü","Düşen cisim/çarpma","Toz","Titreşim"],ans:1,ex:"Baret kafayı düşen cisim ve çarpmalara karşı korur."},
+ {q:"Topraklama ve kısa devre etmenin amacı?",opts:["Daha hızlı çalışmak","Çalışma süresince gerilimsizliği güvence altına almak","Aydınlatma","Ölçüm kolaylığı"],ans:1,ex:"Beklenmedik gerilime karşı çalışanı korur."}
+],
+meslek:[
+ {q:"Sıva altı nemli ortam için uygun kablo?",opts:["NYA","NYM","NYAF","NYY"],ans:1,ex:"NYM (antigron) nemli sıva altı için uygundur."},
+ {q:"Ampermetre devreye nasıl bağlanır?",opts:["Seri","Paralel","Çapraz","Toprağa"],ans:0,ex:"Ampermetre seri bağlanır."},
+ {q:"Kaçak akım rölesinde can güvenliği eşiği?",opts:["10 mA","30 mA","100 mA","300 mA"],ans:1,ex:"İnsan koruması için 30 mA."},
+ {q:"V = I·R bağıntısında akım I neye eşittir?",opts:["V·R","V/R","R/V","V−R"],ans:1,ex:"I = V/R."},
+ {q:"Üç fazlı aktif güç formülü?",opts:["U·I","√3·U·I·cosφ","√3·U·I","U·I·sinφ"],ans:1,ex:"P = √3·U·I·cosφ."},
+ {q:"Yıldırım/koruma topraklamasında istenen direnç?",opts:["Yüksek","Düşük","Sonsuz","Önemsiz"],ans:1,ex:"Topraklama direnci düşük olmalıdır."},
+ {q:"RJ45 T568B diziliminde ilk renk?",opts:["Turuncu","Turuncu-Beyaz","Yeşil-Beyaz","Mavi"],ans:1,ex:"İlk sıra Turuncu-Beyaz."},
+ {q:"Aydınlatma devresinde önerilen maksimum gerilim düşümü?",opts:["%3","%5","%10","%1"],ans:0,ex:"Aydınlatmada ≤%3."},
+ {q:"C tipi otomatın açma akımı aralığı?",opts:["3–5·In","5–10·In","10–20·In","1–2·In"],ans:1,ex:"C eğrisi 5–10·In."},
+ {q:"Transformatör hangi akımda çalışır?",opts:["DC","AC","Hem AC hem DC","Hiçbiri"],ans:1,ex:"Trafo yalnız AC'de çalışır."},
+ {q:"Asenkron motorda yol alma akımını düşüren yöntem?",opts:["Kompanzasyon","Yıldız-üçgen","Topraklama","Parafudur"],ans:1,ex:"Yıldız-üçgen yolverme başlangıç akımını düşürür."},
+ {q:"Kompanzasyon neyi düzeltir?",opts:["Gerilimi","Güç faktörünü (cosφ)","Frekansı","Direnci"],ans:1,ex:"Kompanzasyon cosφ'yi düzeltir."},
+ {q:"Pano içinde akımı dağıtan iletken çubuk?",opts:["Bara","Sigorta","Klemens","Kontaktör"],ans:0,ex:"Bara (busbar) akımı dağıtır."},
+ {q:"Türkiye şebekesinde faz-nötr gerilimi yaklaşık?",opts:["110 V","230 V","400 V","12 V"],ans:1,ex:"Faz-nötr ≈ 230 V."},
+ {q:"Fazlar arası (hat) gerilimi yaklaşık?",opts:["230 V","400 V","690 V","110 V"],ans:1,ex:"Hat gerilimi ≈ 400 V (√3·230)."},
+ {q:"Seri devrede sabit kalan büyüklük?",opts:["Akım","Gerilim","Güç","Direnç"],ans:0,ex:"Seri devrede akım her elemandan aynı geçer."},
+ {q:"Osiloskop hangi değeri gösterir?",opts:["Etkin (RMS)","Maksimum (tepe)","Ortalama","Sıfır"],ans:1,ex:"Osiloskop tepe değeri okutur; Vrms=Vmax/√2."},
+ {q:"İletken kesiti (mm²) neye göre seçilir?",opts:["Renge","Taşınacak akıma","Markaya","Uzunluğa bakılmaz"],ans:1,ex:"Kesit, taşınacak akıma göre seçilir."}
+]
+};
+
+function renderMYK(){
+  let hist='';
+  if(DB.myk.length){
+    hist=`<div class="sectiontitle" style="margin-top:18px"><h2 style="font-size:15px">MYK Deneme Geçmişi</h2><div class="ln"></div></div>`+
+     DB.myk.slice(0,6).map(e=>`<div class="panel2" style="margin:8px 0"><div class="row" style="justify-content:space-between"><span>${e.date} · Seviye ${e.level} (≥%${e.thr})</span><b style="color:${e.pass?'var(--ok)':'var(--bad)'}">%${e.pct} ${e.pass?'GEÇTİ':'KALDI'}</b></div></div>`).join('');
+  }
+  app().innerHTML=`<div class="panel" style="border-left:4px solid var(--acc3)">
+     <h2 style="margin:0">🎖️ MYK Mesleki Yeterlilik — Deneme Merkezi</h2>
+     <div class="edu" style="margin-top:12px;border-left-color:var(--acc3)">${MYK_INFO}</div>
+     <div class="msg info" style="display:block;margin-top:12px">ℹ️ Gerçek MYK sınav soruları telif korumalıdır ve yayımlanmaz. Buradaki sorular, <b>resmi yeterlilik birimleri ve sınav formatına uygun olarak hazırlanmış özgün deneme sorularıdır</b>.</div>
+     <div class="row" style="margin-top:14px">
+       <button class="btn purple" onclick="startMyk(3)">▶ Seviye 3 Denemesi (geçme %70)</button>
+       <button class="btn" onclick="startMyk(4)">▶ Seviye 4 Denemesi (geçme %80)</button>
+     </div>
+   </div>${hist}`;
+}
+let MK=null;
+function startMyk(level){
+  const thr=level===4?80:70;
+  const pool=[]; MYK_Q.isg.forEach((q,i)=>pool.push(Object.assign({qid:'myk.isg.'+i},q))); MYK_Q.meslek.forEach((q,i)=>pool.push(Object.assign({qid:'myk.meslek.'+i},q)));
+  const items=shuffleItems(pool).slice(0,25);
+  MK={items,level,thr,start:Date.now(),dur:50*60,timer:null};
+  app().innerHTML=`<div class="panel"><div class="row" style="justify-content:space-between"><h2 style="margin:0">🎖️ MYK Deneme — Seviye ${level}</h2><div class="examtimer" id="mykTimer">50:00</div></div>
+     <div class="muted" style="font-size:12px;margin-top:4px">25 soru · geçme ≥ %${thr} · yanlış doğruyu götürmez</div>
+     <div id="mykBody" style="margin-top:12px"></div></div>`;
+  startQuiz('mykBody',items,false,'Sınavı Bitir',mykFinish);
+  MK.timer=setInterval(mykTick,1000);
+}
+function mykTick(){ if(!MK)return; const left=MK.dur-Math.floor((Date.now()-MK.start)/1000); const t=el('mykTimer'); if(!t){clearInterval(MK.timer);return;} if(left<=0){clearInterval(MK.timer);t.textContent='00:00'; if(QS&&!QS.checked)submitQuiz(); return;} t.textContent=fmt(left); if(left<=120)t.style.color='var(--bad)'; }
+function mykFinish(c,t,pct){
+  if(MK&&MK.timer)clearInterval(MK.timer);
+  const pass=pct>=MK.thr;
+  DB.myk=DB.myk||[]; DB.myk.unshift({date:todayStr(),level:MK.level,thr:MK.thr,pct,pass}); DB.myk=DB.myk.slice(0,20); persist();
+  addXp(c*3); markToday(); refreshHeader();
+  let out=`<div class="panel2" style="margin-top:14px;border-left:4px solid ${pass?'var(--ok)':'var(--bad)'}"><b style="font-size:16px">${pass?'🎉 Tebrikler — MYK Seviye '+MK.level+' denemesini geçtin!':'Geçme notunun altında kaldın.'}</b> · %${pct} (geçme ≥%${MK.thr})</div>`;
+  if(pass) out+=`<div class="cert" id="cert"><div class="seal">🎖️</div><h2>MYK DENEME BAŞARI BELGESİ</h2>
+     <div class="muted">Elektrik Tesisatçısı (15UY0241) tarzı deneme · ELK MASTER</div>
+     <div class="nm">${DB.name?esc(DB.name):'(Panodan isim ekle)'}</div>
+     <div style="font-size:14px">Seviye ${MK.level} teorik deneme sınavını <b style="color:var(--acc)">%${pct}</b> ile tamamlamıştır.</div>
+     <div class="muted" style="font-size:11px;margin-top:8px">Not: Bu bir hazırlık denemesidir; resmi MYK belgesi yerine geçmez.</div>
+     <div class="line"></div><div class="muted" style="font-size:12px">Tarih: ${todayStr()} · ELK-MYK-${Date.now().toString().slice(-6)}</div>
+     <div class="row" style="justify-content:center;margin-top:14px"><button class="btn sm" onclick="window.print()">🖨️ Yazdır / PDF</button></div></div>`;
+  out+=`<div class="row" style="margin-top:12px"><button class="btn purple" onclick="startMyk(${MK.level})">↻ Tekrar dene</button><button class="btn ghost" onclick="go('myk')">MYK Merkezi</button></div>`;
+  const r=el('qresult'); if(r) r.insertAdjacentHTML('beforeend',out);
+}
+
+/* go yeniden tanımlanır — MYK rotası eklenir */
+function go(view,arg){
+  document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('active',b.dataset.v===view));
+  window.scrollTo(0,0);
+  if(view==='home')renderHome();
+  else if(view==='modules')renderModules();
+  else if(view==='module')openModule(arg);
+  else if(view==='exam')renderExam();
+  else if(view==='review')renderReview();
+  else if(view==='glossary')renderGlossary();
+  else if(view==='settings')renderSettings();
+  else if(view==='myk')renderMYK();
+}
+
+
+/* ===== EK: kaynaklardan 4 yeni modül (30-33) ===== */
+CATS.elektronik={n:"Elektronik & Güç Elektroniği",c:"#06b6d4"};
+CATS.guvenlik={n:"İş Güvenliği & İlk Yardım",c:"#f97316"};
+MODS.push(
+  {id:30, t:"Yarı İletkenler & Diyot", cat:"elektronik", ic:"🔻", d:"N/P tipi, diyot, tek yön geçirme, LED.", task:null},
+  {id:31, t:"Doğrultucular (AC→DC)", cat:"elektronik", ic:"🔋", d:"Yarım/tam/köprü dalga doğrultma.", task:"modDogrultucu"},
+  {id:32, t:"Transistör & Anahtarlama", cat:"elektronik", ic:"📡", d:"NPN/PNP, yükselteç ve anahtar.", task:null},
+  {id:33, t:"Elektrik Çarpması & İlk Yardım", cat:"guvenlik", ic:"⚡", d:"Akım şiddeti etkileri, ilk müdahale.", task:"modCarpilma"}
+);
+Object.assign(TEORI,{
+30:`Maddeler iletkenlik bakımından <b>iletken, yalıtkan ve yarı iletken</b> olur. Yarı iletkenlerin (silisyum, germanyum) son yörüngesinde <b>4 elektron (valans)</b> bulunur.<br><b>Katkılama (doping):</b> 5 değerlikli katkı ile <b>N tipi</b> (fazla elektron), 3 değerlikli katkı ile <b>P tipi</b> (oyuk/hole) elde edilir.<br><b>Diyot</b> bir P-N birleşimidir; akımı yalnız <b>tek yönde (anot→katot)</b> geçirir. Doğru polarmada iletir, ters polarmada tıkar. <b>LED</b> ışık yayan diyottur.`,
+31:`<b>Doğrultma</b>, alternatif akımı (AC) doğru akıma (DC) çevirme işlemidir; diyotların tek yön geçirme özelliğiyle yapılır. Adaptörler bunu yapar.<br>Üç tip: <b>(1) Yarım dalga</b> — tek diyot, yalnız bir alternansı geçirir, verimsiz. <b>(2) Tam dalga (orta uçlu trafo)</b> — iki diyot, her iki alternansı kullanır, güç iki katına çıkar. <b>(3) Köprü</b> — dört diyot, orta uçlu trafo gerekmez, en yaygın.<br>Çıkıştaki dalgalanmayı (ripple) <b>filtre kondansatörü</b> azaltır.`,
+32:`<b>Transistör</b> üç katmanlı yarı iletkendir (<b>NPN</b> veya <b>PNP</b>) ve üç uçludur: <b>Beyz (B), Kolektör (C), Emiter (E)</b>.<br>İki temel işlevi vardır: <b>anahtarlama</b> (aç-kapa, dijital) ve <b>yükseltme</b> (küçük beyz akımıyla büyük kolektör akımını kontrol etme).<br>Küçük bir kumanda sinyaliyle büyük yükü sürer — röle/kontaktörün elektronik karşılığıdır.`,
+33:`Tehlikeyi belirleyen <b>vücuttan geçen akımın şiddetidir</b> (gerilim değil, akım öldürür). Yaklaşık eşikler: ~1 mA hissetme, 1–5 mA uyuşma, 5–15 mA kramp, 15–25 mA kasların kontrol kaybı (bırakamama), <b>80–100 mA ve üzeri kalp fibrilasyonu</b> ve ölüm riski.<br><b>AA, eşit değerdeki DA'dan daha tehlikelidir.</b><br><b>İlk müdahale:</b> önce enerjiyi kes ya da yalıtkan bir cisimle kişiyi akımdan ayır; sonra 112'yi ara, gerekirse CPR uygula.`,
+});
+Object.assign(FOY,{
+30:`<b>Sınıflar:</b> iletken (çok serbest elektron), yalıtkan (yok denecek kadar az), yarı iletken (4 valans elektron).<br><b>N tipi:</b> 5 değerlikli katkı → fazla elektron (n: negatif taşıyıcı). <b>P tipi:</b> 3 değerlikli katkı → oyuk (p: pozitif).<br><b>Diyot = P-N:</b> anot (P) → katot (N) yönünde iletir.<br><b>Doğru polarma:</b> anot +, katot − → iletir. <b>Ters polarma:</b> tıkar.<br><b>LED:</b> iletimde ışık yayar.`,
+31:`<b>Yarım dalga:</b> 1 diyot, çıkış kesik (verimsiz).<br><b>Tam dalga (orta uçlu):</b> 2 diyot, her iki yarı periyot kullanılır → güç ~2 katı.<br><b>Köprü:</b> 4 diyot, orta uçlu trafo gerekmez → en yaygın.<br><b>Filtre kondansatörü</b> DC'yi düzleştirir (ripple azalır).<br><b>Örnek:</b> telefon adaptörü = trafo + köprü doğrultucu + filtre.`,
+32:`<b>Uçlar:</b> Beyz (kumanda), Kolektör, Emiter.<br><b>Türler:</b> NPN, PNP.<br><b>Anahtar modu:</b> beyz sinyali varsa C-E iletir (ON), yoksa kesim (OFF).<br><b>Yükselteç modu:</b> küçük beyz akımındaki değişim, kolektörde büyük akım değişimi yaratır (kazanç).<br><b>Sezgi:</b> transistör = elektronik kontaktör/musluk.`,
+33:`<b>Akım–etki (yaklaşık):</b><br>• 0,5–1 mA: hissetme<br>• 1–5 mA: uyuşma<br>• 5–15 mA: kramp, bırakmada zorluk<br>• 15–25 mA: kaslar kasılır, bırakamama<br>• 80–100 mA+: <b>kalp fibrilasyonu, bilinç kaybı, ölüm</b><br><b>Neden AA daha tehlikeli?</b> 50 Hz kalp ritmini bozmaya daha yatkındır.<br><b>İlk yardım:</b> 1) Enerjiyi kes / yalıtkanla ayır 2) 112 3) Bilinç/solunum yoksa CPR 4) Yanıkları soğut.`,
+});
+
+/* ===== EK: yeni modül soruları + mevcut modüllere ek sorular ===== */
+Object.assign(QBANK,{
+30:[
+ {q:"Yarı iletkenin son yörüngesinde kaç elektron bulunur?",opts:["2","4","6","8"],ans:1,ex:"Yarı iletkenlerde valans yörüngesinde 4 elektron vardır."},
+ {q:"Elektronikte en yaygın iki yarı iletken?",opts:["Bakır-Demir","Silisyum-Germanyum","Altın-Gümüş","Çinko-Nikel"],ans:1,ex:"Silisyum ve germanyum yaygın yarı iletkenlerdir."},
+ {q:"5 değerlikli katkı ile elde edilen yarı iletken?",opts:["N tipi","P tipi","Yalıtkan","İletken"],ans:0,ex:"Fazla elektron → N tipi."},
+ {q:"Diyot akımı hangi yönde geçirir?",opts:["Her iki yön","Tek yön (anot→katot)","Hiçbir yön","Rastgele"],ans:1,ex:"Diyot tek yönlüdür; anottan katoda iletir."},
+ {q:"Diyot doğru polarmada nasıl davranır?",opts:["Tıkar","İletir","Patlar","Isınmaz"],ans:1,ex:"Doğru polarma (anot +) → iletir."},
+ {q:"Ters polarmada diyot?",opts:["İletir","Tıkar (yalıtkan)","Yükseltir","Doğrultur"],ans:1,ex:"Ters polarmada akımı geçirmez."},
+ {q:"LED nedir?",opts:["Işık yayan diyot","Direnç","Kondansatör","Transistör"],ans:0,ex:"LED = Light Emitting Diode (ışık yayan diyot)."},
+ {q:"P tipi yarı iletkende çoğunluk taşıyıcısı?",opts:["Elektron","Oyuk (hole)","Proton","Nötron"],ans:1,ex:"P tipinde çoğunluk taşıyıcı oyuktur."}
+],
+31:[
+ {q:"Doğrultma işlemi nedir?",opts:["DC'yi AC'ye çevirme","AC'yi DC'ye çevirme","Gerilim yükseltme","Akım ölçme"],ans:1,ex:"Doğrultma AC'yi DC'ye çevirir."},
+ {q:"Kaç tip doğrultucu vardır?",opts:["2","3","4","5"],ans:1,ex:"Yarım dalga, tam dalga, köprü."},
+ {q:"Yarım dalga doğrultucuda kaç diyot vardır?",opts:["1","2","4","6"],ans:0,ex:"Yarım dalga tek diyotludur."},
+ {q:"Köprü doğrultucuda kaç diyot vardır?",opts:["1","2","4","8"],ans:2,ex:"Köprü doğrultucu 4 diyotludur."},
+ {q:"Köprü doğrultucunun avantajı?",opts:["Orta uçlu trafo gerektirmez","Tek diyot yeter","DC üretmez","Verimsizdir"],ans:0,ex:"Köprü, orta uçlu trafoya ihtiyaç duymaz."},
+ {q:"Tam dalga doğrultucunun yarım dalgaya göre avantajı?",opts:["Daha az diyot","Gücü ~2 katına çıkarır","DC vermez","Daha ucuz"],ans:1,ex:"Her iki alternans kullanıldığından güç ~2 kat."},
+ {q:"Çıkıştaki dalgalanmayı (ripple) azaltan eleman?",opts:["Filtre kondansatörü","Sigorta","Diyot sayısı","Trafo"],ans:0,ex:"Filtre kondansatörü DC'yi düzleştirir."},
+ {q:"Telefon adaptörü temelde ne yapar?",opts:["DC'yi AC yapar","AC'yi DC yapar","Frekans artırır","Direnç ölçer"],ans:1,ex:"Adaptör şebeke AC'sini cihaz DC'sine doğrultur."}
+],
+32:[
+ {q:"Transistör kaç uçludur?",opts:["2","3","4","5"],ans:1,ex:"Beyz, Kolektör, Emiter — üç uç."},
+ {q:"Transistör türleri?",opts:["N ve P","NPN ve PNP","A ve B","AC ve DC"],ans:1,ex:"İki temel tür: NPN ve PNP."},
+ {q:"Transistörün iki temel işlevi?",opts:["Ölçme ve doğrultma","Anahtarlama ve yükseltme","Topraklama ve yalıtım","Isıtma ve soğutma"],ans:1,ex:"Anahtar (aç-kapa) ve yükselteç olarak çalışır."},
+ {q:"Transistörde kumanda ucu hangisidir?",opts:["Beyz","Kolektör","Emiter","Toprak"],ans:0,ex:"Beyz akımı C-E iletimini kontrol eder."},
+ {q:"Küçük beyz akımı neyi kontrol eder?",opts:["Büyük kolektör akımını","Gerilimi sıfırlar","Frekansı","Direnci"],ans:0,ex:"Küçük beyz sinyali büyük kolektör akımını sürer."},
+ {q:"Transistör neyin elektronik karşılığı sayılır?",opts:["Sigortanın","Röle/anahtarın","Trafonun","Sayacın"],ans:1,ex:"Küçük sinyalle büyük yükü sürdüğü için röle/anahtar gibidir."},
+ {q:"Dijital devrede transistör nasıl çalışır?",opts:["Aç-kapa anahtar","Sadece yükselteç","Doğrultucu","Ölçü aleti"],ans:0,ex:"Dijitalde ON/OFF anahtar olarak kullanılır."},
+ {q:"Yükselteçte transistörün görevi?",opts:["Küçük sinyali büyütmek","Sinyali yok etmek","DC üretmek","Topraklamak"],ans:0,ex:"Zayıf sinyali kazançla büyütür."}
+],
+33:[
+ {q:"Elektrik çarpmasında tehlikeyi asıl belirleyen?",opts:["Gerilim","Akım şiddeti","Renk","Frekans markası"],ans:1,ex:"Vücuttan geçen akımın şiddeti tehlikeyi belirler."},
+ {q:"Yaklaşık 1 mA akımın etkisi?",opts:["Ölüm","Hissetme/gıdıklanma","Fibrilasyon","Hiçbir şey"],ans:1,ex:"~1 mA hissetme sınırıdır."},
+ {q:"80–100 mA ve üzeri akımın etkisi?",opts:["Hafif uyuşma","Kalp fibrilasyonu, ölüm riski","Sadece kramp","Etkisiz"],ans:1,ex:"Bu seviyede kalp fibrilasyonu ve ölüm riski vardır."},
+ {q:"15–25 mA akımda tipik etki?",opts:["Hiçbir şey","Kasların kasılması, bırakamama","Serinleme","Görme kaybı"],ans:1,ex:"Kaslar kasılır, kişi iletkeni bırakamayabilir."},
+ {q:"Eşit değerde hangisi daha tehlikelidir?",opts:["Doğru akım (DA)","Alternatif akım (AA)","İkisi eşit","Hiçbiri"],ans:1,ex:"AA (50 Hz) kalp ritmini bozmaya daha yatkındır."},
+ {q:"Çarpılan birine İLK müdahale?",opts:["Hemen elinden tutmak","Önce enerjiyi kes / akımdan ayır","Su dökmek","Beklemek"],ans:1,ex:"Önce enerjiyi kes veya yalıtkanla ayır."},
+ {q:"Kişiyi akımdan ayırırken ne kullanılır?",opts:["Çıplak el","Yalıtkan bir cisim","Islak bez","Metal çubuk"],ans:1,ex:"Kuru/yalıtkan cisimle ayrılır, çıplak elle değil."},
+ {q:"Bilinç/solunum yoksa ne yapılır?",opts:["Beklenir","112 aranır ve gerekirse CPR","Su verilir","Yürütülür"],ans:1,ex:"112 aranır; gerekirse kalp masajı (CPR) uygulanır."}
+]
+});
+/* mevcut modüllere ek sorular (kaynaklardan) */
+QBANK[1]=QBANK[1].concat([
+ {q:"Atomun çekirdeğindeki yük?",opts:["Negatif","Pozitif (proton)","Nötr","Yok"],ans:1,ex:"Çekirdek protonlar (pozitif) ve nötronlardan oluşur."},
+ {q:"Metal iletkende akımı taşıyan?",opts:["Proton","Serbest elektron","Nötron","Oyuk"],ans:1,ex:"İletkende serbest elektronlar akımı taşır."},
+ {q:"Maddeler iletkenlik bakımından kaça ayrılır?",opts:["2","3 (iletken/yalıtkan/yarı iletken)","4","5"],ans:1,ex:"İletken, yalıtkan ve yarı iletken."}
+]);
+QBANK[18]=QBANK[18].concat([
+ {q:"Sadece dirençli devrede çekilen güç türü?",opts:["Reaktif","Aktif (P)","Görünür","Yok"],ans:1,ex:"Saf dirençli yük aktif güç (P, Watt) çeker."},
+ {q:"Saf bobin/kondansatörlü devrede güç türü?",opts:["Aktif","Reaktif (Q)","Isı","Yok"],ans:1,ex:"Saf L veya C reaktif güç (Q, Var) çeker."}
+]);
+QBANK[25]=QBANK[25].concat([
+ {q:"Bir fazlı asenkron motorda yardımcı sargıya seri bağlanan?",opts:["Direnç","Kondansatör","Diyot","Sigorta"],ans:1,ex:"Yol verme momenti için yardımcı sargıya kondansatör bağlanır."},
+ {q:"Sincap kafesli motora yol verme yöntemlerinden biri?",opts:["Parafudur","Yıldız-üçgen","Kompanzasyon","Doğrultma"],ans:1,ex:"Yıldız-üçgen, ön direnç veya soft starter kullanılır."}
+]);
+QBANK[5]=QBANK[5].concat([
+ {q:"Zaman rölesinde ayarlanabilen temel parametre?",opts:["Renk","Zaman/gecikme","Ağırlık","Frekans markası"],ans:1,ex:"Zaman rölesinde gecikme süresi ayarlanır."}
+]);
+
+/* ===== EK: yeni modül şemaları + interaktif görevler ===== */
+Object.assign(DIAG,{
+30:`<svg viewBox="0 0 420 140"><line x1="40" y1="70" x2="160" y2="70" stroke="#8a98ab" stroke-width="2"/><polygon points="160,50 160,90 200,70" fill="#06b6d4"/><line x1="200" y1="48" x2="200" y2="92" stroke="#06b6d4" stroke-width="4"/><line x1="200" y1="70" x2="320" y2="70" stroke="#8a98ab" stroke-width="2"/><text x="110" y="105" fill="#06b6d4" font-size="12">Anot (+)</text><text x="232" y="105" fill="#06b6d4" font-size="12">Katot (−)</text><polygon points="270,62 258,56 258,68" fill="#3fb950"/><text x="120" y="40" fill="#3fb950" font-size="12">akım tek yön →</text></svg>`,
+31:`<svg viewBox="0 0 420 150"><line x1="20" y1="80" x2="400" y2="80" stroke="#26313f"/><path d="M30,80 Q60,25 90,80 Q120,135 150,80 Q180,25 210,80" fill="none" stroke="#33b1ff" stroke-width="2"/><text x="60" y="125" fill="#33b1ff" font-size="11">Giriş AC</text><path d="M245,80 Q275,25 305,80 Q335,25 365,80" fill="none" stroke="#3fb950" stroke-width="3"/><text x="270" y="125" fill="#3fb950" font-size="11">Doğrultulmuş DC</text></svg>`,
+32:`<svg viewBox="0 0 420 150"><circle cx="200" cy="75" r="40" fill="none" stroke="#8a98ab" stroke-width="2"/><line x1="120" y1="75" x2="168" y2="75" stroke="#06b6d4" stroke-width="3"/><text x="100" y="79" fill="#06b6d4" font-size="13">B</text><line x1="220" y1="52" x2="262" y2="26" stroke="#ffb000" stroke-width="3"/><text x="268" y="30" fill="#ffb000" font-size="13">C</text><line x1="220" y1="98" x2="262" y2="124" stroke="#3fb950" stroke-width="3"/><text x="268" y="128" fill="#3fb950" font-size="13">E</text><text x="183" y="80" fill="#e8eef6" font-size="13">NPN</text></svg>`,
+33:`<svg viewBox="0 0 420 130"><defs><linearGradient id="cg"><stop offset="0%" stop-color="#3fb950"/><stop offset="55%" stop-color="#d29922"/><stop offset="100%" stop-color="#f85149"/></linearGradient></defs><rect x="20" y="44" width="380" height="26" rx="6" fill="url(#cg)"/><text x="20" y="34" fill="#e8eef6" font-size="12">Akım şiddeti arttıkça tehlike artar →</text><text x="22" y="92" fill="#3fb950" font-size="11">~1 mA hissetme</text><text x="150" y="92" fill="#d29922" font-size="11">15–25 mA bırakamama</text><text x="300" y="92" fill="#f85149" font-size="11">80+ fibrilasyon</text></svg>`
+});
+
+/* M31 DOĞRULTUCU */
+let dogAns={};
+function modDogrultucu(m){
+  dogAns={};
+  const rows=['Yarım dalga doğrultucu','Tam dalga (orta uçlu)','Köprü doğrultucu'];
+  el('mtab').innerHTML=`<div class="panel2"><b>Görev 31 — Doğrultucu ↔ Diyot Sayısı</b>
+   <div class="muted" style="font-size:12px;margin:4px 0">Her doğrultucu tipine doğru diyot sayısını ata.</div>
+   ${rows.map((r,i)=>`<div class="row" style="justify-content:space-between;border-bottom:1px solid var(--line);padding:9px 0"><span style="flex:1">${r}</span>
+     <select class="inline" style="width:120px" onchange="dogAns[${i}]=this.value"><option value="">— diyot —</option><option>1</option><option>2</option><option>4</option></select></div>`).join('')}
+   </div><button class="btn blue sm" onclick="dogCheck()">Kontrol Et</button><div id="res31"></div>`;
+}
+function dogCheck(){const dg=['1','2','4'];let c=0;[0,1,2].forEach(i=>{if(dogAns[i]===dg[i])c++;});el('res31').innerHTML=taskDone(31,Math.round(c/3*100),c===3?'ok':'bad',`${c}/3 doğru. Yarım=1 · Tam(orta uçlu)=2 · Köprü=4 diyot.`);}
+
+/* M33 ÇARPILMA */
+let carpAns=null;
+function carpEffect(mA){ if(mA<1)return 'Hissedilme sınırı (gıdıklanma)'; if(mA<5)return 'Uyuşma, kol hareketinde zorluk'; if(mA<15)return 'Kramp başlangıcı'; if(mA<25)return 'Kaslar kasılır — bırakamama'; if(mA<80)return 'Tahammül sınırı, tehlikeli'; return 'KALP FİBRİLASYONU — ölüm riski'; }
+function modCarpilma(m){
+  carpAns=null;
+  el('mtab').innerHTML=`<div class="panel2"><b>Görev 33A — Akım Şiddeti Etkisi (deney)</b>
+   <label class="fld">Vücuttan geçen akım: <span id="caV">10</span> mA</label><input type="range" id="ca" min="0" max="150" value="10" oninput="carpCalc()">
+   <div class="kc"><div class="k" style="grid-column:span 2"><span>Fizyolojik etki</span><b id="ceV" style="font-size:15px">—</b></div></div></div>
+   <div class="panel2"><b>Görev 33B:</b> Kalp fibrilasyonu hangi akım aralığında başlar?
+   <div class="row" style="margin-top:8px"><span class="pill" onclick="carpPick('5-15',this)">5–15 mA</span><span class="pill" onclick="carpPick('25-80',this)">25–80 mA</span><span class="pill" onclick="carpPick('80-100',this)">80–100 mA</span></div></div>
+   <button class="btn blue sm" onclick="carpFinish()">Değerlendir</button><div id="res33"></div>`;
+  carpCalc();
+}
+function carpCalc(){const v=+el('ca').value;el('caV').textContent=v;const e=el('ceV');e.textContent=carpEffect(v);e.style.color=v>=80?'#f85149':(v>=15?'#d29922':'#3fb950');}
+function carpPick(v,e){carpAns=v;e.parentNode.querySelectorAll('.pill').forEach(p=>p.classList.remove('sel'));e.classList.add('sel');}
+function carpFinish(){const ok=carpAns==='80-100';el('res33').innerHTML=taskDone(33,ok?100:40,ok?'ok':'bad',ok?'✔ 80–100 mA ve üzeri kalp fibrilasyonu/ölüm riski. Önce enerjiyi kes!':'Fibrilasyon 80–100 mA ve üzerinde başlar. Akım öldürür, gerilim değil.');}
+
+
+refreshHeader();
+go('home');
+
+</script>
+</body>
+</html>
+   
