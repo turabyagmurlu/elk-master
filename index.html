@@ -2002,6 +2002,31 @@ function previewNext(id){
 function closeModal(){ const r=document.getElementById('modalRoot'); if(r) r.remove(); }
 
 
+/* ===== EK: yanlış cevaba 'Teoriye dön' kısayolu ===== */
+function submitQuiz(){
+  if(QS.checked) return; QS.checked=true; let correct=0;
+  QS.items.forEach((it,i)=>{
+    const p=QS.picks[i];
+    el('o'+i+'_'+it.ans).classList.add('correct');
+    if(p!=null && p!==it.ans) el('o'+i+'_'+p).classList.add('wrong');
+    const ok=p===it.ans; if(ok) correct++;
+    let extra='';
+    if(!ok && it.qid && /^\d+\./.test(it.qid)){
+      const mod=parseInt(it.qid,10);
+      const mm=modById(mod);
+      if(mm) extra=` <button class="btn ghost sm" style="margin-left:6px;padding:3px 9px;font-size:11px" onclick="go('module',${mod})">📖 Teoriye dön (Modül ${mod})</button>`;
+    }
+    const e=el('e'+i); e.className='expl show'; e.innerHTML=(ok?'✔ ':'✗ ')+it.ex+extra;
+    if(QS.srs && it.qid) srsAnswer(it.qid, ok);
+  });
+  const total=QS.items.length, pct=Math.round(correct/total*100);
+  const r=el('qresult'); if(r) r.innerHTML=`<div class="panel2" style="margin-top:14px"><div class="row" style="justify-content:space-between"><b>Sonuç</b><b style="font-size:20px;color:var(--acc)">${correct}/${total} · %${pct}</b></div><div class="scorebar" style="margin:8px 0"><i style="width:${pct}%"></i></div></div>`;
+  const sb=el('qSubmit'); if(sb) sb.disabled=true;
+  markToday(); refreshHeader();
+  if(QS.onFinish) QS.onFinish(correct,total,pct);
+}
+
+
 refreshHeader();
 go('home');
 
