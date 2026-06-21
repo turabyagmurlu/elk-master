@@ -245,6 +245,14 @@
   .wire.dragover{outline:2px dashed var(--acc2);outline-offset:-2px;background:#0d2230}
   .answerbox{margin-top:10px;font-size:12.5px;line-height:1.8;color:#cdd7e2;border-left:3px solid var(--acc2);padding:9px 12px;background:#0f1b27;border-radius:8px}
   .answerbox b{color:#eaf2fb}
+
+  /* önizleme modalı */
+  .modal-bg{position:fixed;inset:0;background:#000b;backdrop-filter:blur(4px);z-index:60;display:flex;align-items:center;justify-content:center;padding:20px;animation:mfade .15s ease}
+  @keyframes mfade{from{opacity:0}to{opacity:1}}
+  .modal{background:linear-gradient(180deg,#161d28,#10151d);border:1px solid var(--line);border-radius:16px;padding:20px;max-width:540px;width:100%;max-height:90vh;overflow:auto;box-shadow:0 24px 70px #000c;animation:mpop .2s ease}
+  @keyframes mpop{from{transform:scale(.95) translateY(8px);opacity:.4}to{transform:none;opacity:1}}
+  .modalhead{display:flex;gap:13px;align-items:center;margin-bottom:14px}
+  .modalhead .lh-ic{font-size:34px;filter:drop-shadow(0 3px 8px #0008)}
 </style>
 </head>
 <body>
@@ -1778,6 +1786,220 @@ function akuCheck(){
   var msg=`Sıralama ${oOk?'✔':'✗'} · Yeşil alev ${akuQA.q1===1?'✔':'✗'} · Makaron ${akuQA.q2===1?'✔':'✗'}`+(c<3?dogru:' — Mükemmel!');
   el('res15').innerHTML=taskDone(15,Math.round(c/3*100),c===3?'ok':'bad',msg);
 }
+
+
+/* ===== TEORİ DERİNLEŞTİRME (1-17) — quizler buradan çözülebilir ===== */
+Object.assign(TEORI,{
+1:`<b>Akım, gerilim, direnç.</b> Elektrik akımı (I) iletken içindeki serbest elektronların hareketidir; birimi <b>Amper (A)</b>. Gerilim (V, Volt) elektronları iten potansiyel farkı, direnç (R, Ohm) ise akışa karşı zorluktur.<br>
+<b>Ohm Yasası:</b> V = I·R. Buradan <b>I = V/R</b> ve R = V/I. Örnek: 24 V ve 8 Ω → I = 24/8 = <b>3 A</b>.<br>
+<b>Güç (P):</b> birim zamanda harcanan enerjidir, birimi <b>Watt (W)</b>: P = V·I = I²·R = V²/R. Örn. I=2 A, R=10 Ω → P = 2²·10 = <b>40 W</b>.<br>
+<b>Seri devre:</b> elemanlar art arda; akım her noktada <b>aynıdır</b>, gerilim bölünür; bir eleman kopunca devre tümüyle açılır.<br>
+<b>Paralel devre:</b> gerilim her kolda aynıdır, akım bölünür; kollar bağımsızdır — <b>bir lamba patlasa diğerleri yanmaya devam eder</b>. Ev tesisatı bu yüzden paraleldir: her cihaz aynı 230 V'u görür ve biri bozulunca diğerleri etkilenmez.`,
+2:`<b>İletken ekleri.</b> İyi bir ek düşük <b>temas direnci</b> sağlar; gevşek/kötü ek ısınır ve <b>yangın</b> riski doğurur. Düz ek ve T-ek için kablo <b>50 mm</b>, koaksiyel F (anten) konnektörde yalıtkan <b>15 mm</b> soyulur.<br>
+<b>Ağ kablosu (RJ45 – T568B):</b> sıra <b>Turuncu-Beyaz</b> · Turuncu · Yeşil-Beyaz · Mavi · Mavi-Beyaz · Yeşil · Kahverengi-Beyaz · Kahverengi. İlk renk Turuncu-Beyaz'dır.<br>
+<b>Düz vs çapraz:</b> iki uç da T568B ise <b>düz kablo</b>; bir uç T568A diğeri T568B ise çapraz.<br>
+<b>Çift büküm</b> (twisted pair) telleri sararak elektromanyetik <b>paraziti (EMI) bastırır</b>. Ek sonrası <b>yank (çekme) testi</b> ile sağlamlık kontrol edilir.`,
+3:`<b>Kablo seçimi</b> ortama ve mekanik şarta göre yapılır:<br>
+• <b>NYA</b> — tek telli (sert); sabit pano/boru içi.<br>
+• <b>NYAF</b> — çok telli (esnek); titreşimli ve hareketli motor bağlantıları.<br>
+• <b>NYM (antigron)</b> — nemli, sıva altı iç mekan.<br>
+• <b>NYY</b> — yer altı, zırhlı/mekanik dayanımlı dış kılıf.<br>
+<b>Harf mantığı:</b> N standart, Y PVC yalıtım, A tek tel, F ince çok tel (esnek), M antigron kılıf.<br>
+<b>Kesit (mm²)</b> taşınacak <b>akıma</b> göre seçilir. İnce kesit + yüksek akım = aşırı ısınma ve gerilim düşümü; bu yüzden yük arttıkça kalın kesit gerekir.`,
+4:`<b>Ölçü aletleri ve bağlama.</b><br>
+• <b>Ampermetre</b> akımı ölçer; iç direnci çok <b>düşüktür (≈0–1 Ω)</b> ve devreye <b>SERİ</b> bağlanır. Paralel bağlanırsa kısa devre olur.<br>
+• <b>Voltmetre</b> gerilimi ölçer; iç direnci çok <b>yüksektir</b> ve devreye <b>PARALEL</b> bağlanır (devreden akım çekmemesi için).<br>
+• <b>Ohmmetre</b> direnç ölçer; devre <b>enerjisiz</b> olmalıdır.<br>
+• <b>Pens ampermetre</b> iletkenin manyetik alanını okur; içine yalnız <b>tek hat (faz)</b> alınır. Faz ve nötr birlikte alınırsa alanlar birbirini götürür ve ekran <b>0 A</b> gösterir.`,
+5:`<b>Pano otomasyonu (LDR + kontaktör).</b><br>
+<b>LDR (foto direnç):</b> aydınlıkta direnci düşük, <b>karanlıkta yüksektir</b>; ortam ışığını "okuyan" sensördür.<br>
+<b>Kontaktör:</b> küçük kumanda akımıyla (bobin, A1-A2 uçları) büyük güç yükünü (ana kontaklar) anahtarlayan elektromekanik şalterdir; <b>röleye benzer</b> ama yüksek akım içindir.<br>
+<b>Çalışma:</b> karanlık olunca LDR sinyal verir → kontaktör bobini enerjilenir → kontaklar kapanır → lambalar yanar. Çevre/sokak aydınlatması akşam (≈19:00) <b>karardığında otomatik yanar</b>, sabah söner. Mantık ters kurulursa (ışık artınca çek) gündüz yanar — yanlıştır.`,
+6:`<b>Üç zamanlı tarife (elektronik sayaç).</b> Tüketim saat dilimlerine ayrılır:<br>
+• <b>T1 (gündüz, ~06–17)</b> orta fiyat · • <b>T2 (puant, 17–22)</b> <b>en pahalı</b> · • <b>T3 (gece, 22–06)</b> <b>en ucuz</b>.<br>
+<b>Yük kaydırma:</b> yüksek güçlü ve ertelenebilir yükleri (fırın, pompa, ısıtıcı) gece dilimine (<b>T3</b>) almak fatura maliyetini düşürür.<br>
+<b>Reaktif güç:</b> sanayide düşük güç faktörü (cosφ) <b>reaktif ceza</b> doğurur; bu, kondansatörlü <b>kompanzasyon</b> panosuyla düzeltilir. cosφ 1'e yaklaştıkça hattan çekilen gereksiz akım ve kayıp azalır.`,
+7:`<b>YG manevrası — ölümcül kural.</b><br>
+<b>Kesici (Breaker):</b> ark söndürme hazneli olup <b>yük akımını güvenle kesebilir</b>.<br>
+<b>Ayırıcı (Isolator):</b> yalnız gözle görülür güvenli ayrım sağlar; <b>yük altında AÇILAMAZ</b> — açılırsa ark patlaması olur.<br>
+<b>Açma (enerji kesme) sırası:</b> önce <b>Kesici</b> → sonra <b>Ayırıcı</b>. <b>Kapama:</b> tersi (önce Ayırıcı, sonra Kesici).<br>
+Gerilim olup olmadığı <b>neon lambalı ıstanka</b> ile kontrol edilir.<br>
+<b>İş güvenliğinde 5 altın kural:</b> 1) Enerjiyi kes 2) Tekrar kapanmayı önle (kilitle/etiketle) 3) Gerilimsizliği doğrula 4) Toprakla ve kısa devre et 5) Komşu gerilimli kısımları yalıt. İlk adım daima <b>enerjiyi kesmektir</b>.`,
+8:`<b>Şantiye idari yönetimi.</b> Şef, hem işçiliği hem yapılan işi takip eder.<br>
+<b>Adam-saat = çalışan sayısı × çalışılan saat.</b> Örn. 10 işçi × 9 saat = <b>90 adam-saat</b>.<br>
+<b>Metraj:</b> yapılan işin <b>ölçülmesidir</b> (örn. çekilen kablo uzunluğu).<br>
+<b>Hakediş = metraj × birim fiyat.</b> Örn. 250 m × 40 TL = <b>10.000 TL</b>.<br>
+<b>Belgeler:</b> puantaj defteri işçi çalışma saatlerini, yeşil defter metrajı tutar; hazırlanan <b>hakediş müşavire/işverene</b> sunulur.`,
+9:`<b>Havacılık — kesintisiz güç.</b> Kritik tesiste elektrik kesintisi kabul edilmez.<br>
+<b>ATS (Otomatik Transfer Şalteri):</b> şebeke ↔ jeneratör arasında otomatik geçiş yapar.<br>
+<b>UPS:</b> jeneratör devreye girene kadar kesintisiz <b>köprüler</b>; online UPS'te geçiş süresi ≈0'dır.<br>
+<b>CAT II/III pist ışıkları kritik yüktür.</b> İniş anında ışık sönmemeli; transfer süresi <b>≤ 1 saniye</b> olmalıdır. 1 sn aşılırsa pist kararır ve <b>pilot pas geçer</b>; görev başarısız sayılır.<br>
+Kademe: Şebeke → UPS (anlık) → Jeneratör (saniyeler içinde) → tekrar şebeke.`,
+10:`<b>YG iletim hatları koruma.</b> 154 kV şalt sahasında trafo girişine <b>parafudur</b> takılır; yıldırım ve anahtarlama kaynaklı aşırı gerilimi <b>toprağa akıtarak</b> teçhizatı korur.<br>
+<b>Topraklama direnci</b> ne kadar <b>düşük</b> olursa koruma o kadar etkilidir. Direnç <b>≥1 Ω</b> ise parafudur işini yapamaz; hedef <b>R &lt; 1 Ω</b>. Direnç, ek <b>bakır kazıklar</b> çakılarak ve eşpotansiyel baralama ile düşürülür.<br>
+Hava hatlarına, helikopter/uçak çarpmasını önlemek için turuncu <b>ikaz küreleri</b> asılır.`,
+11:`<b>Alternatif akım ve osiloskop.</b> Saykıl bir <b>tam dalgadır</b>; periyot (T) bir saykılın süresi, frekans <b>f = 1/T</b> (Hz). Örn. T = 20 ms → f = 1/0,02 = <b>50 Hz</b>.<br>
+<b>Osiloskop</b> dalga şeklini grafiksel gösterir ve <b>maksimum (tepe) değeri</b> okutur; etkin (RMS) değer <b>Vrms = Vmax/√2</b>. Örn. Vmax=100 V → Vrms ≈ <b>70,7 V</b>.<br>
+<b>PCB dağlama:</b> fazla bakırı eritmek için <b>1 ölçek Perhidrol + 3 ölçek Tuz Ruhu</b>, süre 5–10 dk. Süre kısa kalırsa bakır kalır (kısa devre), <b>çok uzun olursa yollar aşınır/plaket yanar</b>.`,
+12:`<b>Büyüklük – Birim – Ölçü aleti.</b> Her elektriksel büyüklüğün bir birimi ve ona özel aleti vardır:<br>
+• Akım (I) → <b>Amper (A)</b> → Ampermetre<br>
+• Gerilim (V) → Volt → Voltmetre<br>
+• Direnç (R) → <b>Ohm (Ω)</b> → Ohmmetre<br>
+• Frekans (f) → <b>Hertz (Hz)</b> → Frekansmetre<br>
+• Aktif güç (P) → Watt → Wattmetre · Reaktif güç (Q) → <b>Var</b> → Varmetre<br>
+• Endüktans (L) → <b>Henry (H)</b> → LCRmetre · Kapasite (C) → Farad → LCRmetre<br>
+• Güç faktörü → cos φ → <b>Kosinüsfimetre</b>. Sınavda birim–alet eşleştirmesi sık sorulur.`,
+13:`<b>Ölçme hatası</b> iki türlü ifade edilir.<br>
+<b>Mutlak hata:</b> ΔX = |Xg − X| (gerçek değer − ölçülen değer); birimi büyüklüğün birimidir.<br>
+<b>Bağıl hata:</b> ε = ΔX / Xg, genelde ×100 ile <b>yüzde</b>. Örnek: Xg=200, X=196 → ΔX = |200−196| = <b>4</b>, ε = 4/200 = 0,02 = <b>%2</b>.<br>
+<b>Alet sınıfı (doğruluk):</b> aletin tam skalasına göre izin verilen <b>maksimum hatayı</b> belirtir (örn. sınıf 1,5 → ±%1,5).<br>
+<b>Bağıl hata</b>, ölçümün kalitesini mutlak hatadan daha iyi anlatır.`,
+14:`<b>Bobin ve reaktans.</b> Bobinin alternatif akıma gösterdiği zorluk endüktif reaktanstır: <b>XL = 2·π·f·L</b>. Frekans artarsa <b>XL artar</b>.<br>
+<b>Kritik:</b> DA'da frekans sıfırdır (f=0) → XL=0 → bobin <b>kısa devre</b> gibi davranır (sadece sargı omik direnci kalır).<br>
+<b>Kapasitif reaktans (karşıt davranış):</b> XC = 1/(2πfC); frekans artarsa azalır. DA'da XC→∞ olduğundan kondansatör <b>açık devredir</b>.<br>
+Özet: bobin DA'yı geçirir/AC'yi zorlar; kondansatör DA'yı durdurur/AC'yi geçirir.`,
+15:`<b>Akü kablosu hazırlama.</b> Doğru sonlandırma sırası: <b>1) Oksidasyon temizliği</b> (uçtaki ½" oksitli bakırı kes) → 2) İzolasyon soyma (lug derinliğine göre) → 3) Krimp/sıkma → <b>4) Lehimleme</b> (sadece terminal ucunu ısıt) → 5) Makaron.<br>
+<b>Yeşil alev:</b> ısıtmada yeşil alev görmek <b>bakırın oksitlendiğini</b> gösterir → dur (iletkenlik düşer).<br>
+<b>Flux:</b> rosin flux akışkanlık sağlar ama abartılmaz; <b>asidiktir</b>, kalırsa korozyon yapar.<br>
+<b>Makaron uyarısı:</b> kötü krimpi/bağlantıyı <b>gizlemek için kullanılmaz</b>; yalnız koruma/kozmetik amaçlıdır.`,
+16:`<b>Endüstriyel bağlantı standartları.</b><br>
+• <b>Solid (tek tel)</b> sabit yerde; <b>Stranded (çok tel)</b> titreşimli/hareketli yerlerde <b>zorunludur</b> (solid çabuk kırılır).<br>
+• <b>Ringing (yüzük atma):</b> izoleyi dairesel kesmek iletkende zayıf nokta açar, titreşimle kırılır — yapılmaz.<br>
+• <b>Nox (anti-oksidan):</b> farklı metaller (bakır-nikel-çinko) nem ve akımla korozyona (elektroliz) uğrar; Nox bunu <b>önler</b>.<br>
+• <b>Shed water:</b> dış mekânda kablo yüksüğü <b>yukarı</b> baksın ki su içine dolmasın.<br>
+• Teller yüksük dişiyle aynı yönde, <b>saat yönünde</b> bükülür. Bitince <b>yank testi</b> (her teli çek) yapılır.`,
+17:`<b>Ölçü aleti sembolleri.</b><br>
+• <b>~</b> sadece Alternatif Akım (AC) · <b>—</b> sadece Doğru Akım (DC) · üst üste düz+dalgalı = hem DC hem AC.<br>
+• <b>⊥ (ters T):</b> alet <b>dik (dikey)</b> kullanılır · <b>⊓ (U):</b> <b>yatay</b> kullanılır · <b>∠60°:</b> 60° eğik.<br>
+• <b>Yıldız içinde rakam (örn. 2):</b> aletin yalıtkanlık deneyi o <b>kV</b> ile yapılmıştır (2 kV). Yıldız (rakamsız) = deney yapılmamış; içi boş beş köşeli yıldız = muayene gerilimi 500 V.<br>
+• <b>Üçgen içinde ünlem (!):</b> çalışma tertibatına <b>dikkat, teknik dokümana bak</b>.`
+});
+
+/* ===== TEORİ DERİNLEŞTİRME (18-34) ===== */
+Object.assign(TEORI,{
+18:`<b>Güç hesabı.</b> Tek fazda P = V·I·cosφ. Üç fazda:<br>
+• Görünür güç <b>S = √3·U·I</b> (kVA)<br>
+• Aktif güç <b>P = √3·U·I·cosφ</b> (kW) — gerçek işi yapan güç<br>
+• Reaktif güç <b>Q = √3·U·I·sinφ</b> (kVAR) — mıknatıslama gücü.<br>
+İlişki: <b>S² = P² + Q²</b> ve güç faktörü <b>cosφ = P/S</b>.<br>
+<b>Örnek:</b> U=380 V, I=10 A, cosφ=1 → P = 1,732·380·10/1000 ≈ <b>6,58 kW</b>.<br>
+Saf dirençli yük yalnız <b>aktif (P)</b>, saf bobin/kondansatör yalnız <b>reaktif (Q)</b> çeker. Düşük cosφ daha çok akım çektirir (kayıp+ceza); <b>kondansatörlü kompanzasyon</b> ile düzeltilir.`,
+19:`<b>ADP (Ana Dağıtım Panosu)</b> binanın elektrik dağıtım merkezidir.<br>
+<b>Hiyerarşi:</b> Sayaç/giriş → <b>Ana pano → tali (alt) panolar → kat/mahal panoları</b>.<br>
+<b>Pano içi:</b> ana şalter, <b>bara (busbar)</b> — akımı dağıtan bakır çubuk —, sigorta/otomatlar, kontaktörler, parafudur (SPD), ölçü (sayaç/analizör), kompanzasyon ve her panoda <b>topraklama barası</b>.<br>
+<b>IP koruma sınıfı:</b> ilk rakam katı cisim/toz, <b>ikinci rakam su</b> korumasıdır (örn. IP54). Pano ortamına göre seçilir. Düşük güç faktörü <b>kompanzasyon panosu</b> ile düzeltilir.`,
+20:`<b>Jeneratör sistemleri.</b> Dizel jeneratör = dizel motor + <b>alternatör</b> (elektriği üreten kısım).<br>
+<b>Çalışma:</b> şebeke kesilince <b>ATS</b> algılar → marş → jeneratör devreye girer → şebeke gelince geri transfer.<br>
+<b>Bileşenler:</b> <b>günlük yakıt tankı</b> (motora yakıt sağlar), marş aküsü, <b>radyatör</b> (soğutma), egzoz susturucu, yağlama, kontrol panosu.<br>
+<b>Standby</b> yalnız acil/kesinti durumunda çalışır; Prime sürekli kaynaktır.<br>
+Birden çok jeneratör paralel çalışacaksa gerilim, frekans ve faz eşitlenir (<b>senkronizasyon</b>).`,
+21:`<b>Yıldırımdan korunma (3 katman).</b><br>
+1) <b>Yakalama ucu</b> (Franklin çubuğu veya aktif paratoner) — yapının en yükseğinde yıldırımı yakalar.<br>
+2) <b>İniş iletkeni</b> — yakalama ucunu toprağa bağlayan kalın bakır; en kısa/düz yol.<br>
+3) <b>Topraklama</b> — düşük dirençli olmalı (hassas tesiste hedef R&lt;1 Ω).<br>
+<b>İç koruma:</b> <b>parafudur (SPD)</b> aşırı gerilimi sınırlar — Tip 1 ana girişte, Tip 2 tali panoda, Tip 3 cihaz yanında — ve eşpotansiyel baralama yapılır.<br>
+Geniş yapılarda örgü/kafes koruması <b>Faraday kafesi</b> ile sağlanır.`,
+22:`<b>Peyzaj/bahçe aydınlatması</b> dış mekân koşullarına dayanmalıdır.<br>
+<b>Koruma:</b> armatür <b>IP65/IP67</b>, kablo UV dayanımlı; armatür ya topraklı (Sınıf I) ya da <b>çift yalıtımlı (Sınıf II)</b>.<br>
+<b>Besleme:</b> yer altından <b>NYY</b> kablo ile, yaklaşık <b>60 cm</b> derine, üzerine ikaz bandı konularak gömülür.<br>
+<b>Kumanda:</b> <b>fotosel</b> (karanlıkta yak) + <b>zaman saati</b> (belirli saatte kapat) birlikte kullanılır.<br>
+Islak/dekoratif alanlarda güvenlik için <b>alçak gerilim (12/24 V)</b> bahçe sistemleri tercih edilir. Armatürler: projektör, gömme spot, bollard, RGB.`,
+23:`<b>Disiplinler arası koordinasyon.</b> Elektrik işleri tek başına yürümez.<br>
+• <b>İnşaat:</b> beton dökümünden <b>ÖNCE</b> boru/sleeve ve ankrajlar bırakılır (sonradan kırım istenmez).<br>
+• <b>Mekanik (HVAC/sıhhi):</b> kablo tavası ile hava kanalı/borular <b>çakışmamalı (clash)</b>; güzergah ve kotlar paylaşılır.<br>
+• <b>Mimari:</b> armatür/priz yerleşimi tavan ve yerleşim planına uyar.<br>
+• <b>Zayıf akım/IT:</b> veri kabloları güç kablolarından <b>ayrı tava ve mesafede</b> tutulur (parazit/EMI).<br>
+• Asansör/yangın grupları <b>ayrı ve güvenilir</b> beslenir. Ortak teknik galeri/şaft ve BIM ile <b>clash detection</b> gecikmeyi önler.`,
+24:`<b>Transformatörler.</b> Trafo elektromanyetik indüksiyonla gerilim seviyesini değiştirir; yalnız <b>AC</b>'de çalışır (DA'da akı sabit kaldığından indüksiyon olmaz).<br>
+<b>Dönüştürme oranı:</b> N1/N2 = V1/V2 = I2/I1. <b>N2 &gt; N1 ise yükseltici</b>, N2 &lt; N1 ise düşürücü.<br>
+İdeal trafoda güç korunur (<b>S1 ≈ S2</b>); gerilim artarsa akım düşer.<br>
+<b>Örnek:</b> N1=1000, N2=100, V1=220 V → V2 = 220·(100/1000) = <b>22 V</b>.<br>
+<b>Kayıplar:</b> bakır (sargı I²R) ve demir (nüvede <b>histerezis + girdap akımı</b>). Üç fazda yıldız (Y) / üçgen (Δ) bağlantı yapılır.`,
+25:`<b>Elektrik makineleri (motorlar).</b> En yaygın olan <b>asenkron (endüksiyon) motordur</b>: sağlam, ucuz, az bakımlı; içinde stator sabit, <b>rotor döner</b>.<br>
+<b>Senkron hız:</b> n = 120·f / p (p: kutup sayısı). Örn. f=50 Hz, p=4 → n = <b>1500 d/d</b>.<br>
+<b>Yol verme:</b> başlangıç akımını düşürmek için <b>yıldız-üçgen</b> (önce yıldız, sonra üçgen), soft starter veya sürücü (<b>VFD</b>, kademesiz hız) kullanılır.<br>
+<b>Senkron motor</b> sabit hızda döner ve güç faktörünü düzeltir. <b>DA motor</b> kolay hız kontrolü sağlar.<br>
+Bir fazlı asenkron motorda yol verme momenti için yardımcı sargıya <b>kondansatör</b> bağlanır.`,
+26:`<b>Topraklama sistemleri & kaçak akım.</b> Sistemler (1. harf kaynak, 2. harf gövde): <b>TN-S</b> (N ve PE ayrı), TN-C-S, <b>TT</b> (gövde ayrı topraklayıcıya), <b>IT</b> (kaynak izole).<br>
+<b>Kaçak akım rölesi (RCD/FI):</b> faz ve nötr akımı arasındaki <b>farkı</b> ölçer; fark eşiği aşarsa keser. Can güvenliği için <b>30 mA</b>, yangın koruması için ~300 mA.<br>
+<b>Eşpotansiyel baralama</b> iletken kısımları aynı potansiyele getirerek <b>dokunma gerilimini</b> azaltır.<br>
+Topraklamanın temel amacı insanı <b>çarpılmaktan korumak</b> ve arıza akımını toprağa akıtmaktır.`,
+27:`<b>Koruma, seçicilik ve hesaplar.</b> Aşırı akım koruması sigorta/otomatla yapılır. Açma eğrileri: <b>B 3–5·In</b> (aydınlatma/dirençsel), <b>C 5–10·In</b> (priz/motor), <b>D 10–20·In</b> (yüksek başlangıç akımı).<br>
+<b>Seçicilik:</b> arıza yalnız en yakın koruma elemanında temizlenmeli, üst kademe açmamalıdır.<br>
+<b>Kesme kapasitesi (kA):</b> beklenen <b>kısa devre akımı</b>, kesicinin kesme kapasitesinden <b>küçük</b> olmalıdır.<br>
+<b>Gerilim düşümü:</b> aydınlatmada ≤<b>%3</b>, kuvvet (motor) devrelerinde ≤<b>%5</b>; hat uzunluğu ve akım arttıkça düşüm büyür, çözüm kesit büyütmektir.`,
+28:`<b>Aydınlatma tekniği.</b> Işık akısı <b>lümen (lm)</b>, aydınlık düzeyi <b>lüks (lx = lm/m²)</b>, armatür verimi <b>lm/W</b> ile ifade edilir (LED en verimli kaynaktır).<br>
+<b>Lümen yöntemi:</b> ortalama aydınlık E = (Φ·n·η·d) / A (n armatür sayısı, η verim, d <b>bakım faktörü</b> — kirlenme/yaşlanmayla ışık azaldığı için hesaba katılır).<br>
+<b>Önerilen düzeyler:</b> ofis ~<b>500 lx</b>, koridor ~100 lx, hassas iş ~750–1000 lx.<br>
+Konfor için renk sıcaklığı (K) ve renksel geriverim <b>CRI (Ra)</b> önemlidir.`,
+29:`<b>Mevzuat & İSG.</b> Temel düzenlemeler: <b>Elektrik İç Tesisleri Yönetmeliği</b>, <b>Elektrik Tesislerinde Topraklamalar Yönetmeliği</b>, Elektrik Kuvvetli Akım Tesisleri Yönetmeliği ve İSG mevzuatı; havacılıkta <b>SHT/HES</b> kuralları (SHGM denetimi).<br>
+Yetkisiz kişi YG'de <b>çalışamaz</b>. Çalışma öncesi <b>5 altın kural</b> uygulanır; KKD (baret, yalıtkan eldiven/ayakkabı) giyilir; riskli ve YG işlerinde <b>iş izni</b> alınır.<br>
+<b>LOTO (Lockout-Tagout):</b> enerji kaynağını <b>kilitle ve etiketle</b> — yanlışlıkla devreye alınmayı önler.`,
+30:`<b>Yarı iletkenler & diyot.</b> Maddeler iletkenlik bakımından iletken, yalıtkan ve <b>yarı iletken</b> olur. Yarı iletkenlerin (silisyum, germanyum) son yörüngesinde <b>4 elektron (valans)</b> bulunur.<br>
+<b>Katkılama (doping):</b> 5 değerlikli katkı ile <b>N tipi</b> (çoğunluk taşıyıcı elektron), 3 değerlikli katkı ile <b>P tipi</b> (çoğunluk taşıyıcı <b>oyuk/hole</b>) elde edilir.<br>
+<b>Diyot</b> bir P-N birleşimidir; akımı yalnız <b>tek yönde (anot→katot)</b> geçirir. <b>Doğru polarmada iletir</b>, ters polarmada tıkar (yalıtkan).<br>
+<b>LED</b> = ışık yayan diyottur.`,
+31:`<b>Doğrultucular (AC→DC).</b> Doğrultma, alternatif akımı doğru akıma çevirme işlemidir; diyotların tek yön geçirme özelliğiyle yapılır (adaptörler bunu yapar).<br>
+<b>Üç tip:</b><br>
+• <b>Yarım dalga</b> — <b>1 diyot</b>, yalnız bir alternansı geçirir (verimsiz).<br>
+• <b>Tam dalga (orta uçlu trafo)</b> — 2 diyot, her iki alternansı kullanır → güç <b>~2 katına</b> çıkar.<br>
+• <b>Köprü</b> — <b>4 diyot</b>, orta uçlu trafo <b>gerektirmez</b>, en yaygın.<br>
+Çıkıştaki dalgalanmayı (ripple) <b>filtre kondansatörü</b> azaltır.`,
+32:`<b>Transistör & anahtarlama.</b> Transistör üç katmanlı yarı iletkendir (<b>NPN</b> veya <b>PNP</b>) ve <b>üç uçludur</b>: Beyz (B), Kolektör (C), Emiter (E).<br>
+İki temel işlevi: <b>anahtarlama</b> (aç-kapa, dijital) ve <b>yükseltme</b> (zayıf sinyali büyütme).<br>
+<b>Kumanda ucu beyzdir</b>: küçük bir beyz akımı, büyük <b>kolektör</b> akımını kontrol eder.<br>
+Bu yüzden transistör, küçük sinyalle büyük yükü süren <b>röle/anahtarın elektronik karşılığı</b> sayılır. Dijital devrede ON/OFF anahtar, yükselteçte küçük sinyali büyüten eleman olarak çalışır.`,
+33:`<b>Elektrik çarpması & ilk yardım.</b> Tehlikeyi belirleyen, vücuttan geçen <b>akımın şiddetidir</b> (gerilim değil, akım öldürür). Yaklaşık eşikler:<br>
+• ~1 mA: hissetme · 1–5 mA: uyuşma · 5–15 mA: kramp · <b>15–25 mA</b>: kasların kontrol kaybı (<b>bırakamama</b>) · <b>80–100 mA ve üzeri</b>: <b>kalp fibrilasyonu</b>, bilinç kaybı, ölüm riski.<br>
+<b>Alternatif akım (AA)</b>, eşit değerdeki doğru akımdan (DA) <b>daha tehlikelidir</b>.<br>
+<b>İlk müdahale:</b> önce enerjiyi kes ya da <b>yalıtkan</b> bir cisimle kişiyi akımdan ayır; sonra <b>112</b>'yi ara, bilinç/solunum yoksa <b>CPR</b> uygula.`,
+34:`<b>Pano atölyesi.</b> Dağıtım panosunda <b>DIN ray</b> üzerine modüler cihazlar dizilir. Besleme sırası: Sayaç → <b>Ana şalter → RCD → MCB'ler</b> → linyeler.<br>
+• <b>RCD (kaçak akım):</b> faz-nötr farkını ölçer, <b>30 mA</b>'i aşınca keser (can güvenliği).<br>
+• <b>MCB (otomatik sigorta):</b> aşırı akım/kısa devrede açar. <b>C16</b> = C eğrisi, 16 A anma akımı.<br>
+• <b>Voltaj koruma rölesi:</b> aşırı/düşük gerilimde (örn. &lt;195 V veya &gt;253 V) keser.<br>
+<b>Renk kodu:</b> Faz kahverengi/siyah, <b>Nötr mavi</b>, <b>Toprak sarı-yeşil</b>. Koruma yukarıdan aşağıya kademelenir (seçicilik).`
+});
+
+/* ===== EK: sıradaki modül butonu + önizleme popup ===== */
+function openModule(id){
+  const m=modById(id);
+  const idx=MODS.findIndex(x=>x.id===id);
+  const nx=(idx>=0&&idx<MODS.length-1)?MODS[idx+1]:null;
+  let tabs=[['teori','📖 Teori']];
+  if(m.task) tabs.push(['uygulama','🎯 Uygulama']);
+  tabs.push(['quiz','📝 Quiz'],['foy','📘 Föy'],['not','✏️ Notlar']);
+  const sc=DB.scores[id]!=null?` · En iyi: %${DB.scores[id]}`:'';
+  const nextBtn = nx?`<button class="btn sm" onclick="previewNext(${nx.id})">Sıradaki: ${nx.ic} ${nx.t} →</button>`:`<button class="btn ghost sm" disabled>🎉 Son modül</button>`;
+  app().innerHTML=`<div class="row" style="justify-content:space-between;align-items:center">
+     <span class="breadcrumb" onclick="go('modules')">← Modüller</span>${nextBtn}</div>
+   <div class="panel">
+     <h2 style="margin:0">${m.ic} Modül ${m.id}: ${m.t}</h2>
+     <div class="muted" style="font-size:12.5px;margin-top:3px">${CATS[m.cat].n}${sc}</div>
+     <div class="tabbar" id="tabbar">${tabs.map(t=>`<button data-t="${t[0]}" onclick="showTab(${id},'${t[0]}')">${t[1]}</button>`).join('')}</div>
+     <div id="mtab"></div>
+     <div class="row" style="margin-top:18px;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding-top:14px">
+       <button class="btn ghost sm" onclick="go('modules')">← Modül listesi</button>${nextBtn}</div>
+   </div>`;
+  showTab(id,'teori');
+}
+function previewNext(id){
+  if(id==null){ toast('Bu son modül 🎉'); return; }
+  const m=modById(id);
+  const d=document.createElement('div'); d.className='modal-bg'; d.id='modalRoot';
+  d.onclick=function(e){ if(e.target===d) closeModal(); };
+  d.innerHTML=`<div class="modal">
+     <div class="modalhead"><div class="lh-ic">${m.ic}</div><div><div class="lh-cat" style="color:${CATS[m.cat].c}">SIRADAKİ MODÜL · ${CATS[m.cat].n}</div><div class="lh-t">Modül ${m.id}: ${m.t}</div></div></div>
+     ${figureFor(id)}
+     <p class="muted" style="font-size:13px;margin:6px 0 10px">${m.d}</p>
+     <div class="muted" style="font-size:11px;margin-bottom:4px">Önizleme — bu modülde öğreneceklerin:</div>
+     <div class="edu" style="max-height:200px;overflow:auto;font-size:12.5px">${TEORI[id]||''}</div>
+     <div class="row" style="margin-top:16px;justify-content:flex-end">
+       <button class="btn ghost sm" onclick="closeModal()">Kapat</button>
+       <button class="btn" onclick="closeModal();go('module',${id})">▶ Modüle Başla</button></div>
+   </div>`;
+  document.body.appendChild(d);
+}
+function closeModal(){ const r=document.getElementById('modalRoot'); if(r) r.remove(); }
 
 
 refreshHeader();
