@@ -237,6 +237,14 @@
   .outwire.live::after{content:"";position:absolute;left:0;right:0;top:-12px;bottom:-12px;background:repeating-linear-gradient(180deg,#ffffffcc 0 5px,transparent 5px 14px);animation:panoflow .55s linear infinite}
   @keyframes panoflow{to{transform:translateY(14px)}}
   .outlbl{font-size:8px;color:#2a2f36;margin-top:4px;font-weight:700}
+
+  /* sürükle-bırak */
+  .wire{cursor:grab}
+  .wire:active{cursor:grabbing}
+  .wire .grip{color:#5b6675;font-size:17px;letter-spacing:-3px;cursor:grab;user-select:none}
+  .wire.dragover{outline:2px dashed var(--acc2);outline-offset:-2px;background:#0d2230}
+  .answerbox{margin-top:10px;font-size:12.5px;line-height:1.8;color:#cdd7e2;border-left:3px solid var(--acc2);padding:9px 12px;background:#0f1b27;border-radius:8px}
+  .answerbox b{color:#eaf2fb}
 </style>
 </head>
 <body>
@@ -1712,6 +1720,64 @@ function panoVolt(v){ PB.volt=+v; el('pvV').textContent=v; PB.vp=!(PB.volt<195||
 function panoFault(){ PB.rcd=false; showMsg('panoMsg','bad','⚡ Kaçak akım algılandı! RCD (30 mA) açtı ve tüm hattı kesti → bu, insanı çarpılmaktan korur. Tekrar enerji için RCD\'ye tıkla.'); panoRender(); }
 function panoEval(){ const liveN=PB.mcb.filter((x,i)=>circuitLive(i)).length; const ok=PB.main&&PB.rcd&&PB.vp&&liveN>=2;
   el('res34').innerHTML=taskDone(34, ok?100:50, ok?'ok':'info', ok?`✔ Pano enerjili: ana şalter + RCD + voltaj koruma açık, ${liveN} devre besleniyor. Gerçekçi panoyu kurdun!`:'Ana şalteri ve RCD\'yi aç, gerilimi 195–253 V aralığında tut ve en az 2 MCB\'yi enerjilendir.'); }
+
+
+/* ===== EK: sürükle-bırak sıralama + doğru cevap gösterimi ===== */
+/* RJ45 */
+var rjDrag=-1;
+function modRJ45(m){
+  rjOrder=[...RULES.rj45].sort(()=>Math.random()-.5);
+  el('mtab').innerHTML=`
+   <div class="panel2"><b>Görev 2A — Soyma Ölçüsü</b>
+     <label class="fld">Düz/T ek için soyma (mm):</label><input type="number" id="strip" class="inline" style="width:120px" placeholder="mm">
+     <div class="muted" style="font-size:12px;margin-top:6px">İpucu: Düz/T ek = 50 mm · F konnektör = 15 mm</div></div>
+   <div class="panel2"><b>Görev 2B — RJ45 (T568B) Renk Sırası</b>
+     <div class="muted" style="font-size:12px;margin:4px 0">🖱️ Satırları <b>sürükleyerek</b> (ya da ▲▼ ile) doğru sıraya diz.</div>
+     <div class="wirebox" id="rj" style="margin-top:8px"></div></div>
+   <div class="row"><button class="btn blue sm" onclick="rjCheck()">CableTest Çalıştır</button><button class="btn ghost sm" onclick="modRJ45()">Karıştır</button></div>
+   <div id="rjMsg" class="msg"></div><div id="res2"></div>`;
+  drawRJ();
+}
+function drawRJ(){
+  el('rj').innerHTML=rjOrder.map((c,i)=>`<div class="wire" draggable="true" ondragstart="rjDrag=${i};this.style.opacity='.4'" ondragend="this.style.opacity='1'" ondragover="event.preventDefault();this.classList.add('dragover')" ondragleave="this.classList.remove('dragover')" ondrop="this.classList.remove('dragover');rjDropAt(${i})">
+   <span class="grip">⠿</span><span style="width:18px;color:var(--muted)">${i+1}</span><span class="sw" style="background:${RJ_COLORS[c]}"></span><span style="flex:1">${c}</span>
+   <button class="pill" onclick="rjMove(${i},-1)">▲</button><button class="pill" onclick="rjMove(${i},1)">▼</button></div>`).join('');
+}
+function rjDropAt(j){ if(rjDrag<0||rjDrag===j){rjDrag=-1;return;} var it=rjOrder.splice(rjDrag,1)[0]; rjOrder.splice(j,0,it); rjDrag=-1; drawRJ(); }
+function rjCheck(){
+  var strip=+el('strip').value, sOk=strip===50, oOk=rjOrder.every((c,i)=>c===RULES.rj45[i]);
+  var pct=oOk&&sOk?100:(oOk?60:20);
+  var dogru='<div class="answerbox">📘 <b>Doğru sıra (T568B):</b><br>'+RULES.rj45.map((c,i)=>(i+1)+'. '+c).join(' · ')+'<br><b>Soyma:</b> Düz/T ek = 50 mm.</div>';
+  var msg = oOk ? (sOk?'CableTest = PASS ✔ Renk sırası ve soyma doğru!':'Sıra doğru ama soyma ölçüsü hatalı. (50 mm olmalı)'+dogru)
+                : 'CableTest = FAIL — renk sırası yanlış.'+dogru;
+  el('res2').innerHTML=taskDone(2,pct,pct>=100?'ok':'bad',msg);
+}
+/* AKÜ */
+var akuDrag=-1;
+function modAku(m){
+  akuOrder=RULES.akuAdimlari.map((s,i)=>({s,i})).sort(()=>Math.random()-.5);akuQA={};
+  el('mtab').innerHTML=`<div class="panel2"><b>Görev 15A — Adımları Sırala</b>
+   <div class="muted" style="font-size:12px;margin:4px 0">🖱️ Satırları <b>sürükleyerek</b> (ya da ▲▼ ile) doğru sıraya diz.</div>
+   <div class="wirebox" id="aku" style="margin-top:8px"></div></div>
+   <div class="panel2"><b>Görev 15B — Güvenlik</b><div style="margin-top:6px;font-size:13px">Yeşil alev neyi gösterir?</div>
+   <div class="row" style="margin-top:6px"><span class="pill" onclick="akuQ('q1',0,this)">Lehim hazır</span><span class="pill" onclick="akuQ('q1',1,this)">Bakır oksitlendi</span></div>
+   <div style="margin-top:10px;font-size:13px">Makaron ne için KULLANILMAZ?</div>
+   <div class="row" style="margin-top:6px"><span class="pill" onclick="akuQ('q2',0,this)">Koruma</span><span class="pill" onclick="akuQ('q2',1,this)">Kötü krimpi gizlemek</span></div></div>
+   <button class="btn blue sm" onclick="akuCheck()">Değerlendir</button><div id="res15"></div>`;
+  drawAku();
+}
+function drawAku(){
+  el('aku').innerHTML=akuOrder.map((o,i)=>`<div class="wire" draggable="true" ondragstart="akuDrag=${i};this.style.opacity='.4'" ondragend="this.style.opacity='1'" ondragover="event.preventDefault();this.classList.add('dragover')" ondragleave="this.classList.remove('dragover')" ondrop="this.classList.remove('dragover');akuDropAt(${i})">
+   <span class="grip">⠿</span><span style="width:18px;color:var(--muted)">${i+1}</span><span style="flex:1">${o.s}</span>
+   <button class="pill" onclick="akuMove(${i},-1)">▲</button><button class="pill" onclick="akuMove(${i},1)">▼</button></div>`).join('');
+}
+function akuDropAt(j){ if(akuDrag<0||akuDrag===j){akuDrag=-1;return;} var it=akuOrder.splice(akuDrag,1)[0]; akuOrder.splice(j,0,it); akuDrag=-1; drawAku(); }
+function akuCheck(){
+  var oOk=akuOrder.every((o,i)=>o.i===i), c=(oOk?1:0)+(akuQA.q1===1?1:0)+(akuQA.q2===1?1:0);
+  var dogru='<div class="answerbox">📘 <b>Doğru sıra:</b> '+RULES.akuAdimlari.map((s,i)=>(i+1)+'. '+s).join(' → ')+'<br>Yeşil alev = bakır oksitlendi (dur). Makaron kötü bağlantıyı gizlemek için kullanılmaz.</div>';
+  var msg=`Sıralama ${oOk?'✔':'✗'} · Yeşil alev ${akuQA.q1===1?'✔':'✗'} · Makaron ${akuQA.q2===1?'✔':'✗'}`+(c<3?dogru:' — Mükemmel!');
+  el('res15').innerHTML=taskDone(15,Math.round(c/3*100),c===3?'ok':'bad',msg);
+}
 
 
 refreshHeader();
