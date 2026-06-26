@@ -253,6 +253,8 @@
   @keyframes mpop{from{transform:scale(.95) translateY(8px);opacity:.4}to{transform:none;opacity:1}}
   .modalhead{display:flex;gap:13px;align-items:center;margin-bottom:14px}
   .modalhead .lh-ic{font-size:34px;filter:drop-shadow(0 3px 8px #0008)}
+  nav.main a.foynav{display:inline-flex;align-items:center;gap:6px;color:var(--acc);font-size:13.5px;font-weight:800;padding:7px 13px;border-radius:9px;text-decoration:none;border:1px solid var(--acc);transition:.15s;box-shadow:0 0 0 0 #ffb00000}
+  nav.main a.foynav:hover{background:#ffb0001f;box-shadow:0 0 14px #ffb00044}
 </style>
 </head>
 <body>
@@ -269,6 +271,7 @@
     <button data-v="review" onclick="go('review')">Tekrar</button>
     <button data-v="glossary" onclick="go('glossary')">Sözlük</button>
     <button data-v="settings" onclick="go('settings')">⚙️ Veri</button>
+    <a class="foynav" href="foy.html" target="_blank" rel="noopener">📄 Eğitim Föyü</a>
   </nav>
   <div class="hstats">
     <span class="chip">🔥 <b id="hsStreak">0</b> gün</span>
