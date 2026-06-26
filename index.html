@@ -255,6 +255,76 @@
   .modalhead .lh-ic{font-size:34px;filter:drop-shadow(0 3px 8px #0008)}
   nav.main a.foynav{display:inline-flex;align-items:center;gap:6px;color:var(--acc);font-size:13.5px;font-weight:800;padding:7px 13px;border-radius:9px;text-decoration:none;border:1px solid var(--acc);transition:.15s;box-shadow:0 0 0 0 #ffb00000}
   nav.main a.foynav:hover{background:#ffb0001f;box-shadow:0 0 14px #ffb00044}
+
+  /* ============ SADE & ZAMANSIZ TEMA (override) ============ */
+  :root{
+    --bg:#14151a; --bg2:#181a20; --panel:#1b1e25; --panel2:#20242d; --line:#2b303b;
+    --txt:#ece8e1; --muted:#9a958c; --acc:#c9a96a; --acc2:#8fb3c9; --acc3:#a99bbf;
+    --ok:#84b07f; --bad:#cf8077; --warn:#c9a96a;
+  }
+  body{background:var(--bg);letter-spacing:.1px}
+  body::before{display:none!important}
+  header.top{background:rgba(20,21,26,.94);border-bottom:1px solid var(--line);box-shadow:none}
+  header.top::after{display:none!important}
+  .brand h1{background:none;-webkit-text-fill-color:initial;color:var(--txt);font-family:Georgia,"Times New Roman",serif;font-weight:600;letter-spacing:.6px}
+  .logo{animation:none!important;background:#1b1e25;border:1px solid var(--acc);color:var(--acc);box-shadow:none;font-weight:600;font-size:18px}
+  nav.main button{font-weight:600;letter-spacing:.2px}
+  nav.main button.active{color:var(--acc);background:transparent;box-shadow:none;text-shadow:none;border-bottom:2px solid var(--acc);border-radius:0}
+  nav.main button:hover{background:transparent;color:var(--txt)}
+  .chip{background:#1b1e25;border:1px solid var(--line);box-shadow:none}
+  .hstats b{color:var(--acc)}
+  .kpi .v{color:var(--acc);-webkit-text-fill-color:initial;background:none;font-weight:700}
+  .btn{background:var(--acc);color:#17130a;box-shadow:none;border-radius:8px;font-weight:600;letter-spacing:.2px}
+  .btn:hover{filter:none;background:#d7ba80;transform:none}
+  .btn.blue{background:transparent;color:var(--acc2);border:1px solid var(--acc2);box-shadow:none}
+  .btn.blue:hover{background:#8fb3c914;color:var(--acc2)}
+  .btn.purple{background:transparent;color:var(--acc3);border:1px solid var(--acc3);box-shadow:none}
+  .btn.purple:hover{background:#a99bbf14}
+  .btn.danger{background:transparent;color:var(--bad);border:1px solid var(--bad);box-shadow:none}
+  .btn.danger:hover{background:#cf807714}
+  .btn.ghost{background:transparent;border:1px solid var(--line)}
+  .btn.ghost:hover{border-color:var(--acc);color:var(--txt)}
+  .btn:active{transform:none}
+  .card{background:var(--panel);box-shadow:none;border:1px solid var(--line)}
+  .card:hover{transform:translateY(-2px);box-shadow:none;border-color:var(--acc)}
+  .card::after{display:none!important}
+  .card .ico{transition:none}
+  .card:hover .ico{transform:none}
+  .card .cat{color:var(--muted)}
+  .panel{box-shadow:none;border:1px solid var(--line);background:var(--panel)}
+  .panel::before{display:none!important}
+  .panel2{box-shadow:none}
+  .ring{filter:none}
+  .ring circle:last-of-type{stroke:var(--acc)!important;filter:none}
+  .sectiontitle h2,.stage h2{font-family:Georgia,"Times New Roman",serif;font-weight:600;letter-spacing:.3px}
+  .sectiontitle .ln{background:var(--line)}
+  .lh-t{font-family:Georgia,"Times New Roman",serif;font-weight:600}
+  .modalhead .lh-ic{filter:none}
+  .modal{box-shadow:0 20px 60px #0008;animation:none}
+  .modal-bg{backdrop-filter:blur(2px);animation:none}
+  .badge.on{box-shadow:none;border-color:var(--acc)}
+  .badge.on .bi{animation:none}
+  .cert{box-shadow:none;border-color:var(--acc)}
+  .cert .seal{animation:none}
+  .cert .nm{color:var(--acc)}
+  .examtimer{text-shadow:none;color:var(--acc2)}
+  .scorebar>i{box-shadow:none;background:var(--acc)}
+  .opt.correct{box-shadow:none;border-color:var(--ok);background:#1a241a;color:#cfe3cc}
+  .opt.wrong{box-shadow:none;border-color:var(--bad);background:#251a19;color:#e6c5c0}
+  .opt.sel{border-color:var(--acc);background:#221d12}
+  #app>*{animation:none!important}
+  nav.main a.foynav{box-shadow:none!important;border:1px solid var(--acc);color:var(--acc);font-weight:600}
+  nav.main a.foynav:hover{background:#c9a96a14;box-shadow:none!important}
+  .tabbar button.active{color:var(--acc);border-bottom-color:var(--acc)}
+  .tabbar button:hover{color:var(--txt)}
+  .edu{border-left-color:var(--acc2);background:#181c24}
+  .foy{border-left-color:var(--ok);background:#171c18}
+  .foy summary{color:var(--ok)}
+  .msg.ok{background:#161f16;color:#cfe3cc;border-color:#33502f}
+  .msg.bad{background:#211716;color:#e6c5c0;border-color:#50302c}
+  .msg.info{background:#171d24;color:#c9d6df;border-color:#33414c}
+  .pill.sel{border-color:var(--acc);background:#221d12}
+  footer{border-top:1px solid var(--line)}
 </style>
 </head>
 <body>
