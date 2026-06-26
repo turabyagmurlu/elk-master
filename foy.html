@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ELK MASTER — Elektrik Eğitim Föyü</title>
+<style>
+  :root{--ink:#1a2230;--soft:#5b6675;--line:#dfe4ea;--blue:#1d6fd6;--orange:#e08600;--green:#1f9d54;--red:#d23b2f;--purple:#7c4dff;--copper:#b5651d;--paper:#ffffff;--bg:#eef1f5}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Segoe UI",system-ui,Arial,sans-serif;line-height:1.65;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:880px;margin:0 auto;padding:0 18px 60px}
+  .cover{background:linear-gradient(135deg,#0e1b33,#143b6e 60%,#1d6fd6);color:#fff;border-radius:0 0 22px 22px;padding:44px 30px 34px;position:relative;overflow:hidden;box-shadow:0 14px 40px #0003}
+  .cover::after{content:"⚡";position:absolute;right:18px;top:-10px;font-size:150px;opacity:.10}
+  .cover .kic{font-size:42px}
+  .cover h1{margin:6px 0 4px;font-size:30px;letter-spacing:.5px}
+  .cover .sub{font-size:15px;opacity:.92}
+  .cover .meta{margin-top:16px;font-size:12.5px;opacity:.8}
+  .chipline{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+  .chip{background:#ffffff22;border:1px solid #ffffff35;padding:5px 11px;border-radius:20px;font-size:12px}
+  h2.sec{font-size:21px;margin:34px 0 4px;padding-left:14px;border-left:6px solid var(--blue);scroll-margin-top:14px}
+  h2.sec .n{color:var(--blue);font-weight:800;margin-right:8px}
+  h3{font-size:16px;margin:20px 0 6px;color:#21324a}
+  p{margin:8px 0}
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin:14px 0;box-shadow:0 4px 16px #0b224708}
+  .fig{background:linear-gradient(180deg,#f7f9fc,#eef2f7);border:1px solid var(--line);border-radius:12px;padding:16px;margin:14px 0;text-align:center}
+  .fig svg{width:100%;height:auto;max-height:240px}
+  .fig figcaption{font-size:12px;color:var(--soft);margin-top:10px;font-style:italic}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13.5px;overflow:hidden;border-radius:10px}
+  th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line)}
+  th{background:#1d6fd6;color:#fff;font-weight:700}
+  tr:nth-child(even) td{background:#f5f8fc}
+  .formula{background:#0e1b33;color:#eaf2ff;border-radius:10px;padding:14px 18px;margin:12px 0;font-size:16px;text-align:center;font-family:"Cambria Math",Georgia,serif;letter-spacing:.3px}
+  .formula b{color:#ffd27a}
+  .warn,.tip,.note{border-radius:10px;padding:12px 16px;margin:12px 0;font-size:13.5px;border-left:5px solid}
+  .warn{background:#fff3f2;border-color:var(--red)}
+  .tip{background:#eafaf0;border-color:var(--green)}
+  .note{background:#fff7e9;border-color:var(--orange)}
+  .warn b{color:var(--red)} .tip b{color:var(--green)} .note b{color:var(--orange)}
+  ul{margin:8px 0 8px 4px;padding-left:20px}
+  li{margin:4px 0}
+  .toc{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px 22px;margin:18px 0;columns:2;column-gap:30px}
+  .toc a{display:block;color:#21324a;text-decoration:none;font-size:13.5px;padding:4px 0;border-bottom:1px dashed var(--line);break-inside:avoid}
+  .toc a:hover{color:var(--blue)}
+  .toc a b{color:var(--blue);margin-right:6px}
+  .kbox{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:12px 0}
+  .kbox .k{background:#f5f8fc;border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+  .kbox .k b{display:block;font-size:18px;color:var(--blue)}
+  .kbox .k span{font-size:11.5px;color:var(--soft)}
+  footer{text-align:center;color:var(--soft);font-size:12px;padding:24px}
+  @media print{body{background:#fff}.cover{border-radius:0}.card,.fig{box-shadow:none;break-inside:avoid}.toc{columns:2}h2.sec{break-after:avoid}}
+  @media(max-width:620px){.toc{columns:1}}
+</style>
+</head>
+<body>
+<div class="cover">
+  <div class="kic">⚡</div>
+  <h1>ELEKTRİK EĞİTİM FÖYÜ</h1>
+  <div class="sub">Temel Elektrik · Ölçme · Makineler · Koruma · Elektronik · İş Güvenliği · MYK</div>
+  <div class="chipline">
+    <span class="chip">9 Bölüm</span><span class="chip">Görsel şemalar</span><span class="chip">Formüller & tablolar</span><span class="chip">Sınav odaklı</span>
+  </div>
+  <div class="meta">ELK MASTER Akademisi · Saha + Teori entegre çalışma fasikülü · Yüklenen kaynaklardan sentezlenmiştir.</div>
+</div>
+<div class="wrap">
+
+<div class="toc">
+  <a href="#s1"><b>1.</b> Elektriğin Temelleri</a>
+  <a href="#s2"><b>2.</b> Ölçme Tekniği ve Hata</a>
+  <a href="#s3"><b>3.</b> İletkenler, Kablolar ve Bağlantı</a>
+  <a href="#s4"><b>4.</b> Alternatif Akım, Güç ve Kompanzasyon</a>
+  <a href="#s5"><b>5.</b> Elektrik Makineleri (Trafo & Motor)</a>
+  <a href="#s6"><b>6.</b> Topraklama, Koruma ve Pano</a>
+  <a href="#s6b"><b>7.</b> Pano İçi Ekipmanlar ve Tasarım</a>
+  <a href="#s7b"><b>8.</b> Veri Merkezi (Datacenter) Rack</a>
+  <a href="#s7"><b>9.</b> Elektronik (Diyot · Doğrultucu · Transistör)</a>
+  <a href="#s8"><b>10.</b> İş Güvenliği ve Elektrik Çarpması</a>
+  <a href="#s9"><b>11.</b> MYK Mesleki Yeterlilik Rehberi</a>
+  <a href="#s12"><b>12.</b> Saha Uygulama Rehberi (Bağlama · Tek Hat · Arıza · Ölçüm)</a>
+</div>
+
+<!-- ===== 1 ===== -->
+<h2 class="sec" id="s1"><span class="n">1</span>Elektriğin Temelleri</h2>
+<div class="card">
+<p>Madde atomlardan oluşur. Atomun merkezinde <b>pozitif yüklü protonlar</b> ve yüksüz nötronlardan oluşan çekirdek, çevresinde ise <b>negatif yüklü elektronlar</b> bulunur. İletken bir maddede son yörüngedeki <b>serbest elektronların</b> yönlü hareketi <b>elektrik akımını</b> oluşturur.</p>
+
+<div class="fig"><svg viewBox="0 0 420 180">
+  <circle cx="120" cy="90" r="22" fill="#ffe3b0" stroke="#e08600" stroke-width="2"/>
+  <text x="120" y="95" text-anchor="middle" font-size="12" fill="#8a5a00" font-weight="700">+ çekirdek</text>
+  <ellipse cx="120" cy="90" rx="70" ry="40" fill="none" stroke="#9fb0c6" stroke-width="1.5"/>
+  <ellipse cx="120" cy="90" rx="95" ry="62" fill="none" stroke="#9fb0c6" stroke-width="1.5"/>
+  <circle cx="190" cy="90" r="7" fill="#1d6fd6"/><circle cx="120" cy="28" r="7" fill="#1d6fd6"/><circle cx="55" cy="118" r="7" fill="#1d6fd6"/>
+  <text x="205" y="94" font-size="11" fill="#1d6fd6">e⁻</text>
+  <line x1="250" y1="90" x2="390" y2="90" stroke="#b5651d" stroke-width="8" stroke-linecap="round"/>
+  <polygon points="360,90 348,84 348,96" fill="#fff"/>
+  <text x="250" y="74" font-size="12" fill="#444">İletken (bakır)</text>
+  <text x="285" y="118" font-size="12" fill="#1f9d54" font-weight="700">akım yönü →</text>
+</svg><figcaption>Atom yapısı ve iletkende serbest elektron hareketi</figcaption></div>
+
+<h3>Temel büyüklükler ve Ohm Yasası</h3>
+<p>Üç temel büyüklük: <b>Akım (I, Amper)</b>, <b>Gerilim (V, Volt)</b> ve <b>Direnç (R, Ohm)</b>. Aralarındaki ilişki Ohm Yasası ile verilir:</p>
+<div class="formula"><b>V = I · R</b> &nbsp;→&nbsp; I = V / R &nbsp;·&nbsp; R = V / I</div>
+<div class="kbox">
+  <div class="k"><b>Amper (A)</b><span>Akım birimi</span></div>
+  <div class="k"><b>Volt (V)</b><span>Gerilim birimi</span></div>
+  <div class="k"><b>Ohm (Ω)</b><span>Direnç birimi</span></div>
+  <div class="k"><b>Watt (W)</b><span>Güç birimi</span></div>
+</div>
+
+<h3>Güç ve devre tipleri</h3>
+<p>Elektriksel güç, birim zamanda harcanan enerjidir:</p>
+<div class="formula">P = V · I = I²·R = V²/R &nbsp; <span style="opacity:.7">(Watt)</span></div>
+<table>
+  <tr><th>Özellik</th><th>Seri Devre</th><th>Paralel Devre</th></tr>
+  <tr><td>Akım</td><td>Her yerde <b>aynı</b></td><td>Kollara bölünür</td></tr>
+  <tr><td>Gerilim</td><td>Elemanlara bölünür</td><td>Her kolda <b>aynı</b></td></tr>
+  <tr><td>Bir eleman arızalanırsa</td><td>Devre tümüyle açılır</td><td>Diğerleri çalışır</td></tr>
+</table>
+<div class="tip"><b>İpucu:</b> Ev tesisatı paraleldir; her cihaz aynı 230 V'u görür ve biri bozulunca diğerleri etkilenmez. Bu yüzden bir lamba patlasa diğerleri yanmaya devam eder.</div>
+<div class="note"><b>Akım türleri:</b> <b>Doğru Akım (DA)</b> zamanla yön/şiddet değiştirmez (pil, akü). <b>Alternatif Akım (AA)</b> periyodik olarak yön ve şiddet değiştirir (şebeke). Bir <b>saykıl</b> bir tam dalga, <b>periyot (T)</b> bir saykılın süresi, <b>frekans f = 1/T</b> (Hz).</div>
+</div>
+<!-- ===== 2 ===== -->
+<h2 class="sec" id="s2"><span class="n">2</span>Ölçme Tekniği ve Hata</h2>
+<div class="card">
+<p>Doğru ölçüm, doğru bağlantıyla başlar. Akım ölçen <b>ampermetre devreye SERİ</b>, gerilim ölçen <b>voltmetre devreye PARALEL</b> bağlanır.</p>
+<div class="fig"><svg viewBox="0 0 420 180">
+  <rect x="50" y="55" width="320" height="80" rx="6" fill="none" stroke="#5b6675" stroke-width="2"/>
+  <circle cx="150" cy="55" r="16" fill="#eafaf0" stroke="#1f9d54" stroke-width="2"/><text x="150" y="60" text-anchor="middle" font-size="13" fill="#1f9d54" font-weight="700">A</text>
+  <text x="120" y="34" font-size="12" fill="#1f9d54">SERİ</text>
+  <line x1="300" y1="55" x2="300" y2="135" stroke="#e08600" stroke-width="2" stroke-dasharray="5"/>
+  <circle cx="300" cy="150" r="16" fill="#fff7e9" stroke="#e08600" stroke-width="2"/><text x="300" y="155" text-anchor="middle" font-size="13" fill="#e08600" font-weight="700">V</text>
+  <text x="320" y="140" font-size="12" fill="#e08600">PARALEL</text>
+  <polyline points="210,55 218,47 234,63 242,55" fill="none" stroke="#7c4dff" stroke-width="3"/><text x="206" y="44" font-size="11" fill="#7c4dff">R</text>
+</svg><figcaption>Ampermetre seri, voltmetre paralel bağlanır</figcaption></div>
+
+<table>
+  <tr><th>Alet</th><th>Bağlantı</th><th>İç direnç</th><th>Ölçtüğü</th></tr>
+  <tr><td>Ampermetre</td><td>Seri</td><td>Çok düşük (≈0–1 Ω)</td><td>Akım (A)</td></tr>
+  <tr><td>Voltmetre</td><td>Paralel</td><td>Çok yüksek</td><td>Gerilim (V)</td></tr>
+  <tr><td>Ohmmetre</td><td>Enerjisiz devreye</td><td>—</td><td>Direnç (Ω)</td></tr>
+  <tr><td>Pens ampermetre</td><td>Tek hat içine</td><td>—</td><td>Akım (temassız)</td></tr>
+</table>
+<div class="warn"><b>Pens ampermetre tuzağı:</b> Pensin içine yalnız <b>tek hat (faz)</b> alınır. Faz ve nötr birlikte alınırsa manyetik alanlar birbirini götürür ve ekran <b>0 A</b> gösterir.</div>
+
+<h3>Ölçme hatası</h3>
+<div class="formula">Mutlak hata: <b>ΔX = |X<sub>g</sub> − X|</b> &nbsp;·&nbsp; Bağıl hata: <b>ε = ΔX / X<sub>g</sub> × 100</b></div>
+<p>Örnek: gerçek değer X<sub>g</sub>=200, ölçülen X=196 → ΔX = 4 ve ε = 4/200 = <b>%2</b>. Aletin <b>sınıfı</b> (örn. 1,5) tam skalaya göre izin verilen maksimum hatayı belirtir.</p>
+
+<h3>Ölçü aleti sembolleri</h3>
+<table>
+  <tr><th>Sembol</th><th>Anlamı</th><th>Sembol</th><th>Anlamı</th></tr>
+  <tr><td>~</td><td>Sadece AC</td><td>⊥</td><td>Dik kullan</td></tr>
+  <tr><td>—</td><td>Sadece DC</td><td>⊓</td><td>Yatay kullan</td></tr>
+  <tr><td>Yıldız + 2</td><td>Yalıtkanlık deneyi 2 kV</td><td>△ içinde !</td><td>Dikkat, dokümana bak</td></tr>
+</table>
+</div>
+
+<!-- ===== 3 ===== -->
+<h2 class="sec" id="s3"><span class="n">3</span>İletkenler, Kablolar ve Bağlantı</h2>
+<div class="card">
+<p>Kablo, kullanılacağı ortama ve mekanik şarta göre seçilir. Kesit (mm²) taşınacak <b>akıma</b> göre belirlenir; ince kesit + yüksek akım = aşırı ısınma.</p>
+<div class="fig"><svg viewBox="0 0 440 150">
+  <circle cx="60" cy="55" r="28" fill="#f3f6fa" stroke="#5b6675" stroke-width="2"/><circle cx="60" cy="55" r="10" fill="#b5651d"/>
+  <text x="60" y="105" text-anchor="middle" font-size="12" fill="#1d6fd6" font-weight="700">NYA</text><text x="60" y="122" text-anchor="middle" font-size="10" fill="#5b6675">tek tel · pano</text>
+  <circle cx="165" cy="55" r="28" fill="#f3f6fa" stroke="#5b6675" stroke-width="2"/>
+  <circle cx="165" cy="55" r="3" fill="#b5651d"/><circle cx="157" cy="49" r="3" fill="#b5651d"/><circle cx="173" cy="49" r="3" fill="#b5651d"/><circle cx="157" cy="61" r="3" fill="#b5651d"/><circle cx="173" cy="61" r="3" fill="#b5651d"/><circle cx="165" cy="45" r="3" fill="#b5651d"/><circle cx="165" cy="65" r="3" fill="#b5651d"/>
+  <text x="165" y="105" text-anchor="middle" font-size="12" fill="#1d6fd6" font-weight="700">NYAF</text><text x="165" y="122" text-anchor="middle" font-size="10" fill="#5b6675">çok tel · motor</text>
+  <circle cx="280" cy="55" r="28" fill="#e9edf2" stroke="#5b6675" stroke-width="2"/><circle cx="270" cy="55" r="7" fill="#b5651d"/><circle cx="292" cy="55" r="7" fill="#b5651d"/><circle cx="281" cy="42" r="7" fill="#b5651d"/>
+  <text x="280" y="105" text-anchor="middle" font-size="12" fill="#1d6fd6" font-weight="700">NYM</text><text x="280" y="122" text-anchor="middle" font-size="10" fill="#5b6675">nemli sıva altı</text>
+  <circle cx="390" cy="55" r="28" fill="#dfe4ea" stroke="#5b6675" stroke-width="2"/><circle cx="380" cy="55" r="6" fill="#b5651d"/><circle cx="400" cy="55" r="6" fill="#b5651d"/><circle cx="390" cy="43" r="6" fill="#b5651d"/><circle cx="390" cy="67" r="6" fill="#b5651d"/>
+  <text x="390" y="105" text-anchor="middle" font-size="12" fill="#1d6fd6" font-weight="700">NYY</text><text x="390" y="122" text-anchor="middle" font-size="10" fill="#5b6675">yer altı</text>
+</svg><figcaption>Kablo tipleri ve kesit görünümleri</figcaption></div>
+
+<table>
+  <tr><th>Kablo</th><th>Kullanım yeri</th><th>Özellik</th></tr>
+  <tr><td>NYA</td><td>Sabit pano/boru içi</td><td>Tek telli, sert</td></tr>
+  <tr><td>NYAF</td><td>Titreşimli/motor bağlantısı</td><td>Çok telli, esnek</td></tr>
+  <tr><td>NYM (antigron)</td><td>Nemli sıva altı iç mekan</td><td>Antigron kılıf</td></tr>
+  <tr><td>NYY</td><td>Yer altı</td><td>Mekanik dayanımlı</td></tr>
+</table>
+
+<h3>Ek ve sonlandırma</h3>
+<p>İyi bir ek <b>düşük temas direnci</b> sağlar; gevşek ek ısınır ve yangın riski doğurur. Düz/T ek için kablo <b>50 mm</b>, F (anten) konnektörde yalıtkan <b>15 mm</b> soyulur. Ağ kablosunda <b>T568B</b> renk sırası:</p>
+<table>
+  <tr><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr>
+  <tr><td>Tu-Beyaz</td><td>Turuncu</td><td>Ye-Beyaz</td><td>Mavi</td><td>Mavi-Beyaz</td><td>Yeşil</td><td>Ka-Beyaz</td><td>Kahve</td></tr>
+</table>
+<div class="tip"><b>Saha kuralları:</b> Çift bükümlü teller paraziti (EMI) bastırır · Dış mekânda yüksük <b>yukarı</b> baksın (su dolmasın) · Teller <b>saat yönünde</b> bükülür · Bitince <b>yank (çekme) testi</b> yapılır.</div>
+<div class="warn"><b>Akü kablosunda yeşil alev</b> görmek, bakırın oksitlendiğini gösterir — durulur. Makaron, kötü bir bağlantıyı <b>gizlemek için kullanılmaz</b>.</div>
+</div>
+
+<!-- ===== 4 ===== -->
+<h2 class="sec" id="s4"><span class="n">4</span>Alternatif Akım, Güç ve Kompanzasyon</h2>
+<div class="card">
+<div class="fig"><svg viewBox="0 0 420 150">
+  <line x1="20" y1="75" x2="400" y2="75" stroke="#cfd6df"/>
+  <path d="M30,75 Q70,15 110,75 T190,75 T270,75 T350,75" fill="none" stroke="#1d6fd6" stroke-width="3"/>
+  <line x1="30" y1="75" x2="30" y2="22" stroke="#e08600" stroke-dasharray="3"/><line x1="190" y1="75" x2="190" y2="22" stroke="#e08600" stroke-dasharray="3"/>
+  <text x="95" y="18" font-size="12" fill="#e08600">T (periyot)</text><text x="20" y="40" font-size="11" fill="#1f9d54">Vmax</text>
+  <text x="270" y="35" font-size="13" fill="#1a2230">f = 1/T · Vrms = Vmax/√2</text>
+</svg><figcaption>AC dalga formu: periyot, tepe ve etkin değer</figcaption></div>
+<p>Osiloskop AC'nin <b>maksimum (tepe)</b> değerini gösterir; etkin (RMS) değer <b>Vrms = Vmax/√2</b>'dir (örn. 100 V tepe → ≈70,7 V).</p>
+
+<h3>Güç üçgeni</h3>
+<div class="fig"><svg viewBox="0 0 420 170">
+  <polygon points="70,140 320,140 70,45" fill="none" stroke="#5b6675" stroke-width="1.5"/>
+  <line x1="70" y1="140" x2="320" y2="140" stroke="#1f9d54" stroke-width="5"/><text x="165" y="158" font-size="13" fill="#1f9d54">P — Aktif (kW)</text>
+  <line x1="320" y1="140" x2="70" y2="45" stroke="#e08600" stroke-width="5"/><text x="205" y="88" font-size="13" fill="#e08600">S — Görünür (kVA)</text>
+  <line x1="70" y1="140" x2="70" y2="45" stroke="#d23b2f" stroke-width="5"/><text x="14" y="98" font-size="13" fill="#d23b2f">Q (kVAR)</text>
+  <text x="86" y="133" font-size="12" fill="#5b6675">φ</text>
+</svg><figcaption>S² = P² + Q² · cosφ = P/S</figcaption></div>
+<div class="formula">Üç faz: <b>S = √3·U·I</b> · <b>P = √3·U·I·cosφ</b> · <b>Q = √3·U·I·sinφ</b></div>
+<p>Örnek: U=380 V, I=10 A, cosφ=1 → P = 1,732·380·10/1000 ≈ <b>6,58 kW</b>. Saf dirençli yük yalnız <b>aktif (P)</b>, saf bobin/kondansatör yalnız <b>reaktif (Q)</b> çeker.</p>
+<div class="note"><b>Kompanzasyon:</b> Düşük güç faktörü (cosφ) sanayide reaktif ceza doğurur ve hattan gereksiz akım çektirir. Kondansatörlü kompanzasyon panosu cosφ'yi 1'e yaklaştırır, kayıpları azaltır. Üç zamanlı tarifede yükü en pahalı dilim T2 (puant) yerine en ucuz dilim T3 (gece) saatine kaydırmak maliyeti düşürür.</div>
+<div class="note"><b>Bobin & kondansatör:</b> Endüktif reaktans <b>X<sub>L</sub> = 2πfL</b>; DA'da (f=0) X<sub>L</sub>=0 olduğundan bobin <b>kısa devre</b> gibi davranır. Kapasitif reaktans X<sub>C</sub> = 1/(2πfC); DA'da kondansatör <b>açık devredir</b>.</div>
+</div>
+<!-- ===== 5 ===== -->
+<h2 class="sec" id="s5"><span class="n">5</span>Elektrik Makineleri (Trafo & Motor)</h2>
+<div class="card">
+<h3>Transformatör</h3>
+<p>Trafo elektromanyetik indüksiyonla gerilim seviyesini değiştirir; yalnız <b>AC</b>'de çalışır (DA'da akı sabit kaldığından indüksiyon olmaz).</p>
+<div class="fig"><svg viewBox="0 0 420 160">
+  <rect x="195" y="30" width="14" height="100" fill="#cdd3da"/>
+  <line x1="80" y1="30" x2="80" y2="130" stroke="#1d6fd6" stroke-width="2"/>
+  <path d="M80,45 a8,7 0 0 1 0,14 M80,63 a8,7 0 0 1 0,14 M80,81 a8,7 0 0 1 0,14 M80,99 a8,7 0 0 1 0,14" fill="none" stroke="#1d6fd6" stroke-width="3"/>
+  <line x1="320" y1="40" x2="320" y2="120" stroke="#e08600" stroke-width="2"/>
+  <path d="M320,55 a8,7 0 0 0 0,14 M320,73 a8,7 0 0 0 0,14 M320,91 a8,7 0 0 0 0,14" fill="none" stroke="#e08600" stroke-width="3"/>
+  <text x="50" y="150" font-size="12" fill="#1d6fd6">N₁ / V₁</text><text x="300" y="150" font-size="12" fill="#e08600">N₂ / V₂</text>
+  <text x="150" y="22" font-size="13" fill="#1a2230">N₁/N₂ = V₁/V₂ = I₂/I₁</text>
+</svg><figcaption>Trafo sargıları ve dönüştürme oranı</figcaption></div>
+<p><b>N₂ &gt; N₁ ise yükseltici</b>, N₂ &lt; N₁ ise düşürücü. İdeal trafoda güç korunur (S₁ ≈ S₂). Örnek: N₁=1000, N₂=100, V₁=220 V → V₂ = <b>22 V</b>. Kayıplar: bakır (I²R) ve demir (histerezis + girdap akımı).</p>
+
+<h3>Asenkron motor ve yol verme</h3>
+<div class="fig"><svg viewBox="0 0 420 150">
+  <circle cx="110" cy="75" r="42" fill="#eafaf0" stroke="#1f9d54" stroke-width="2"/><text x="110" y="82" text-anchor="middle" font-size="20" fill="#1f9d54" font-weight="800">M</text>
+  <text x="78" y="135" font-size="12" fill="#5b6675">Asenkron motor (3~)</text>
+  <line x1="250" y1="50" x2="290" y2="50" stroke="#1d6fd6" stroke-width="3"/><line x1="270" y1="50" x2="270" y2="32" stroke="#1d6fd6" stroke-width="3"/>
+  <text x="300" y="55" font-size="12" fill="#1d6fd6">Yıldız (Y) — yol verme (düşük akım)</text>
+  <polygon points="255,95 285,95 270,75" fill="none" stroke="#e08600" stroke-width="3"/>
+  <text x="300" y="100" font-size="12" fill="#e08600">Üçgen (Δ) — çalışma</text>
+</svg><figcaption>Yıldız-üçgen yol verme</figcaption></div>
+<div class="formula">Senkron hız: <b>n = 120 · f / p</b> &nbsp;(örn. f=50, p=4 → n = 1500 d/d)</div>
+<p>En yaygın motor <b>asenkron</b>'dur (sağlam, ucuz, az bakım; rotoru döner). Yol alma akımını düşürmek için <b>yıldız-üçgen</b>, soft starter veya sürücü (VFD, kademesiz hız) kullanılır. Senkron motor sabit hızda döner ve güç faktörünü düzeltir. Bir fazlı motorda yardımcı sargıya <b>kondansatör</b> bağlanır.</p>
+</div>
+
+<!-- ===== 6 ===== -->
+<h2 class="sec" id="s6"><span class="n">6</span>Topraklama, Koruma ve Pano</h2>
+<div class="card">
+<p>Dağıtım panosunda <b>DIN ray</b> üzerine modüler cihazlar dizilir. Besleme sırası: <b>Sayaç → Ana şalter → RCD → MCB'ler → linyeler.</b></p>
+<div class="fig"><svg viewBox="0 0 440 130">
+  <rect x="20" y="55" width="400" height="18" fill="#c2c8cf"/>
+  <rect x="30" y="35" width="40" height="58" rx="3" fill="#fff" stroke="#c2c8cf"/><rect x="44" y="44" width="12" height="16" rx="2" fill="#d23b2f"/><text x="50" y="106" text-anchor="middle" font-size="9" fill="#1a2230">ANA</text>
+  <rect x="80" y="35" width="64" height="58" rx="3" fill="#fff" stroke="#c2c8cf"/><text x="112" y="68" text-anchor="middle" font-size="10" fill="#1a2230" font-weight="700">RCD 30mA</text>
+  <g>
+  <rect x="160" y="35" width="34" height="58" rx="3" fill="#fff" stroke="#c2c8cf"/><rect x="171" y="44" width="12" height="14" rx="2" fill="#d23b2f"/><text x="177" y="106" text-anchor="middle" font-size="8" fill="#1a2230">C16</text>
+  <rect x="205" y="35" width="34" height="58" rx="3" fill="#fff" stroke="#c2c8cf"/><rect x="216" y="44" width="12" height="14" rx="2" fill="#d23b2f"/><text x="222" y="106" text-anchor="middle" font-size="8" fill="#1a2230">C16</text>
+  <rect x="250" y="35" width="34" height="58" rx="3" fill="#fff" stroke="#c2c8cf"/><rect x="261" y="44" width="12" height="14" rx="2" fill="#d23b2f"/><text x="267" y="106" text-anchor="middle" font-size="8" fill="#1a2230">C16</text>
+  </g>
+  <rect x="300" y="35" width="64" height="58" rx="3" fill="#0a0a0a"/><text x="332" y="58" text-anchor="middle" font-size="13" fill="#ff3b30" font-family="monospace" font-weight="800">230</text><text x="332" y="78" text-anchor="middle" font-size="12" fill="#28d05a" font-family="monospace" font-weight="800">8.0</text><text x="332" y="106" text-anchor="middle" font-size="8" fill="#1a2230">VOLTAJ KOR.</text>
+</svg><figcaption>Gerçekçi pano dizilimi: ana şalter · RCD · MCB'ler · voltaj koruma</figcaption></div>
+<table>
+  <tr><th>Cihaz</th><th>Görevi</th></tr>
+  <tr><td>Ana şalter</td><td>Tüm panoyu açıp kapatır</td></tr>
+  <tr><td>RCD (kaçak akım)</td><td>Faz-nötr farkını ölçer; <b>30 mA</b>'i aşınca keser → can güvenliği</td></tr>
+  <tr><td>Voltaj koruma rölesi</td><td>Aşırı/düşük gerilimde (≈&lt;195 / &gt;253 V) keser</td></tr>
+  <tr><td>MCB (otomat, örn. C16)</td><td>Aşırı akım/kısa devrede açar (C = 5–10·In)</td></tr>
+</table>
+<div class="kbox">
+  <div class="k"><b style="color:#7a4a23">Faz</b><span>Kahverengi / siyah</span></div>
+  <div class="k"><b style="color:#1d6fd6">Nötr</b><span>Mavi</span></div>
+  <div class="k"><b style="color:#1f9d54">Toprak</b><span>Sarı-yeşil</span></div>
+</div>
+
+<h3>Topraklama sistemleri ve koruma</h3>
+<p>Sistemler: <b>TN-S</b> (N ve PE ayrı), TN-C-S, <b>TT</b> (gövde ayrı topraklayıcı), <b>IT</b> (kaynak izole). <b>Eşpotansiyel baralama</b> dokunma gerilimini azaltır. Yıldırımdan korunma 3 katmanlıdır: yakalama ucu (paratoner) → iniş iletkeni → düşük dirençli topraklama (hedef <b>R &lt; 1 Ω</b>). İç koruma <b>parafudur (SPD)</b> ile yapılır.</p>
+<div class="warn"><b>Yüksek Gerilim — ölümcül kural:</b> Akım keserken sıra daima <b>önce Kesici, sonra Ayırıcı</b>'dır. Ayırıcı yük altında <b>açılamaz</b> (ark patlaması). Gerilim, neon lambalı ıstanka ile kontrol edilir.</div>
+</div>
+
+<!-- ===== 7 PANO İÇİ EKİPMANLAR ===== -->
+<h2 class="sec" id="s6b"><span class="n">7</span>Pano İçi Ekipmanlar ve Tasarım</h2>
+<div class="card">
+<p>Elektrik panosu; enerjinin <b>güvenle dağıtıldığı, ölçüldüğü ve korunduğu</b> merkezdir. İçindeki cihazlar <b>DIN ray</b> (35 mm) üzerine geçirilir, baralarla beslenir ve kablolarla linyelere dağıtılır. Pano gövdesi sıva üstü/altı, saç veya poliester olabilir; ortamına göre <b>IP koruma sınıfı</b> seçilir (iç mekân ~IP40, tozlu/dış ~IP54–IP65).</p>
+
+<div class="fig"><svg viewBox="0 0 440 200">
+  <rect x="20" y="14" width="400" height="174" rx="8" fill="#eef2f7" stroke="#9fb0c6" stroke-width="2"/>
+  <rect x="34" y="36" width="372" height="20" fill="#c2c8cf"/><rect x="34" y="92" width="372" height="20" fill="#c2c8cf"/><rect x="34" y="148" width="372" height="20" fill="#c2c8cf"/>
+  <!-- row1 -->
+  <rect x="40" y="22" width="46" height="48" rx="3" fill="#fff" stroke="#9fb0c6"/><rect x="56" y="30" width="14" height="16" rx="2" fill="#d23b2f"/><text x="63" y="80" text-anchor="middle" font-size="8" fill="#1a2230">ANA ŞALT.</text>
+  <rect x="96" y="22" width="84" height="48" rx="3" fill="#0a0a0a"/><text x="138" y="44" text-anchor="middle" font-size="12" fill="#ff3b30" font-family="monospace">400V</text><text x="138" y="60" text-anchor="middle" font-size="10" fill="#28d05a" font-family="monospace">63A</text>
+  <rect x="190" y="22" width="84" height="48" rx="3" fill="#fff" stroke="#9fb0c6"/><text x="232" y="50" text-anchor="middle" font-size="10" fill="#1a2230" font-weight="700">RCCB 30mA</text>
+  <rect x="284" y="22" width="50" height="48" rx="3" fill="#fff" stroke="#9fb0c6"/><text x="309" y="50" text-anchor="middle" font-size="9" fill="#1a2230">SPD</text>
+  <!-- row2 MCBs -->
+  <rect x="40" y="78" width="34" height="48" rx="3" fill="#fff" stroke="#9fb0c6"/><rect x="51" y="86" width="12" height="14" rx="2" fill="#d23b2f"/><text x="57" y="118" text-anchor="middle" font-size="8" fill="#1a2230">C16</text>
+  <rect x="82" y="78" width="34" height="48" rx="3" fill="#fff" stroke="#9fb0c6"/><rect x="93" y="86" width="12" height="14" rx="2" fill="#d23b2f"/><text x="99" y="118" text-anchor="middle" font-size="8" fill="#1a2230">C16</text>
+  <rect x="124" y="78" width="34" height="48" rx="3" fill="#fff" stroke="#9fb0c6"/><rect x="135" y="86" width="12" height="14" rx="2" fill="#d23b2f"/><text x="141" y="118" text-anchor="middle" font-size="8" fill="#1a2230">C16</text>
+  <rect x="166" y="78" width="34" height="48" rx="3" fill="#fff" stroke="#9fb0c6"/><rect x="177" y="86" width="12" height="14" rx="2" fill="#d23b2f"/><text x="183" y="118" text-anchor="middle" font-size="8" fill="#1a2230">C16</text>
+  <rect x="208" y="78" width="34" height="48" rx="3" fill="#fff" stroke="#9fb0c6"/><rect x="219" y="86" width="12" height="14" rx="2" fill="#d23b2f"/><text x="225" y="118" text-anchor="middle" font-size="8" fill="#1a2230">C16</text>
+  <rect x="250" y="78" width="34" height="48" rx="3" fill="#fff" stroke="#9fb0c6"/><rect x="261" y="86" width="12" height="14" rx="2" fill="#d23b2f"/><text x="267" y="118" text-anchor="middle" font-size="8" fill="#1a2230">C16</text>
+  <!-- row3 contactor + termik + kompanzasyon -->
+  <rect x="40" y="134" width="60" height="48" rx="3" fill="#fff" stroke="#9fb0c6"/><text x="70" y="162" text-anchor="middle" font-size="9" fill="#1a2230">Kontaktör</text>
+  <rect x="110" y="134" width="60" height="48" rx="3" fill="#fff" stroke="#9fb0c6"/><text x="140" y="156" text-anchor="middle" font-size="8.5" fill="#1a2230">Termik</text><text x="140" y="168" text-anchor="middle" font-size="8.5" fill="#1a2230">röle</text>
+  <rect x="300" y="134" width="106" height="48" rx="3" fill="#fff" stroke="#9fb0c6"/><text x="353" y="162" text-anchor="middle" font-size="9" fill="#1a2230">Kompanzasyon (kondansatör)</text>
+</svg><figcaption>Tipik dağıtım panosu yerleşimi: ana şalter · ölçü · RCCB · SPD · MCB sırası · kumanda · kompanzasyon</figcaption></div>
+
+<h3>7.1 Koruma cihazları: sigortalar ve şalterler</h3>
+<p>Koruma cihazları iki tehlikeye karşı çalışır: <b>aşırı yük</b> (anma akımının biraz üstü, ısınma — gecikmeli açma) ve <b>kısa devre</b> (çok yüksek akım — ani açma). Otomatik sigorta bunu içindeki <b>termik (bimetal)</b> ve <b>manyetik (bobin)</b> mekanizmayla birlikte yapar.</p>
+
+<div class="fig"><svg viewBox="0 0 440 170">
+  <rect x="150" y="20" width="140" height="130" rx="8" fill="#f7f9fc" stroke="#9fb0c6" stroke-width="2"/>
+  <rect x="205" y="6" width="30" height="22" rx="3" fill="#23262b"/><text x="220" y="22" text-anchor="middle" font-size="11" fill="#fff">I/O</text>
+  <path d="M175,40 q14,18 0,36 q-14,18 0,30" fill="none" stroke="#d23b2f" stroke-width="3"/><text x="120" y="60" font-size="11" fill="#d23b2f">Bimetal</text><text x="118" y="74" font-size="9" fill="#5b6675">(aşırı yük)</text>
+  <circle cx="245" cy="70" r="16" fill="none" stroke="#1d6fd6" stroke-width="3"/><path d="M245,56 a14,14 0 0 1 0,28" fill="none" stroke="#1d6fd6" stroke-width="2"/><text x="300" y="66" font-size="11" fill="#1d6fd6">Manyetik bobin</text><text x="300" y="80" font-size="9" fill="#5b6675">(kısa devre)</text>
+  <path d="M180,120 l30,-14 l30,14" fill="none" stroke="#5b6675" stroke-width="2"/><text x="200" y="142" font-size="10" fill="#5b6675">Ark söndürme</text>
+</svg><figcaption>Otomatik sigorta (MCB) iç yapısı: bimetal + manyetik bobin + ark söndürme</figcaption></div>
+
+<table>
+  <tr><th>Cihaz</th><th>Ne yapar?</th><th>Tipik kullanım / akım</th></tr>
+  <tr><td>Buşonlu sigorta (Diazed/Neozed)</td><td>Eriyen telli, vidalı; sadece koruma</td><td>Eski/küçük tesis, 2–63 A</td></tr>
+  <tr><td>NH (bıçaklı) sigorta</td><td>Yüksek akım, yüksek kesme kapasitesi; eriyince değiştirilir</td><td>Ana giriş/sanayi, boy 00–4, 16–1250 A</td></tr>
+  <tr><td>Otomatik sigorta (MCB)</td><td>Termik+manyetik; açınca tekrar kurulur</td><td>Ev/ticari, 6–63 A</td></tr>
+  <tr><td>TMŞ / Kompakt şalter (MCCB)</td><td>Ayarlanabilir termik-manyetik, yüksek akım</td><td>Ana/motor koruma, 16–1600 A</td></tr>
+  <tr><td>Açık tip güç şalteri (ACB)</td><td>Çok yüksek akım, ana dağıtım</td><td>630–6300 A</td></tr>
+  <tr><td>Yük ayırıcı / pak şalter</td><td>Manuel açma-kapama; <b>koruma yapmaz</b></td><td>Ana kesme, manevra</td></tr>
+</table>
+<div class="note"><b>MCB açma eğrileri:</b> <b>B (3–5×In)</b> konut aydınlatma/priz · <b>C (5–10×In)</b> genel ve küçük motor · <b>D (10–20×In)</b> yüksek yol alma akımı (trafo, büyük motor). <b>Kesme kapasitesi (Icn):</b> konut ~3–6 kA, ticari ~10 kA, sanayi 15–25 kA+. Beklenen kısa devre akımı, bu değerden küçük olmalıdır.</div>
+<div class="tip"><b>Sigorta–kablo uyumu:</b> Koruma cihazının anma akımı (In), beslediği kablonun taşıma kapasitesinden <b>büyük olamaz</b>. Örn. 2,5 mm² priz hattını genelde 16 A korur. Sigorta kabloyu korur — kablo yanmadan açmalıdır.</div>
+
+<h3>7.2 Kaçak akım koruma</h3>
+<table>
+  <tr><th>Cihaz</th><th>Görevi</th></tr>
+  <tr><td>RCCB</td><td>Sadece kaçak akımı keser (aşırı akım korumaz; önüne sigorta gerekir)</td></tr>
+  <tr><td>RCBO</td><td>Kaçak + aşırı akım korumayı <b>tek cihazda</b> birleştirir</td></tr>
+</table>
+<p>Eşikler: <b>30 mA</b> can güvenliği (insan koruması), <b>300 mA</b> yangın koruması. Tipler: <b>AC</b> (sinüzoidal kaçak), <b>A</b> (darbeli DA bileşenli — çoğu ev), <b>B</b> (düzgün DA — sürücü/invertör devreleri).</p>
+
+<h3>7.3 Kumanda ve motor koruma</h3>
+<table>
+  <tr><th>Cihaz</th><th>Açıklama</th></tr>
+  <tr><td>Kontaktör</td><td>Bobin (A1-A2) enerjilenince ana kontaklar kapanır; yardımcı kontaklar (NO/NC) kumanda için. Kategori AC3 = motor yükü.</td></tr>
+  <tr><td>Termik (aşırı yük) rölesi</td><td>Motor anma akımına <b>ayarlanır</b>; uzun süreli aşırı yükte motoru korur. Kontaktörün altına takılır.</td></tr>
+  <tr><td>Motor koruma şalteri (MPCB)</td><td>Termik+manyetik korumayı tek cihazda verir, ayarlanabilir.</td></tr>
+  <tr><td>Zaman rölesi</td><td>Gecikme/sıra üretir (örn. yıldız-üçgen yol vermede geçiş süresi).</td></tr>
+  <tr><td>Faz koruma rölesi</td><td>Faz sırası, faz kaybı, asimetri ve gerilim sınırlarını izleyip keser.</td></tr>
+</table>
+
+<h3>7.4 Aşırı gerilim koruma (Parafudur / SPD)</h3>
+<p><b>Tip 1:</b> ana girişte, doğrudan yıldırım akımına karşı · <b>Tip 2:</b> tali panoda, anahtarlama aşırı gerilimlerine · <b>Tip 3:</b> hassas cihaz yanında. SPD'nin etkin çalışması düşük topraklama direncine bağlıdır.</p>
+
+<h3>7.5 Kompanzasyon ve ölçü</h3>
+<table>
+  <tr><th>Cihaz</th><th>Görevi</th></tr>
+  <tr><td>Kondansatör + reaktif güç (kompanzasyon) rölesi</td><td>cosφ'yi izleyip kademeleri devreye alır; reaktif cezayı önler</td></tr>
+  <tr><td>Akım trafosu (CT, örn. 100/5 A)</td><td>Yüksek akımı ölçülebilir küçük akıma indirir; ampermetre/analizöre bağlanır</td></tr>
+  <tr><td>Ampermetre / Voltmetre / Şebeke analizörü</td><td>Akım, gerilim, güç, cosφ, enerji ve harmonik izleme</td></tr>
+  <tr><td>Sayaç</td><td>Tüketilen aktif/reaktif enerjiyi kaydeder</td></tr>
+</table>
+
+<h3>7.6 Bağlantı, taşıma ve tasarım kuralları</h3>
+<ul>
+  <li><b>Baralar (busbar):</b> faz, nötr ve PE için ayrı bakır baralar; akıma göre kesit. Topraklama (PE) barası her panoda bulunur.</li>
+  <li><b>Klemensler ve kablo kanalı (spiral/yarıklı kanal):</b> düzenli, etiketli bağlantı; faz renk kodu (kahve/siyah/gri), nötr mavi, toprak sarı-yeşil.</li>
+  <li><b>Kablo ucu:</b> çok telli iletkende <b>yüksük (ferrül)</b> kullanılır; gevşek bağlantı ısınma yapar (yank testi).</li>
+  <li><b>Seçicilik (selektivite):</b> arıza yalnız en yakın koruma elemanında temizlenmeli; üst kademe (ana şalter) açmamalı.</li>
+  <li><b>Faz dengesi:</b> tek fazlı yükler üç faza dengeli dağıtılır.</li>
+  <li><b>Isı/havalandırma:</b> kayıplar ısı üretir; pano ısınırsa havalandırma/fan ve yeterli iç hacim gerekir.</li>
+  <li><b>Montaj sırası (yukarıdan aşağı koruma kademesi):</b> Sayaç → Ana şalter/TMŞ → SPD → RCCB → MCB linyeleri → kumanda (kontaktör/termik).</li>
+</ul>
+<div class="warn"><b>Altın kural:</b> Pano üzerinde çalışmadan önce ana şalteri kapat, kilitle-etiketle (LOTO) ve gerilimsizliği ölçerek doğrula. Pano kapağı kapalıyken bile baralar gerilim altında olabilir.</div>
+</div>
+
+<!-- ===== 8 VERİ MERKEZİ RACK ===== -->
+<h2 class="sec" id="s7b"><span class="n">8</span>Veri Merkezi (Datacenter) Rack ve Aktif Cihazlar</h2>
+<div class="card">
+<p>Kurumsal BT altyapısının kalbi, <b>19" standart rack (kabin)</b> içinde toplanır. Yükseklik <b>U</b> birimiyle ölçülür (1U = 44,45 mm); tipik dolap 42U'dur. Cihazlar yukarıdan aşağıya <b>ağ → güvenlik → sunucu → depolama → güç</b> mantığıyla dizilir. Elektrik tekniği açısından önemli kısımlar en altta: <b>UPS</b> (yedek güç) ve <b>PDU</b> (güç dağıtımı).</p>
+
+<div class="fig"><svg viewBox="0 0 470 600" style="max-height:600px">
+  <!-- cabinet -->
+  <rect x="150" y="20" width="210" height="556" rx="10" fill="#15181d" stroke="#3a3f47" stroke-width="3"/>
+  <rect x="162" y="32" width="158" height="532" rx="4" fill="#0c0e12"/>
+  <!-- door (mesh) -->
+  <rect x="366" y="20" width="74" height="556" rx="8" fill="#1b1f25" stroke="#3a3f47" stroke-width="2"/>
+  <g fill="#2c333c">
+   <circle cx="380" cy="60" r="2"/><circle cx="395" cy="60" r="2"/><circle cx="410" cy="60" r="2"/><circle cx="425" cy="60" r="2"/>
+   <circle cx="380" cy="120" r="2"/><circle cx="410" cy="120" r="2"/><circle cx="395" cy="90" r="2"/><circle cx="425" cy="90" r="2"/>
+   <circle cx="380" cy="200" r="2"/><circle cx="410" cy="200" r="2"/><circle cx="395" cy="300" r="2"/><circle cx="425" cy="300" r="2"/>
+   <circle cx="380" cy="420" r="2"/><circle cx="410" cy="420" r="2"/><circle cx="395" cy="500" r="2"/><circle cx="425" cy="500" r="2"/>
+  </g>
+  <line x1="366" y1="20" x2="366" y2="576" stroke="#0a0c10" stroke-width="2"/>
+
+  <!-- helper: each device bar -->
+  <!-- Patch panel -->
+  <rect x="168" y="40" width="146" height="26" rx="3" fill="#23262b" stroke="#000"/>
+  <g fill="#0e1318" stroke="#3a82d6"></g>
+  <rect x="174" y="46" width="9" height="9" fill="#0e1318" stroke="#3a82d6"/><rect x="187" y="46" width="9" height="9" fill="#0e1318" stroke="#3a82d6"/><rect x="200" y="46" width="9" height="9" fill="#0e1318" stroke="#3a82d6"/><rect x="213" y="46" width="9" height="9" fill="#0e1318" stroke="#3a82d6"/><rect x="226" y="46" width="9" height="9" fill="#0e1318" stroke="#3a82d6"/><rect x="239" y="46" width="9" height="9" fill="#0e1318" stroke="#3a82d6"/><rect x="252" y="46" width="9" height="9" fill="#0e1318" stroke="#3a82d6"/><rect x="265" y="46" width="9" height="9" fill="#0e1318" stroke="#3a82d6"/><rect x="278" y="46" width="9" height="9" fill="#0e1318" stroke="#3a82d6"/><rect x="291" y="46" width="9" height="9" fill="#0e1318" stroke="#3a82d6"/>
+  <!-- Switch -->
+  <rect x="168" y="74" width="146" height="24" rx="3" fill="#23262b" stroke="#000"/>
+  <rect x="176" y="82" width="60" height="8" fill="#0e1318"/><rect x="244" y="82" width="60" height="8" fill="#0e1318"/><circle cx="186" cy="86" r="1.6" fill="#3fb950"/><circle cx="210" cy="86" r="1.6" fill="#3fb950"/>
+  <!-- Firewall -->
+  <rect x="168" y="106" width="146" height="24" rx="3" fill="#23262b" stroke="#000"/>
+  <rect x="176" y="112" width="40" height="12" rx="2" fill="#06202e"/><text x="196" y="121" text-anchor="middle" font-size="7" fill="#33b1ff" font-family="monospace">FW-01</text>
+  <circle cx="232" cy="118" r="2" fill="#3fb950"/><circle cx="242" cy="118" r="2" fill="#d29922"/><rect x="270" y="113" width="36" height="10" fill="#0e1318"/>
+  <!-- Servers 1-5 -->
+  <g>
+   <rect x="168" y="140" width="146" height="20" rx="3" fill="#23262b" stroke="#000"/><rect x="176" y="145" width="10" height="10" fill="#11151b" stroke="#2a3038"/><rect x="190" y="145" width="10" height="10" fill="#11151b" stroke="#2a3038"/><rect x="204" y="145" width="10" height="10" fill="#11151b" stroke="#2a3038"/><circle cx="300" cy="150" r="2.2" fill="#33b1ff"/>
+   <rect x="168" y="164" width="146" height="20" rx="3" fill="#23262b" stroke="#000"/><rect x="176" y="169" width="10" height="10" fill="#11151b" stroke="#2a3038"/><rect x="190" y="169" width="10" height="10" fill="#11151b" stroke="#2a3038"/><rect x="204" y="169" width="10" height="10" fill="#11151b" stroke="#2a3038"/><circle cx="300" cy="174" r="2.2" fill="#33b1ff"/>
+   <rect x="168" y="188" width="146" height="20" rx="3" fill="#23262b" stroke="#000"/><rect x="176" y="193" width="10" height="10" fill="#11151b" stroke="#2a3038"/><rect x="190" y="193" width="10" height="10" fill="#11151b" stroke="#2a3038"/><rect x="204" y="193" width="10" height="10" fill="#11151b" stroke="#2a3038"/><circle cx="300" cy="198" r="2.2" fill="#33b1ff"/>
+   <rect x="168" y="212" width="146" height="20" rx="3" fill="#23262b" stroke="#000"/><rect x="176" y="217" width="10" height="10" fill="#11151b" stroke="#2a3038"/><rect x="190" y="217" width="10" height="10" fill="#11151b" stroke="#2a3038"/><rect x="204" y="217" width="10" height="10" fill="#11151b" stroke="#2a3038"/><circle cx="300" cy="222" r="2.2" fill="#33b1ff"/>
+   <rect x="168" y="236" width="146" height="20" rx="3" fill="#23262b" stroke="#000"/><rect x="176" y="241" width="10" height="10" fill="#11151b" stroke="#2a3038"/><rect x="190" y="241" width="10" height="10" fill="#11151b" stroke="#2a3038"/><rect x="204" y="241" width="10" height="10" fill="#11151b" stroke="#2a3038"/><circle cx="300" cy="246" r="2.2" fill="#33b1ff"/>
+  </g>
+  <!-- right server tags -->
+  <g font-size="9" fill="#fff">
+   <rect x="372" y="143" width="58" height="14" rx="3" fill="#1d6fd6"/><text x="401" y="153" text-anchor="middle">SERVER 1</text>
+   <rect x="372" y="167" width="58" height="14" rx="3" fill="#1d6fd6"/><text x="401" y="177" text-anchor="middle">SERVER 2</text>
+   <rect x="372" y="191" width="58" height="14" rx="3" fill="#1d6fd6"/><text x="401" y="201" text-anchor="middle">SERVER 3</text>
+   <rect x="372" y="215" width="58" height="14" rx="3" fill="#1d6fd6"/><text x="401" y="225" text-anchor="middle">SERVER 4</text>
+   <rect x="372" y="239" width="58" height="14" rx="3" fill="#1d6fd6"/><text x="401" y="249" text-anchor="middle">SERVER 5</text>
+  </g>
+  <!-- NAS -->
+  <rect x="168" y="262" width="146" height="26" rx="3" fill="#23262b" stroke="#000"/>
+  <rect x="176" y="268" width="16" height="14" fill="#11151b" stroke="#2a3038"/><rect x="196" y="268" width="16" height="14" fill="#11151b" stroke="#2a3038"/><rect x="216" y="268" width="16" height="14" fill="#11151b" stroke="#2a3038"/><rect x="236" y="268" width="16" height="14" fill="#11151b" stroke="#2a3038"/><circle cx="300" cy="275" r="2.2" fill="#3fb950"/>
+  <!-- Storage array (taller) -->
+  <rect x="168" y="294" width="146" height="50" rx="3" fill="#23262b" stroke="#000"/>
+  <rect x="176" y="300" width="14" height="16" fill="#11151b" stroke="#2a3038"/><rect x="194" y="300" width="14" height="16" fill="#11151b" stroke="#2a3038"/><rect x="212" y="300" width="14" height="16" fill="#11151b" stroke="#2a3038"/><rect x="230" y="300" width="14" height="16" fill="#11151b" stroke="#2a3038"/><rect x="248" y="300" width="14" height="16" fill="#11151b" stroke="#2a3038"/><rect x="266" y="300" width="14" height="16" fill="#11151b" stroke="#2a3038"/>
+  <rect x="176" y="320" width="14" height="16" fill="#11151b" stroke="#2a3038"/><rect x="194" y="320" width="14" height="16" fill="#11151b" stroke="#2a3038"/><rect x="212" y="320" width="14" height="16" fill="#11151b" stroke="#2a3038"/><rect x="230" y="320" width="14" height="16" fill="#11151b" stroke="#2a3038"/><rect x="248" y="320" width="14" height="16" fill="#11151b" stroke="#2a3038"/><rect x="266" y="320" width="14" height="16" fill="#11151b" stroke="#2a3038"/>
+  <!-- Load balancer -->
+  <rect x="168" y="350" width="146" height="24" rx="3" fill="#23262b" stroke="#000"/>
+  <rect x="176" y="356" width="50" height="12" rx="2" fill="#06202e"/><text x="201" y="365" text-anchor="middle" font-size="7" fill="#33b1ff" font-family="monospace">LB</text><rect x="250" y="357" width="56" height="10" fill="#0e1318"/>
+  <!-- UPS -->
+  <rect x="168" y="382" width="146" height="34" rx="3" fill="#23262b" stroke="#000"/>
+  <rect x="250" y="390" width="56" height="18" rx="2" fill="#06202e"/><text x="278" y="402" text-anchor="middle" font-size="8" fill="#33b1ff" font-family="monospace">230V ✓</text>
+  <rect x="176" y="392" width="60" height="14" rx="2" fill="#11151b"/>
+  <!-- PDU -->
+  <rect x="168" y="424" width="146" height="22" rx="3" fill="#23262b" stroke="#000"/>
+  <rect x="174" y="430" width="10" height="10" rx="2" fill="#d23b2f"/>
+  <g fill="#0e1318" stroke="#444"></g>
+  <circle cx="200" cy="435" r="4" fill="#0e1318" stroke="#555"/><circle cx="216" cy="435" r="4" fill="#0e1318" stroke="#555"/><circle cx="232" cy="435" r="4" fill="#0e1318" stroke="#555"/><circle cx="248" cy="435" r="4" fill="#0e1318" stroke="#555"/><circle cx="264" cy="435" r="4" fill="#0e1318" stroke="#555"/><circle cx="280" cy="435" r="4" fill="#0e1318" stroke="#555"/><circle cx="296" cy="435" r="4" fill="#0e1318" stroke="#555"/>
+  <!-- wheels -->
+  <circle cx="180" cy="568" r="8" fill="#2a2f36"/><circle cx="330" cy="568" r="8" fill="#2a2f36"/>
+
+  <!-- LEFT LABELS -->
+  <g font-family="Segoe UI,Arial" font-size="10">
+   <text x="8" y="48" fill="#1d6fd6" font-weight="700">Patch Panel</text><text x="8" y="60" fill="#5b6675" font-size="8.5">kablo yönetimi</text><circle cx="158" cy="53" r="3" fill="#1d6fd6"/><line x1="120" y1="50" x2="158" y2="53" stroke="#1d6fd6" stroke-width="1"/>
+   <text x="8" y="86" fill="#1f9d54" font-weight="700">Switch</text><text x="8" y="98" fill="#5b6675" font-size="8.5">LAN bağlar</text><circle cx="158" cy="86" r="3" fill="#1f9d54"/><line x1="78" y1="86" x2="158" y2="86" stroke="#1f9d54" stroke-width="1"/>
+   <text x="8" y="118" fill="#d23b2f" font-weight="700">Firewall</text><text x="8" y="130" fill="#5b6675" font-size="8.5">güvenlik duvarı</text><circle cx="158" cy="118" r="3" fill="#d23b2f"/><line x1="92" y1="118" x2="158" y2="118" stroke="#d23b2f" stroke-width="1"/>
+   <text x="8" y="196" fill="#7c4dff" font-weight="700">Sunucular</text><text x="8" y="208" fill="#5b6675" font-size="8.5">uygulama + veri</text><circle cx="158" cy="198" r="3" fill="#7c4dff"/><line x1="92" y1="198" x2="158" y2="198" stroke="#7c4dff" stroke-width="1"/>
+   <text x="8" y="272" fill="#1f9d54" font-weight="700">NAS</text><text x="8" y="284" fill="#5b6675" font-size="8.5">dosya depolama</text><circle cx="158" cy="275" r="3" fill="#1f9d54"/><line x1="60" y1="275" x2="158" y2="275" stroke="#1f9d54" stroke-width="1"/>
+   <text x="8" y="316" fill="#e08600" font-weight="700">Storage</text><text x="8" y="328" fill="#5b6675" font-size="8.5">blok depolama (SAN)</text><circle cx="158" cy="318" r="3" fill="#e08600"/><line x1="92" y1="318" x2="158" y2="318" stroke="#e08600" stroke-width="1"/>
+   <text x="8" y="362" fill="#d23b2f" font-weight="700">Load Balancer</text><text x="8" y="374" fill="#5b6675" font-size="8.5">yük dengeleme</text><circle cx="158" cy="362" r="3" fill="#d23b2f"/><line x1="118" y1="362" x2="158" y2="362" stroke="#d23b2f" stroke-width="1"/>
+   <text x="8" y="398" fill="#1d6fd6" font-weight="700">UPS</text><text x="8" y="410" fill="#5b6675" font-size="8.5">kesintisiz güç</text><circle cx="158" cy="399" r="3" fill="#1d6fd6"/><line x1="60" y1="399" x2="158" y2="399" stroke="#1d6fd6" stroke-width="1"/>
+   <text x="8" y="438" fill="#e08600" font-weight="700">PDU</text><text x="8" y="450" fill="#5b6675" font-size="8.5">güç dağıtım birimi</text><circle cx="158" cy="435" r="3" fill="#e08600"/><line x1="60" y1="435" x2="158" y2="435" stroke="#e08600" stroke-width="1"/>
+  </g>
+</svg><figcaption>19" rack yerleşimi: ağ (patch panel/switch/firewall) → sunucu → depolama → güç (UPS/PDU)</figcaption></div>
+
+<table>
+  <tr><th>Cihaz</th><th>Görevi</th></tr>
+  <tr><td><b>Patch Panel</b></td><td>Ağ kablolarının düzenli sonlandırıldığı pasif RJ45 panel; kablo yönetimi sağlar (aktif değildir, beslemesi yoktur).</td></tr>
+  <tr><td><b>Switch</b></td><td>Yerel ağda (LAN) cihazları birbirine bağlayan aktif anahtar. PoE ile bazı cihazlara veri+güç verebilir.</td></tr>
+  <tr><td><b>Firewall</b></td><td>Ağ trafiğini izleyip kurallara göre süzen güvenlik duvarı; iç ağı dış tehditlerden korur.</td></tr>
+  <tr><td><b>Sunucu (Server)</b></td><td>Uygulamaları çalıştıran ve veriyi işleyen bilgisayarlar (1U/2U). Çift güç kaynağı (redundant PSU) ile A/B beslemeye bağlanır.</td></tr>
+  <tr><td><b>NAS</b></td><td>Dosya/veri için ağ üzerinden erişilen merkezi depolama.</td></tr>
+  <tr><td><b>Storage (SAN/Disk Array)</b></td><td>Yüksek kapasiteli blok depolama; çok sayıda disk + RAID ile yedeklilik.</td></tr>
+  <tr><td><b>Load Balancer</b></td><td>Gelen trafiği birden çok sunucuya dağıtır; süreklilik ve performans sağlar.</td></tr>
+  <tr><td><b>UPS</b></td><td>Kesintisiz güç kaynağı; akülerle kısa süreli yedek güç verir, jeneratör devreye girene kadar köprüler ve dalgalanmaları filtreler.</td></tr>
+  <tr><td><b>PDU</b></td><td>Rack içi güç dağıtım birimi; tüm cihazlara prizler üzerinden enerji dağıtır (akıllı PDU akım/enerji ölçer).</td></tr>
+</table>
+
+<div class="note"><b>Elektrik bakışı:</b> Bir rack'in güvenilirliği elektrik altyapısına bağlıdır. Kritik tesislerde <b>çift (A/B) bağımsız besleme</b>, her cihazda <b>çift güç kaynağı</b>, hat üzerinde <b>UPS</b>, arkasında <b>jeneratör</b> ve <b>ATS</b> bulunur. Ayrıca düşük dirençli <b>topraklama</b> ve eşpotansiyel baralama, sızıntı akımlarını ve statik elektriği güvenle boşaltır. Üretilen ısı <b>soğutma (HVAC/CRAC)</b> ile alınır; yetersiz soğutma cihaz arızası yapar.</div>
+<div class="tip"><b>Zayıf akım koordinasyonu:</b> Veri (zayıf akım) kabloları, parazit (EMI) nedeniyle güç (kuvvetli akım) kablolarından <b>ayrı kanal/tava</b> ve uygun mesafede çekilir. Bu, elektrik ekibiyle IT ekibinin ortak planlama yaptığı kritik bir konudur (bkz. Bölüm 23 mantığı — disiplinler arası koordinasyon).</div>
+</div>
+
+<!-- ===== 9 ===== -->
+<h2 class="sec" id="s7"><span class="n">9</span>Elektronik: Diyot · Doğrultucu · Transistör</h2>
+<div class="card">
+<p>Maddeler iletken, yalıtkan ve <b>yarı iletken</b> olur. Yarı iletkenlerin (silisyum, germanyum) son yörüngesinde <b>4 elektron</b> bulunur. Katkılama ile <b>N tipi</b> (fazla elektron) ve <b>P tipi</b> (oyuk) elde edilir.</p>
+<div class="fig"><svg viewBox="0 0 420 130">
+  <line x1="40" y1="65" x2="160" y2="65" stroke="#5b6675" stroke-width="2"/>
+  <polygon points="160,45 160,85 200,65" fill="#1d6fd6"/><line x1="200" y1="43" x2="200" y2="87" stroke="#1d6fd6" stroke-width="4"/>
+  <line x1="200" y1="65" x2="320" y2="65" stroke="#5b6675" stroke-width="2"/>
+  <text x="110" y="100" font-size="12" fill="#1d6fd6">Anot (+)</text><text x="232" y="100" font-size="12" fill="#1d6fd6">Katot (−)</text>
+  <polygon points="270,58 258,52 258,64" fill="#1f9d54"/><text x="120" y="40" font-size="12" fill="#1f9d54">akım tek yön →</text>
+</svg><figcaption>Diyot yalnız tek yönde (anot→katot) iletir</figcaption></div>
+<table>
+  <tr><th>Eleman</th><th>İşlev</th></tr>
+  <tr><td>Diyot (P-N)</td><td>Akımı tek yönde geçirir; doğru polarmada iletir, ters polarmada tıkar. LED = ışık yayan diyot.</td></tr>
+  <tr><td>Doğrultucu</td><td>AC'yi DC'ye çevirir. Yarım dalga (1 diyot) · Tam dalga (2) · <b>Köprü (4, en yaygın)</b>. Filtre kondansatörü ripple'ı azaltır.</td></tr>
+  <tr><td>Transistör (NPN/PNP)</td><td>3 uçlu (B, C, E). <b>Anahtar</b> ve <b>yükselteç</b>: küçük beyz akımı, büyük kolektör akımını kontrol eder.</td></tr>
+</table>
+<div class="fig"><svg viewBox="0 0 420 120">
+  <line x1="20" y1="60" x2="400" y2="60" stroke="#cfd6df"/>
+  <path d="M30,60 Q55,18 80,60 Q105,102 130,60 Q155,18 180,60" fill="none" stroke="#1d6fd6" stroke-width="2"/><text x="55" y="100" font-size="11" fill="#1d6fd6">Giriş AC</text>
+  <path d="M235,60 Q260,18 285,60 Q310,18 335,60" fill="none" stroke="#1f9d54" stroke-width="3"/><text x="255" y="100" font-size="11" fill="#1f9d54">Doğrultulmuş DC</text>
+</svg><figcaption>Doğrultma: AC dalganın DC'ye çevrilmesi</figcaption></div>
+</div>
+<!-- ===== 8 ===== -->
+<h2 class="sec" id="s8"><span class="n">10</span>İş Güvenliği ve Elektrik Çarpması</h2>
+<div class="card">
+<p>Elektrik çarpmasında tehlikeyi belirleyen, vücuttan geçen <b>akımın şiddetidir</b> (gerilim değil, akım öldürür). Eşit değerde <b>alternatif akım (AA)</b>, doğru akımdan (DA) daha tehlikelidir.</p>
+<div class="fig"><svg viewBox="0 0 440 120">
+  <defs><linearGradient id="cg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#1f9d54"/><stop offset="0.55" stop-color="#e08600"/><stop offset="1" stop-color="#d23b2f"/></linearGradient></defs>
+  <rect x="20" y="44" width="400" height="24" rx="6" fill="url(#cg)"/>
+  <text x="20" y="34" font-size="12" fill="#1a2230">Akım şiddeti arttıkça tehlike artar →</text>
+  <text x="22" y="92" font-size="11" fill="#1f9d54">~1 mA: hissetme</text>
+  <text x="160" y="92" font-size="11" fill="#e08600">15–25 mA: bırakamama</text>
+  <text x="305" y="92" font-size="11" fill="#d23b2f">80+ mA: fibrilasyon</text>
+</svg><figcaption>Akım şiddetinin fizyolojik etkisi</figcaption></div>
+<table>
+  <tr><th>Akım</th><th>Etki</th></tr>
+  <tr><td>~1 mA</td><td>Hissetme sınırı (gıdıklanma)</td></tr>
+  <tr><td>1–5 mA</td><td>Uyuşma, kol hareketinde zorluk</td></tr>
+  <tr><td>5–15 mA</td><td>Kramp başlangıcı</td></tr>
+  <tr><td>15–25 mA</td><td>Kaslar kasılır — iletkeni <b>bırakamama</b></td></tr>
+  <tr><td>80–100 mA+</td><td><b>Kalp fibrilasyonu, bilinç kaybı, ölüm riski</b></td></tr>
+</table>
+<div class="warn"><b>İlk müdahale:</b> 1) Önce <b>enerjiyi kes</b> ya da yalıtkan bir cisimle kişiyi akımdan ayır (çıplak elle dokunma). 2) <b>112</b>'yi ara. 3) Bilinç/solunum yoksa <b>CPR</b> uygula. 4) Yanıkları soğut.</div>
+<h3>İş güvenliğinde 5 Altın Kural</h3>
+<table>
+  <tr><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr>
+  <tr><td>Enerjiyi kes</td><td>Tekrar kapanmayı önle (kilitle/etiketle — LOTO)</td><td>Gerilimsizliği doğrula</td><td>Toprakla ve kısa devre et</td><td>Komşu gerilimli kısımları yalıt</td></tr>
+</table>
+<div class="tip"><b>KKD (kişisel koruyucu donanım):</b> baret (düşen cisim), yalıtkan eldiven ve ayakkabı (çarpılma), gerektiğinde yüz siperi. Elektrik yangınında <b>su kullanılmaz</b>; CO₂ veya kuru kimyevi toz kullanılır.</div>
+</div>
+
+<!-- ===== 9 ===== -->
+<h2 class="sec" id="s9"><span class="n">11</span>MYK Mesleki Yeterlilik Rehberi</h2>
+<div class="card">
+<p>Elektrik Tesisatçısı (15UY0241) MYK sınavı <b>iki aşamalıdır</b>: teorik ve performans (uygulama).</p>
+<table>
+  <tr><th>Konu</th><th>Bilgi</th></tr>
+  <tr><td>Teorik sınav</td><td>En az 25 çoktan seçmeli (4 şıklı) soru · soru başına ~2 dk · yanlış doğruyu götürmez</td></tr>
+  <tr><td>Geçme notu</td><td>Seviye 3 için ≥ <b>%70</b>, Seviye 4 için ≥ <b>%80</b>; A1 (İSG) birimi ≥ 70</td></tr>
+  <tr><td>Performans sınavı</td><td>Gerçek/gerçeğe yakın ortamda; kritik adımların tamamı + genelde ≥ %80</td></tr>
+  <tr><td>Birimler</td><td>A1 (zorunlu — İSG/Çevre/Organizasyon), B1 (Proje Hazırlama), B2 (Tesisat Uygulaması)</td></tr>
+</table>
+<div class="note"><b>Hazırlık önerisi:</b> İSG ve güvenlik kurallarına ağırlık ver (A1 zorunlu ve ayrı geçilir). Renk kodları, RCD/MCB, topraklama, ölçü aletleri ve temel hesaplar (Ohm, güç, gerilim düşümü) sık çıkan konulardır. Bu föydeki her bölüm doğrudan bu konuları kapsar.</div>
+<div class="tip"><b>Not:</b> Gerçek MYK soruları yayımlanmaz; ELK MASTER uygulamasındaki MYK bölümü, resmi yapı ve formata uygun <b>özgün deneme sorularıyla</b> hazırlanmıştır. Bu föy bir hazırlık kaynağıdır.</div>
+</div>
+
+<!-- ===== 12 SAHA UYGULAMA REHBERİ ===== -->
+<h2 class="sec" id="s12"><span class="n">12</span>Saha Uygulama Rehberi (Detaylı)</h2>
+
+<div class="card">
+<h3>12.1 Kablo ekleri nasıl yapılır?</h3>
+<p>Ek yeri, tesisatın <b>en zayıf noktasıdır</b>: kötü bir ek yüksek temas direnci yaratır, ısınır ve yangına yol açabilir. Bu yüzden ekler ya doğru sarılıp lehimlenir ya da <b>klemens/yüksük</b> ile yapılır. Her zaman <b>enerjisiz</b> çalışılır.</p>
+
+<h3 style="color:#1d6fd6">a) Düz ek (iki kabloyu uç uca birleştirme)</h3>
+<div class="fig"><svg viewBox="0 0 460 130">
+  <!-- step1 -->
+  <text x="60" y="18" text-anchor="middle" font-size="10" fill="#5b6675" font-weight="700">1) Soy (~5 cm)</text>
+  <rect x="10" y="46" width="50" height="8" fill="#9aa2ab"/><rect x="60" y="46" width="40" height="8" fill="#b5651d"/>
+  <rect x="160" y="46" width="40" height="8" fill="#b5651d"/><rect x="200" y="46" width="50" height="8" fill="#9aa2ab"/>
+  <!-- step2 cross -->
+  <text x="290" y="18" text-anchor="middle" font-size="10" fill="#5b6675" font-weight="700">2) Çapraz tut, 3) sıkıca sar</text>
+  <rect x="270" y="60" width="40" height="8" fill="#9aa2ab"/><rect x="370" y="60" width="40" height="8" fill="#9aa2ab"/>
+  <path d="M310,64 q10,-14 20,0 q10,14 20,0 q10,-14 20,0" fill="none" stroke="#b5651d" stroke-width="4"/>
+  <text x="350" y="100" text-anchor="middle" font-size="10" fill="#1f9d54">4) Lehimle + makaron/bant</text>
+</svg><figcaption>Düz ek: iki ucu 5 cm soy → çapraz tut → 5–6 tur birbirine sıkıca sar → (lehim) → makaronla yalıt</figcaption></div>
+<table>
+  <tr><th>#</th><th>Adım</th></tr>
+  <tr><td>1</td><td>Her iki kablonun ucunu yaklaşık <b>5 cm</b> soy. Yalıtkanı <b>dairesel kesme</b> (ringing yapma) — iletkeni çentmeden soy.</td></tr>
+  <tr><td>2</td><td>Açıkta kalan bakırların oksitli/kirli kısmını temizle (parlak bakıra ulaş).</td></tr>
+  <tr><td>3</td><td>İki ucu <b>X şeklinde çapraz</b> tut, ortadan başlayarak birbirine <b>5–6 sıkı tur</b> sar; her iki yöne de sar.</td></tr>
+  <tr><td>4</td><td>İsteğe bağlı <b>lehimle</b> (mekanik birleşmeyi sağlamlaştırır; lehim yapıştırıcı değildir).</td></tr>
+  <tr><td>5</td><td>Yalıtımı <b>makaron</b> (ısı ile daralan) veya kaliteli izole bant ile, yalıtkandan <b>geniş</b> şekilde kapat.</td></tr>
+</table>
+
+<h3 style="color:#1d6fd6">b) T-ek (derivasyon — ana hattan kol alma)</h3>
+<div class="fig"><svg viewBox="0 0 440 120">
+  <rect x="40" y="50" width="360" height="8" fill="#9aa2ab"/><rect x="180" y="50" width="80" height="8" fill="#b5651d"/>
+  <rect x="216" y="58" width="8" height="36" fill="#9aa2ab"/>
+  <path d="M220,58 q-12,8 0,16 q12,8 0,16" fill="none" stroke="#b5651d" stroke-width="4"/>
+  <text x="60" y="44" font-size="10" fill="#5b6675">Ana hat (ortadan soyulur, kesilmez)</text>
+  <text x="232" y="100" font-size="10" fill="#5b6675">Tali kablo ana iletkene 5–6 tur sarılır</text>
+</svg><figcaption>T-ek: ana iletken kesilmeden ortadan soyulur, tali kablo ana iletkene sıkıca sarılır</figcaption></div>
+
+<h3 style="color:#1d6fd6">c) Yüksüklü / klemensli ek (en güvenli pratik yöntem)</h3>
+<ul>
+  <li>Çok telli (NYAF) kablolarda iletken ucuna <b>yüksük (ferrül)</b> takılır ve <b>krimp pensesiyle</b> sıkılır; teller dağılmaz, gevşemez.</li>
+  <li>Ek, <b>buat klemensi</b> veya <b>ray klemensi</b> içinde yapılır; vida <b>tork değerine</b> göre sıkılır (az sıkma = ısınma, çok sıkma = iletken kopması).</li>
+  <li>Klemensli ek, sökülüp tekrar yapılabilir ve denetlenebilir olduğu için modern tesisatta tercih edilir.</li>
+</ul>
+<h3 style="color:#1d6fd6">d) Lehimli ek ve makaron</h3>
+<ul>
+  <li>Önce <b>mekanik birleştirme</b> (sarma) yapılır; lehim yalnız bunu sağlamlaştırır. Lehim akışkanlığı için <b>rosin flux</b> kullanılır (asidik, abartılmaz).</li>
+  <li>Isı <b>iletkene</b> uygulanır, lehim teli ekin üstüne sürülür; lehim ısıyla kendi akar. <b>Yeşil alev</b> bakırın oksitlendiğini gösterir — durulur.</li>
+  <li>Makaron ek üstüne geçirilip ısıtılır; yalıtkandan geniş olmalıdır.</li>
+</ul>
+<div class="warn"><b>Sık yapılan hatalar:</b> ringing (yüzük atma) ile iletkeni zayıflatmak · az tur sararak gevşek ek bırakmak · kötü mekanik eki lehim veya makaronla <b>gizlemek</b> · çok telli kabloyu yüksüksüz klemense sıkıştırmak.</div>
+</div>
+
+<div class="card">
+<h3>12.2 Tek hat şeması nasıl okunur? (adım adım, örnekle)</h3>
+<p>Tek hat şeması; üç faz, nötr ve toprağı içeren bir sistemi <b>tek bir çizgiyle</b> sadeleştirip gösterir. Amacı karmaşayı azaltıp <b>güç akışını ve koruma kademelerini</b> görünür kılmaktır. Okuma yönü daima <b>yukarıdan (kaynak) aşağıya (yükler)</b> doğrudur.</p>
+<p><b>Okuma kuralı (6 adım):</b></p>
+<table>
+  <tr><th>#</th><th>Ne yaparsın</th></tr>
+  <tr><td>1</td><td><b>Kaynağı bul</b> (en üstte): sayaç veya şebeke girişi.</td></tr>
+  <tr><td>2</td><td>Çizgiyi <b>aşağı doğru izle</b>: ana kesici → kaçak akım rölesi (RCD).</td></tr>
+  <tr><td>3</td><td><b>Barayı</b> (kalın yatay çizgi) bul: dağıtım buradan yapılır.</td></tr>
+  <tr><td>4</td><td>Baradan <b>kaç kol (linye) çıktığını</b> say.</td></tr>
+  <tr><td>5</td><td>Her kolda <b>koruma elemanını</b> (MCB: B/C/D + akım) ve <b>yükü</b> (lamba, priz, motor) oku.</td></tr>
+  <tr><td>6</td><td><b>Etiketleri</b> not et: kablo kesiti (örn. 3×2,5 NYM), akım (16 A), RCD eşiği (30 mA).</td></tr>
+</table>
+<div class="fig"><svg viewBox="0 0 420 330" style="max-height:360px">
+  <line x1="130" y1="22" x2="130" y2="210" stroke="#1a2230" stroke-width="2.5"/>
+  <!-- 1 sayac -->
+  <circle cx="130" cy="40" r="14" fill="#fff" stroke="#1a2230" stroke-width="2"/><text x="130" y="44" text-anchor="middle" font-size="8" fill="#1a2230">kWh</text>
+  <circle cx="100" cy="40" r="9" fill="#1d6fd6"/><text x="100" y="44" text-anchor="middle" font-size="10" fill="#fff" font-weight="700">1</text>
+  <!-- 2 ana kesici -->
+  <line x1="130" y1="66" x2="144" y2="56" stroke="#d23b2f" stroke-width="2.5"/><circle cx="130" cy="66" r="2.5" fill="#1a2230"/>
+  <circle cx="100" cy="66" r="9" fill="#1d6fd6"/><text x="100" y="70" text-anchor="middle" font-size="10" fill="#fff" font-weight="700">2</text>
+  <!-- 3 RCD -->
+  <rect x="114" y="82" width="32" height="20" fill="#fff" stroke="#1f9d54" stroke-width="2"/><text x="130" y="96" text-anchor="middle" font-size="7.5" fill="#1f9d54" font-weight="700">30mA</text>
+  <circle cx="100" cy="92" r="9" fill="#1d6fd6"/><text x="100" y="96" text-anchor="middle" font-size="10" fill="#fff" font-weight="700">3</text>
+  <!-- 4 bara -->
+  <line x1="40" y1="125" x2="300" y2="125" stroke="#1a2230" stroke-width="3"/><line x1="130" y1="102" x2="130" y2="125" stroke="#1a2230" stroke-width="2"/>
+  <circle cx="318" cy="125" r="9" fill="#1d6fd6"/><text x="318" y="129" text-anchor="middle" font-size="10" fill="#fff" font-weight="700">4</text>
+  <!-- branches -->
+  <line x1="70" y1="125" x2="70" y2="145" stroke="#1a2230" stroke-width="2"/><rect x="58" y="145" width="24" height="15" fill="#fff" stroke="#1a2230"/><text x="70" y="156" text-anchor="middle" font-size="7" fill="#1a2230">B10</text><line x1="70" y1="160" x2="70" y2="182" stroke="#1a2230" stroke-width="2"/><circle cx="70" cy="194" r="11" fill="#fff" stroke="#e08600" stroke-width="2"/><line x1="63" y1="187" x2="77" y2="201" stroke="#e08600"/><line x1="77" y1="187" x2="63" y2="201" stroke="#e08600"/><text x="70" y="224" text-anchor="middle" font-size="8.5" fill="#5b6675">Aydınlatma</text><text x="70" y="236" text-anchor="middle" font-size="8" fill="#5b6675">3×1,5</text>
+  <line x1="170" y1="125" x2="170" y2="145" stroke="#1a2230" stroke-width="2"/><rect x="158" y="145" width="24" height="15" fill="#fff" stroke="#1a2230"/><text x="170" y="156" text-anchor="middle" font-size="7" fill="#1a2230">C16</text><line x1="170" y1="160" x2="170" y2="188" stroke="#1a2230" stroke-width="2"/><path d="M160,188 a10,10 0 0 0 20,0" fill="none" stroke="#1d6fd6" stroke-width="2"/><text x="170" y="220" text-anchor="middle" font-size="8.5" fill="#5b6675">Prizler</text><text x="170" y="232" text-anchor="middle" font-size="8" fill="#5b6675">3×2,5</text>
+  <line x1="260" y1="125" x2="260" y2="145" stroke="#1a2230" stroke-width="2"/><rect x="248" y="145" width="24" height="15" fill="#fff" stroke="#1a2230"/><text x="260" y="156" text-anchor="middle" font-size="7" fill="#1a2230">C20</text><line x1="260" y1="160" x2="260" y2="184" stroke="#1a2230" stroke-width="2"/><circle cx="260" cy="196" r="12" fill="#fff" stroke="#1f9d54" stroke-width="2"/><text x="260" y="200" text-anchor="middle" font-size="10" fill="#1f9d54" font-weight="700">M</text><text x="260" y="226" text-anchor="middle" font-size="8.5" fill="#5b6675">Kombi/Mutfak</text>
+  <!-- PE -->
+  <line x1="130" y1="210" x2="130" y2="250" stroke="#1f9d54" stroke-width="2"/><line x1="116" y1="250" x2="144" y2="250" stroke="#1f9d54" stroke-width="2"/><line x1="121" y1="256" x2="139" y2="256" stroke="#1f9d54" stroke-width="2"/><line x1="125" y1="262" x2="135" y2="262" stroke="#1f9d54" stroke-width="2"/><circle cx="100" cy="240" r="9" fill="#1f9d54"/><text x="100" y="244" text-anchor="middle" font-size="9" fill="#fff" font-weight="700">PE</text>
+</svg><figcaption>Örnek daire panosu — numaraları sırayla okuyarak takip et</figcaption></div>
+<div class="tip"><b>Bu şemayı okuyalım:</b> ① Sayaçtan enerji gelir → ② Ana kesici → ③ 30 mA kaçak akım rölesi (RCD) tüm daireyi korur → ④ Bara, enerjiyi üç kola dağıtır → her kolda bir otomat ve yük var: <b>Aydınlatma</b> (B10, 3×1,5 mm²), <b>Prizler</b> (C16, 3×2,5 mm²), <b>Kombi/Mutfak</b> (C20). Altta yeşil <b>topraklama (PE)</b> tüm gövdeleri korur. Yani "akım yukarıdan girer, RCD'den geçer, baradan dağılır, her cihaz kendi sigortasından beslenir."</div>
+</div>
+
+<div class="card">
+<h3>12.3 Megger (izolasyon direnci) testi nasıl yapılır?</h3>
+<p>Megger (megaohmmetre / izolasyon test cihazı), bir iletken ile <b>toprak</b> veya <b>başka bir iletken</b> arasındaki <b>yalıtım direncini</b> ölçer; birim <b>megaohm (MΩ)</b>'dur. Yalıtımın nemden, yaşlanmadan veya hasardan bozulup bozulmadığını ortaya çıkarır. Normal multimetreden farkı, ölçümü <b>yüksek bir test gerilimi</b> (250/500/1000 V DC) uygulayarak yapmasıdır.</p>
+<div class="fig"><svg viewBox="0 0 440 180">
+  <rect x="40" y="40" width="120" height="100" rx="10" fill="#1a2230" stroke="#0c1119"/>
+  <rect x="54" y="52" width="92" height="34" rx="4" fill="#9fe7b0"/><text x="100" y="76" text-anchor="middle" font-size="16" fill="#0c2a16" font-family="monospace" font-weight="800">&gt;500 MΩ</text>
+  <circle cx="78" cy="112" r="14" fill="#0c1119" stroke="#3a3f47"/><text x="78" y="116" text-anchor="middle" font-size="8" fill="#9fb0c6">500V</text>
+  <rect x="120" y="100" width="28" height="20" rx="3" fill="#d23b2f"/><text x="134" y="114" text-anchor="middle" font-size="8" fill="#fff">TEST</text>
+  <!-- leads -->
+  <path d="M160,60 C 230,60 250,40 300,40" fill="none" stroke="#d23b2f" stroke-width="2.5"/><text x="305" y="44" font-size="10" fill="#d23b2f">L (faz iletkeni)</text>
+  <path d="M160,120 C 230,120 250,150 300,150" fill="none" stroke="#1a2230" stroke-width="2.5"/><text x="305" y="154" font-size="10" fill="#1a2230">E (toprak / PE)</text>
+  <line x1="300" y1="150" x2="320" y2="150" stroke="#1f9d54" stroke-width="2"/><line x1="306" y1="156" x2="314" y2="156" stroke="#1f9d54" stroke-width="2"/>
+</svg><figcaption>Megger bağlantısı: bir prob iletkene (L), diğeri toprağa (E); yüksek değer = sağlam yalıtım</figcaption></div>
+<h3 style="color:#1d6fd6">Adım adım prosedür</h3>
+<table>
+  <tr><th>#</th><th>İşlem</th></tr>
+  <tr><td>1</td><td><b>Enerjiyi kes</b> ve gerilimsizliği multimetreyle doğrula. Test gerilimli olduğundan kesinlikle enerjili devrede yapılmaz.</td></tr>
+  <tr><td>2</td><td>Zarar görebilecek <b>elektronik cihazları, dimmerleri, parafudur (SPD) ve kondansatörleri</b> devreden ayır.</td></tr>
+  <tr><td>3</td><td>Devreyi <b>deşarj et</b> (kalıcı yük olabilir).</td></tr>
+  <tr><td>4</td><td><b>Test gerilimini seç:</b> ≤500 V AG tesisat için genelde <b>500 V</b>; SELV/hassas için 250 V; motor/güç kablosu için 1000 V.</td></tr>
+  <tr><td>5</td><td><b>Probları bağla ve sırayla ölç:</b> Faz–Toprak (L-PE), Nötr–Toprak (N-PE), Faz–Nötr (L-N).</td></tr>
+  <tr><td>6</td><td>Test butonuna bas, gerilimi uygula ve değer oturana kadar <b>~1 dakika</b> bekle; <b>MΩ</b> değerini oku ve kaydet.</td></tr>
+  <tr><td>7</td><td>Test sonrası devreyi <b>tekrar deşarj et</b> (uçlarda yüksek gerilim kalabilir), probları çıkar.</td></tr>
+</table>
+<h3 style="color:#1d6fd6">Kabul değerleri ve yorum</h3>
+<table>
+  <tr><th>Devre tipi</th><th>Test gerilimi</th><th>En düşük kabul</th></tr>
+  <tr><td>SELV / PELV</td><td>250 V</td><td>≥ 0,5 MΩ</td></tr>
+  <tr><td>≤ 500 V tesisat (ev/işyeri)</td><td>500 V</td><td>≥ 1,0 MΩ</td></tr>
+  <tr><td>&gt; 500 V tesisat</td><td>1000 V</td><td>≥ 1,0 MΩ</td></tr>
+</table>
+<div class="tip"><b>Yorum:</b> Sağlam yeni bir tesisatta değer <b>onlarca–yüzlerce MΩ</b> (ideal "sonsuz/OL") çıkar; 1 MΩ yalnızca alt sınırdır. <b>Düşük değer</b> (örn. kΩ'lar) nem, iletkenler arası kaçak veya yalıtım hasarı demektir → hattı parçalara bölüp arızalı bölümü bul.</div>
+<div class="warn"><b>Güvenlik:</b> Test sırasında probların uçlarına dokunma (test gerilimi tehlikelidir). Elektronik cihazlar ölçüm gerilimiyle zarar görebilir; mutlaka izole et. Ölçüm bitince deşarjı unutma.</div>
+</div>
+
+<div class="card">
+<h3>12.4 Arıza tespiti (sistematik)</h3>
+<p>Teşhis tahminle değil, <b>gözle kontrol → gerilim ölç → bölerek izole et → süreklilik/izolasyon ölç</b> sırasıyla yapılır.</p>
+<table>
+  <tr><th>Belirti</th><th>Olası neden</th><th>Ölçüm / çözüm</th></tr>
+  <tr><td>MCB sürekli atıyor</td><td>Kısa devre veya aşırı yük</td><td>Hattı ikiye böl; <b>enerjisiz süreklilik</b> ile faz-nötr kısa devresini ara; aşırı yükte kesit/sigorta uyumunu ve yük sayısını kontrol et</td></tr>
+  <tr><td>RCD atıyor</td><td>Kaçak / izolasyon arızası / nötr-toprak teması</td><td>Linyeleri tek tek devreye al; <b>megger</b> ile izolasyon ölç; nötrün yanlış paylaşılmadığını doğrula</td></tr>
+  <tr><td>Priz/lamba ölü, gerilim yok</td><td>Kopukluk, gevşek klemens, atmış sigorta</td><td>Kademe kademe <b>gerilim ölç</b> (panodan prize doğru); klemensleri sık; süreklilikle kopukluğu bul</td></tr>
+  <tr><td>Gerilim var ama cihaz çalışmıyor</td><td>Cihaz arızası</td><td>Beslemede 230 V doğruysa sorun cihazdadır</td></tr>
+  <tr><td>Bağlantı ısınıyor / kararıyor</td><td>Gevşek/oksitli bağlantı (yüksek temas direnci)</td><td>Enerjisiz sök, temizle, yüksük tak, <b>torkla</b> sık</td></tr>
+  <tr><td>Çarpılma hissi / kaçak</td><td>Gövde-faz teması, yalıtım bozuk</td><td>Hemen enerjiyi kes; megger + topraklama sürekliliğini ölç</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>12.5 Ölçü aletleri kullanımı (detaylı)</h3>
+<table>
+  <tr><th>Ölçüm</th><th>Kademe</th><th>Nasıl yapılır?</th><th>Beklenen</th></tr>
+  <tr><td>AC gerilim</td><td>V~</td><td>Problar faz-nötr arasına <b>paralel</b></td><td>~230 V (faz-nötr), ~400 V (faz-faz)</td></tr>
+  <tr><td>DC gerilim</td><td>V=</td><td>Problar +/− uçlara paralel</td><td>Akü 12/24 V, pil 1,5 V vb.</td></tr>
+  <tr><td>Süreklilik</td><td>Ω / 🔊</td><td><b>Enerjisiz</b>; iletken iki ucuna</td><td>Sağlamsa <b>öter</b> (≈0 Ω), kopuksa ötmez</td></tr>
+  <tr><td>Direnç</td><td>Ω</td><td><b>Enerjisiz</b> eleman uçlarına</td><td>Düşük=iletim, <b>OL/∞</b>=kopuk</td></tr>
+  <tr><td>Diyot</td><td>⯈│ sembolü</td><td>Anot(+)/katot(−) uçlarına</td><td>Doğru yön ~0,5–0,7 V, ters yön OL</td></tr>
+  <tr><td>Akım</td><td>A (seri) / Pens</td><td>Multimetrede seri; pratikte <b>pens</b> ile tek hat içine</td><td>Hattın çektiği amper</td></tr>
+  <tr><td>İzolasyon</td><td>Megger</td><td>Yüksek gerilimle iletken-toprak arası</td><td>MΩ (yüksek = iyi)</td></tr>
+</table>
+<div class="warn"><b>Güvenlik:</b> Direnç, süreklilik, diyot ve izolasyon ölçümleri <b>daima enerjisiz</b>. Gerilimli ölçümde alet/prob <b>CAT sınıfı</b> ortama uygun olmalı (örn. pano içi CAT III/IV). Büyük dirençleri iki probu birden elle tutarak ölçme.</div>
+<div class="tip"><b>Pens ampermetre:</b> Yalnız <b>tek iletken (faz)</b> içine alınır; faz+nötr birlikte alınırsa alanlar birbirini götürür ve ekran <b>0 A</b> gösterir.</div>
+</div>
+
+</div>
+<footer>ELK MASTER — Elektrik Eğitim Föyü · Tek parça çalışma fasikülü · Canlı uygulama: turabyagmurlu.github.io/elk-master · Yazdırmak için Ctrl+P</footer>
+</body>
+</html>
