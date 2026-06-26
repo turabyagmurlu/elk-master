@@ -325,6 +325,72 @@
   .msg.info{background:#171d24;color:#c9d6df;border-color:#33414c}
   .pill.sel{border-color:var(--acc);background:#221d12}
   footer{border-top:1px solid var(--line)}
+
+  /* ============ SICAK & DAVETKÂR PREMIUM KATMAN ============ */
+  :root{
+    --bg:#13141a; --bg2:#181a20; --panel:#1c1f27; --panel2:#22262f; --line:#2e333f;
+    --txt:#f1ede5; --muted:#a39d92; --acc:#e3bd7e; --accd:#cf9a52; --acc2:#9cc0d6; --acc3:#b6a7d6;
+    --ok:#86b87f; --bad:#d68a80; --warn:#e3bd7e;
+  }
+  body{background:radial-gradient(1000px 460px at 50% -160px,#2a2114 0%,transparent 58%),var(--bg)}
+  header.top{background:rgba(19,20,26,.94);border-bottom:1px solid var(--line)}
+  .logo{background:linear-gradient(135deg,#1f2129,#171920);border:1px solid var(--acc);color:var(--acc);box-shadow:0 4px 14px #0005}
+  .chip{background:#1e1b15;border:1px solid #3a3326}
+  .hstats b{color:var(--acc)}
+
+  /* hero — premium, warm depth */
+  .hero{position:relative;overflow:hidden;background:linear-gradient(135deg,#1f232c,#191c23)}
+  .hero::before{content:"";position:absolute;right:-70px;top:-70px;width:280px;height:280px;border-radius:50%;
+    background:radial-gradient(circle,#e3bd7e26,transparent 70%);pointer-events:none}
+  .hero h2{font-family:Georgia,"Times New Roman",serif;font-size:25px;letter-spacing:.3px}
+  .ring circle:last-of-type{stroke:var(--acc)!important;filter:drop-shadow(0 0 6px #e3bd7e55)}
+  .kpi{background:#191c23;border:1px solid var(--line)}
+  .kpi .v{color:var(--acc);font-weight:800;font-size:25px}
+
+  /* primary CTA — subtle warm gradient with depth */
+  .btn{background:linear-gradient(135deg,#ecc888,#d09f57);color:#241a09;box-shadow:0 6px 16px #0005;border-radius:9px;font-weight:700}
+  .btn:hover{transform:translateY(-1px);box-shadow:0 9px 22px #0006;filter:brightness(1.04)}
+  .btn.blue{background:transparent;color:var(--acc2);border:1px solid var(--acc2);box-shadow:none}
+  .btn.blue:hover{background:#9cc0d614;transform:translateY(-1px);box-shadow:none}
+  .btn.purple{background:transparent;color:var(--acc3);border:1px solid var(--acc3)}
+  .btn.danger{background:transparent;color:var(--bad);border:1px solid var(--bad)}
+  .btn.ghost{background:#ffffff05;border:1px solid var(--line)}
+  .btn.ghost:hover{border-color:var(--acc);transform:translateY(-1px)}
+
+  /* cards — inviting hover */
+  .card{background:var(--panel);border:1px solid var(--line);position:relative;overflow:hidden;transition:.18s}
+  .card:hover{transform:translateY(-3px);box-shadow:0 14px 30px #0006;border-color:var(--acc)}
+  .card::after{content:"";position:absolute!important;left:0;top:0;height:3px;width:100%;
+    background:linear-gradient(90deg,var(--acc),transparent);opacity:0;transition:.2s;display:block!important}
+  .card:hover::after{opacity:.85}
+  .card .ico{transition:.18s;display:inline-block}
+  .card:hover .ico{transform:scale(1.1) rotate(-3deg)}
+
+  /* progress bars / scores warm */
+  .scorebar>i{background:linear-gradient(90deg,var(--accd),var(--acc));box-shadow:0 0 10px #e3bd7e33}
+  .mini>i{background:linear-gradient(90deg,var(--accd),var(--acc))}
+
+  /* badges earned — gentle life */
+  .badge.on{box-shadow:0 0 0 1px #e3bd7e33,0 8px 20px #0004;border-color:var(--acc)}
+  .badge.on .bi{display:inline-block;animation:floaty 4s ease-in-out infinite}
+  @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+
+  /* nav active warm underline */
+  nav.main button.active{color:var(--acc);border-bottom:2px solid var(--acc);border-radius:0;text-shadow:0 0 10px #e3bd7e44}
+  nav.main a.foynav{border:1px solid var(--acc);color:var(--acc)}
+  nav.main a.foynav:hover{background:#e3bd7e16}
+  .tabbar button.active{color:var(--acc);border-bottom-color:var(--acc)}
+
+  .examtimer{color:var(--acc2)}
+  .cert{border-color:var(--acc);box-shadow:0 0 30px #e3bd7e1a}
+  .cert .nm{color:var(--acc)}
+  .opt.sel{border-color:var(--acc);background:#241d12}
+  .pill.sel{border-color:var(--acc);background:#241d12}
+  .sectiontitle h2,.stage h2{font-family:Georgia,"Times New Roman",serif}
+  .edu{border-left-color:var(--acc2)}
+  #app>*{animation:rise .22s ease}
+  @keyframes rise{from{opacity:.55;transform:translateY(6px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion: reduce){#app>*,.badge.on .bi{animation:none}}
 </style>
 </head>
 <body>
