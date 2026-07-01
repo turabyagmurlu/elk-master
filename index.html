@@ -2283,6 +2283,50 @@ function submitQuiz(){
 }
 
 
+/* ===== MODÜL 35 — SAYAÇ & PANO BAĞLANTISI ===== */
+MODS.push({id:35, t:"Sayaç & Pano Bağlantısı", cat:"pano", ic:"🔌", d:"Sayaç panosu, sigorta bağlantısı, mühür, tesisat girişi.", task:null});
+Object.assign(TEORI,{
+35:`<b>Sayaç panosu</b>, şebeke enerjisinin binaya girdiği ve tüketimin ölçüldüğü ilk noktadır.<br>
+<b>Bağlantı sırası:</b> Şebeke girişi → ana sigorta/kesici → <b>Sayaç</b> → tüketici panosu (RCD + linye sigortaları) → linyeler.<br>
+<b>Sayaç tipi:</b> Ev için <b>monofaze</b> (1 faz + nötr), işyeri/sanayi için <b>trifaze</b> (3 faz + nötr).<br>
+Sayacın <b>giriş uçları şebekeden</b>, <b>çıkış uçları tesisata</b> bağlanır; uçlar karıştırılmaz. Sayaç ve ana kesici <b>dağıtım şirketince mühürlenir</b>; mühürlü kısma müdahale yasaktır (kaçak sayılır).<br>
+Sayaç sonrası tüketici tarafında <b>RCD (30 mA)</b> ve <b>linye sigortaları (MCB)</b> bulunur. Topraklama (PE) ayrı çekilir; rengi <b>sarı-yeşildir</b>.`,
+});
+Object.assign(FOY,{
+35:`<b>Kademeler (giriş → yük):</b><br>
+1) <b>Şebeke girişi:</b> Dağıtım şebekesinden faz(lar) + nötr gelir.<br>
+2) <b>Ana sigorta/kesici:</b> Panoyu ve sayacı korur, mühürlenir.<br>
+3) <b>Sayaç:</b> Tüketilen enerjiyi (kWh) ölçer. Giriş = şebeke, çıkış = tesisat. Monofaze 230 V, trifaze 400 V.<br>
+4) <b>Tüketici panosu:</b> RCD (30 mA can güvenliği) + linye sigortaları (aydınlatma, priz, mutfak...).<br>
+5) <b>Linyeler:</b> Her sigortadan bir hat çıkar; kesit yüke göre (aydınlatma 1,5 mm², priz 2,5 mm²).<br>
+<b>Renk kodu:</b> Faz kahve/siyah/gri · Nötr mavi · Toprak sarı-yeşil.<br>
+<b>Dikkat:</b> Mühürlü bölüme dokunma; faz-nötr uçlarını karıştırma; çok telli kabloda yüksük kullan; her sigortayı etiketle.`,
+});
+Object.assign(QBANK,{
+35:[
+ {q:"Sayaç ne ölçer?",opts:["Gerilimi","Tüketilen elektrik enerjisini (kWh)","Direnci","Frekansı"],ans:1,ex:"Sayaç tüketilen aktif enerjiyi kWh cinsinden ölçer."},
+ {q:"Ev tipi (monofaze) sayaç kaç iletkenle bağlanır?",opts:["Faz + nötr (2)","3 faz + nötr","Sadece faz","5 iletken"],ans:0,ex:"Monofaze: 1 faz + nötr."},
+ {q:"Trifaze sayaç bağlantısı?",opts:["1 faz + nötr","3 faz + nötr","2 faz","Sadece nötr"],ans:1,ex:"Trifaze: 3 faz + nötr (işyeri/sanayi)."},
+ {q:"Doğru bağlantı sırası?",opts:["Sayaç→şebeke→RCD","Şebeke→ana kesici→sayaç→RCD→sigortalar→linye","Linye→sayaç→şebeke","RCD→sayaç→şebeke"],ans:1,ex:"Enerji giriş→ölçüm→koruma→dağıtım sırasıyla ilerler."},
+ {q:"Sayacın giriş uçları nereye bağlanır?",opts:["Tesisata","Şebekeye","Toprağa","Linyeye"],ans:1,ex:"Giriş şebekeden, çıkış tesisata; uçlar karıştırılmaz."},
+ {q:"Sayaç/ana kesicideki mühüre müdahale?",opts:["Serbest","Yasak (kaçak sayılır)","İzinle serbest","Sadece geceleri"],ans:1,ex:"Mühürlü kısma müdahale kaçak elektrik sayılır ve yasaktır."},
+ {q:"Sayaç sonrası can güvenliği cihazı?",opts:["Kondansatör","RCD (30 mA)","Sayaç","Parafudur"],ans:1,ex:"Tüketici tarafında 30 mA RCD kullanılır."},
+ {q:"Panoda topraklama iletkeni rengi?",opts:["Mavi","Sarı-yeşil","Kahverengi","Siyah"],ans:1,ex:"Toprak (PE) sarı-yeşildir."}
+]
+});
+Object.assign(DIAG,{
+35:`<svg viewBox="0 0 420 320"><line x1="150" y1="18" x2="150" y2="250" stroke="#8a98ab" stroke-width="2.5"/>
+ <text x="170" y="24" fill="#cdd7e2" font-size="11">Şebeke girişi</text><circle cx="150" cy="24" r="4" fill="#f85149"/>
+ <line x1="150" y1="42" x2="150" y2="54" stroke="#8a98ab" stroke-width="2"/><rect x="140" y="54" width="20" height="14" fill="#161b22" stroke="#8a98ab"/><text x="170" y="65" fill="#8a98ab" font-size="10">Ana sigorta (mühürlü)</text>
+ <circle cx="150" cy="92" r="16" fill="#161b22" stroke="#ffb000" stroke-width="2"/><text x="150" y="96" text-anchor="middle" font-size="9" fill="#ffb000">kWh</text><text x="172" y="90" fill="#ffb000" font-size="11">SAYAÇ</text><text x="172" y="102" fill="#8a98ab" font-size="9">giriş=şebeke, çıkış=tesisat</text>
+ <line x1="150" y1="108" x2="150" y2="124" stroke="#8a98ab" stroke-width="2"/><line x1="150" y1="124" x2="164" y2="114" stroke="#f85149" stroke-width="2.5"/><text x="172" y="126" fill="#8a98ab" font-size="10">Ana kesici</text>
+ <rect x="132" y="140" width="36" height="20" fill="#161b22" stroke="#3fb950" stroke-width="2"/><text x="150" y="154" text-anchor="middle" font-size="8" fill="#3fb950">RCD 30mA</text>
+ <line x1="60" y1="182" x2="300" y2="182" stroke="#8a98ab" stroke-width="3"/><line x1="150" y1="160" x2="150" y2="182" stroke="#8a98ab" stroke-width="2"/><text x="308" y="186" fill="#8a98ab" font-size="10">Bara</text>
+ ${[0,1,2].map(i=>`<line x1="${90+i*80}" y1="182" x2="${90+i*80}" y2="200" stroke="#8a98ab" stroke-width="2"/><rect x="${78+i*80}" y="200" width="24" height="15" fill="#161b22" stroke="#33b1ff"/><text x="${90+i*80}" y="211" text-anchor="middle" font-size="7" fill="#33b1ff">C16</text><line x1="${90+i*80}" y1="215" x2="${90+i*80}" y2="235" stroke="#8a98ab" stroke-width="2"/><text x="${90+i*80}" y="248" text-anchor="middle" font-size="8" fill="#8a98ab">Linye ${i+1}</text>`).join('')}
+ <line x1="150" y1="250" x2="150" y2="278" stroke="#3fb950" stroke-width="2"/><line x1="138" y1="278" x2="162" y2="278" stroke="#3fb950" stroke-width="2"/><line x1="143" y1="284" x2="157" y2="284" stroke="#3fb950" stroke-width="2"/><text x="170" y="282" fill="#3fb950" font-size="9">Topraklama (PE)</text></svg>`,
+});
+
+
 refreshHeader();
 go('home');
 
