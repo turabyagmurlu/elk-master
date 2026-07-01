@@ -2327,6 +2327,91 @@ Object.assign(DIAG,{
 });
 
 
+/* ===== MODÜL 36 — ELEKTRİK 101 (TEMEL KAVRAMLAR) ===== */
+MODS.push({id:36, t:"Elektrik 101 — Temel Kavramlar", cat:"temel", ic:"🎓", d:"Volt, Amper, Watt, kWh nedir? Güç hesabı, hap bilgiler.", task:"modElk101"});
+Object.assign(TEORI,{
+36:`Elektriği anlamanın en kolay yolu <b>su borusu benzetmesidir</b> 🚰:<br>
+• <b>Gerilim (Volt, V)</b> = suyun <b>BASINCI</b>. Elektronları iten kuvvet. Türkiye'de priz ≈ <b>230 V</b>.<br>
+• <b>Akım (Amper, A)</b> = borudaki su <b>DEBİSİ</b>. Bir noktadan saniyede geçen elektron miktarı.<br>
+• <b>Direnç (Ohm, Ω)</b> = borudaki <b>DARLIK</b>. Akışa karşı gösterilen zorluk.<br>
+• <b>Güç (Watt, W)</b> = birim zamanda yapılan <b>İŞ</b>; cihazın "ne kadar güçlü" olduğudur. <b>P = V × I</b>.<br>
+• <b>Enerji (kWh)</b> = zamanla harcanan <b>TÜKETİM</b>; faturaya yansıyan budur. <b>kWh = kW × saat</b>.<br>
+<b>Watt neye denir?</b> Güç birimine — 1 W, saniyede 1 joule enerji demektir. <b>1 kW = 1000 W.</b><br>
+<b>kWh nedir?</b> 1 kW gücün 1 saat çalışması = 1 kWh enerji.<br>
+<b>Ön ekler:</b> mili (m)=1/1000 · kilo (k)=1.000 · Mega (M)=1.000.000.`,
+});
+Object.assign(FOY,{
+36:`<b>💊 Hap bilgiler:</b><br>
+• Volt (V) → gerilim/basınç · Amper (A) → akım/debi · Ohm (Ω) → direnç · Watt (W) → güç · kWh → enerji (tüketim).<br>
+• <b>Ohm yasası:</b> V = I × R.<br>
+• <b>Güç:</b> P = V × I = I²×R = V²/R (birim: Watt).<br>
+• <b>1 kW = 1000 W</b>, <b>1 MW = 1000 kW</b>.<br>
+• <b>Enerji = Güç × Zaman:</b> kWh = kW × saat.<br>
+<b>Örnek fatura hesabı:</b> 2000 W'lık (2 kW) bir ısıtıcı günde 3 saat çalışırsa:<br>
+&nbsp;&nbsp;Enerji = 2 kW × 3 saat = <b>6 kWh/gün</b> → ayda 6×30 = 180 kWh.<br>
+&nbsp;&nbsp;Birim fiyat 3 TL/kWh ise: 180 × 3 = <b>540 TL/ay</b>.<br>
+<b>Kısa yol:</b> Watt'ı 1000'e böl → kW; saatle çarp → kWh; birim fiyatla çarp → TL.`,
+});
+Object.assign(QBANK,{
+36:[
+ {q:"Gerilimin birimi nedir?",opts:["Amper","Volt","Watt","Ohm"],ans:1,ex:"Gerilim Volt (V) ile ölçülür."},
+ {q:"Akımın birimi nedir?",opts:["Amper","Volt","Ohm","Hertz"],ans:0,ex:"Akım Amper (A) ile ölçülür."},
+ {q:"Güç hangi birimle ifade edilir?",opts:["Volt","Watt","Joule","Ohm"],ans:1,ex:"Güç Watt (W) ile ifade edilir."},
+ {q:"Güç formülü hangisidir?",opts:["P = V + I","P = V × I","P = V / I","P = I / V"],ans:1,ex:"P = V × I (gerilim çarpı akım)."},
+ {q:"1 kW kaç Watt'tır?",opts:["10","100","1000","1.000.000"],ans:2,ex:"1 kW = 1000 W."},
+ {q:"Faturadaki tüketim (enerji) hangi birimledir?",opts:["Watt","kWh","Volt","Amper"],ans:1,ex:"Enerji tüketimi kWh (kilovatsaat) ile ölçülür."},
+ {q:"1 kWh ne demektir?",opts:["1 kW gücün 1 saat çalışması","1000 Volt","1 Amperlik akım","1 saatlik gerilim"],ans:0,ex:"kWh = kW × saat; 1 kW'ın 1 saat çalışması 1 kWh'dir."},
+ {q:"Su benzetmesinde 'Volt' neye benzer?",opts:["Debiye","Basınca","Darlığa","Sıcaklığa"],ans:1,ex:"Volt = basınç, Amper = debi, Ohm = borudaki darlık."}
+]
+});
+Object.assign(DIAG,{
+36:`<svg viewBox="0 0 440 190"><rect x="30" y="80" width="380" height="26" rx="6" fill="#20303f" stroke="#8a98ab"/>
+ <circle cx="80" cy="60" r="20" fill="#161b22" stroke="#ffb000" stroke-width="2"/><line x1="80" y1="60" x2="92" y2="50" stroke="#ffb000" stroke-width="2"/><text x="80" y="30" text-anchor="middle" fill="#ffb000" font-size="12" font-weight="700">V</text><text x="80" y="128" text-anchor="middle" fill="#8a98ab" font-size="9">Basınç (Volt)</text>
+ <polygon points="180,86 180,100 210,93" fill="#33b1ff"/><text x="165" y="74" fill="#33b1ff" font-size="12" font-weight="700">A →</text><text x="185" y="128" text-anchor="middle" fill="#8a98ab" font-size="9">Debi (Amper)</text>
+ <path d="M250,80 l14,13 l-14,13" fill="none" stroke="#f85149" stroke-width="3"/><path d="M270,80 l-14,13 l14,13" fill="none" stroke="#f85149" stroke-width="3"/><text x="258" y="72" text-anchor="middle" fill="#f85149" font-size="12" font-weight="700">Ω</text><text x="258" y="128" text-anchor="middle" fill="#8a98ab" font-size="9">Darlık (Direnç)</text>
+ <circle cx="370" cy="93" r="22" fill="#161b22" stroke="#3fb950" stroke-width="2"/>${[0,60,120,180,240,300].map(a=>`<line x1="370" y1="93" x2="${(370+18*Math.cos(a*Math.PI/180)).toFixed(1)}" y2="${(93+18*Math.sin(a*Math.PI/180)).toFixed(1)}" stroke="#3fb950" stroke-width="2"/>`).join('')}<text x="370" y="97" text-anchor="middle" fill="#3fb950" font-size="12" font-weight="700">W</text><text x="370" y="132" text-anchor="middle" fill="#8a98ab" font-size="9">İş / Güç (Watt)</text>
+ <text x="30" y="165" fill="#cdd7e2" font-size="13">P = V × I &nbsp;·&nbsp; kWh = kW × saat</text></svg>`,
+});
+function modElk101(m){
+  el('mtab').innerHTML=`
+   <div class="panel2"><b>Görev — Enerji & Fatura Hesaplayıcı</b>
+     <div class="muted" style="font-size:12px;margin:4px 0">Bir cihazın günde/ayda ne kadar enerji ve para harcadığını gör. Kaydırıcıları oynat.</div>
+     <label class="fld">Cihaz gücü: <span id="e1v">2000</span> W (<span id="e1k">2.0</span> kW)</label>
+     <input type="range" id="eGuc" min="10" max="3000" step="10" value="2000" oninput="elk101calc()">
+     <label class="fld">Günlük çalışma: <span id="e2v">3</span> saat</label>
+     <input type="range" id="eSaat" min="0" max="24" step="0.5" value="3" oninput="elk101calc()">
+     <label class="fld">Birim fiyat (TL/kWh):</label>
+     <input type="number" id="eFiyat" class="inline" style="width:110px" value="3" oninput="elk101calc()">
+     <div class="kc" style="margin-top:10px">
+       <div class="k"><span>Günlük enerji</span><b id="eKwh">—</b></div>
+       <div class="k"><span>Günlük tutar</span><b id="eGun">—</b></div>
+       <div class="k"><span>Aylık enerji</span><b id="eAy">—</b></div>
+       <div class="k"><span>Aylık tutar</span><b id="eAyTl">—</b></div>
+     </div>
+   </div>
+   <div class="panel2"><b>Görev — Hesapla</b>
+     <div class="muted" style="font-size:12px;margin:4px 0">2000 W (2 kW) bir cihaz 3 saat çalışırsa kaç <b>kWh</b> harcar?</div>
+     <input type="number" id="eAns" step="0.1" class="inline" style="width:120px" placeholder="kWh">
+     <button class="btn blue sm" style="margin-left:8px" onclick="elk101check()">Kontrol</button>
+   </div>
+   <div id="res36"></div>`;
+  elk101calc();
+}
+function elk101calc(){
+  var W=+el('eGuc').value, hs=+el('eSaat').value, f=+el('eFiyat').value||0;
+  el('e1v').textContent=W; el('e1k').textContent=(W/1000).toFixed(1); el('e2v').textContent=hs;
+  var kwh=W*hs/1000, gun=kwh*f, ay=kwh*30, ayTl=gun*30;
+  el('eKwh').textContent=kwh.toFixed(2)+' kWh';
+  el('eGun').textContent=gun.toFixed(2)+' TL';
+  el('eAy').textContent=ay.toFixed(0)+' kWh';
+  el('eAyTl').textContent=ayTl.toFixed(0)+' TL';
+}
+function elk101check(){
+  var ok=Math.abs(+el('eAns').value-6)<0.05;
+  el('res36').innerHTML=taskDone(36, ok?100:40, ok?'ok':'bad', ok?'✔ Doğru! Enerji = 2 kW × 3 saat = 6 kWh. (kWh = kW × saat)':'✗ Enerji = Güç(kW) × Zaman = 2 × 3 = 6 kWh olmalı.');
+}
+
+
 refreshHeader();
 go('home');
 
