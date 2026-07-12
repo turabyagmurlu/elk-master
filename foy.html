@@ -76,6 +76,8 @@
   <a href="#s8"><b>10.</b> İş Güvenliği ve Elektrik Çarpması</a>
   <a href="#s9"><b>11.</b> MYK Mesleki Yeterlilik Rehberi</a>
   <a href="#s12"><b>12.</b> Saha Uygulama Rehberi (Bağlama · Tek Hat · Arıza · Ölçüm)</a>
+  <a href="#s13"><b>13.</b> Güç → Akım → Kablo Kesiti → Koruma</a>
+  <a href="#s14"><b>14.</b> Yıldız-Üçgen Bağlantı</a>
 </div>
 
 <!-- ===== 1 ===== -->
@@ -300,6 +302,7 @@
   <rect x="110" y="134" width="60" height="48" rx="3" fill="#fff" stroke="#9fb0c6"/><text x="140" y="156" text-anchor="middle" font-size="8.5" fill="#1a2230">Termik</text><text x="140" y="168" text-anchor="middle" font-size="8.5" fill="#1a2230">röle</text>
   <rect x="300" y="134" width="106" height="48" rx="3" fill="#fff" stroke="#9fb0c6"/><text x="353" y="162" text-anchor="middle" font-size="9" fill="#1a2230">Kompanzasyon (kondansatör)</text>
 </svg><figcaption>Tipik dağıtım panosu yerleşimi: ana şalter · ölçü · RCCB · SPD · MCB sırası · kumanda · kompanzasyon</figcaption></div>
+<figure class="fig" style="background:#fff;border:1px solid var(--line)"><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3GAM4t5LIrVnoytOwhQqVixxnvj/hf_20260712_130252_8d8715d4-1db9-4dc4-85dd-403d1752ce95.png" alt="Gerçekçi dağıtım panosu" style="width:100%;max-height:470px;object-fit:contain;border-radius:8px"><figcaption style="color:#5b6675">Gerçek bir dağıtım panosu: ana şalter (100A) · RCD 30mA · C16 otomatlar (linye etiketli) · parafudur (SPD) · faz (kahve) / nötr (mavi) / toprak (sarı-yeşil) kablolama</figcaption></figure>
 
 <h3>7.1 Koruma cihazları: sigortalar ve şalterler</h3>
 <p>Koruma cihazları iki tehlikeye karşı çalışır: <b>aşırı yük</b> (anma akımının biraz üstü, ısınma — gecikmeli açma) ve <b>kısa devre</b> (çok yüksek akım — ani açma). Otomatik sigorta bunu içindeki <b>termik (bimetal)</b> ve <b>manyetik (bobin)</b> mekanizmayla birlikte yapar.</p>
@@ -686,6 +689,86 @@
 </table>
 <div class="warn"><b>Güvenlik:</b> Direnç, süreklilik, diyot ve izolasyon ölçümleri <b>daima enerjisiz</b>. Gerilimli ölçümde alet/prob <b>CAT sınıfı</b> ortama uygun olmalı (örn. pano içi CAT III/IV). Büyük dirençleri iki probu birden elle tutarak ölçme.</div>
 <div class="tip"><b>Pens ampermetre:</b> Yalnız <b>tek iletken (faz)</b> içine alınır; faz+nötr birlikte alınırsa alanlar birbirini götürür ve ekran <b>0 A</b> gösterir.</div>
+</div>
+
+<!-- ===== 13 KABLO KESİTİ SEÇİMİ ===== -->
+<h2 class="sec" id="s13"><span class="n">13</span>Güç → Akım → Kablo Kesiti → Koruma</h2>
+<div class="card">
+<p>Sahada her şey <b>güçten başlar</b>. Kabloyu da, sigortayı da, şalteri de belirleyen şey o hattan geçecek <b>akımdır</b>; akımı bulmak için de önce gücü bilmen gerekir. Zincir daima şu sırayla işler — bozarsan iş tutmaz:</p>
+<div class="formula">Güç (W) &nbsp;→&nbsp; <b>Akım (A)</b> &nbsp;→&nbsp; Kablo kesiti (mm²) &nbsp;→&nbsp; Koruma (sigorta/şalter)</div>
+
+<h3>1) Yükü topla (eşzamanlılık)</h3>
+<p>Hattı besleyen tüm cihazların gücünü topla. İki tuzağa dikkat:</p>
+<ul>
+<li><b>Etiket gücü ≠ gerçek çekiş:</b> etiket çoğu zaman maksimumdur. <b>Motorlar kalkışta 5–7 kat akım</b> çeker — bunu ayrı düşün.</li>
+<li><b>Eşzamanlılık (talep faktörü):</b> 20 prizin hepsi aynı anda dolu çalışmaz. Toplam güce bir katsayı uygularsın — konutta ~<b>0,6–0,8</b>. Çok düşük tutarsan hat yetmez; çok yüksek tutarsan gereksiz kalın kablo döşersin.</li>
+</ul>
+
+<h3>2) Güçten akıma geç (en çok hata yapılan yer)</h3>
+<div class="formula">Tek faz (230 V): <b>I = P / (V · cosφ)</b><br>Üç faz (400 V): <b>I = P / (√3 · V · cosφ)</b> &nbsp;(√3 ≈ 1,73)</div>
+<div class="warn"><b>√3'ü unutma!</b> Üç fazda bu çarpan vardır. Unutursan akımı yanlış bulur, ya gereksiz kalın kablo seçer ya da hattı yakarsın. <b>cosφ (güç faktörü):</b> saf rezistif yükte (ısıtıcı, akkor lamba) <b>1</b>; motorlu yükte ~<b>0,8</b>. cosφ'yi 1 varsayıp motor hattı hesaplarsan akımı düşük çıkarırsın.</div>
+<table>
+<tr><th>Örnek</th><th>Hesap</th><th>Akım</th></tr>
+<tr><td>3500 W ısıtıcı, 230 V (tek faz, cosφ=1)</td><td>I = 3500 / (230 × 1)</td><td><b>15,2 A</b></td></tr>
+<tr><td>7,5 kW motor, 400 V, cosφ=0,8 (üç faz)</td><td>I = 7500 / (1,73 × 400 × 0,8)</td><td><b>13,5 A</b></td></tr>
+</table>
+<div class="tip"><b>Üç fazın avantajı:</b> 7,5 kW motor, aynı güçteki tek faz yükten <b>daha az akım</b> çeker — çünkü akım üç hatta bölünür, daha ince kablo yeter.</div>
+
+<h3>3) Kesit seçimi — 3 kritere birden bak, en kalını kazanır</h3>
+<p>"Akım bu, tablodan seçtim, bitti" en yaygın hatadır. Kesiti <b>üç ayrı kriter</b> belirler:</p>
+<p><b>Kriter 1 — Akım taşıma kapasitesi</b> (PVC yalıtımlı bakır, normal döşeme — yaklaşık):</p>
+<table>
+<tr><th>Kesit (mm²)</th><th>1,5</th><th>2,5</th><th>4</th><th>6</th><th>10</th><th>16</th><th>25</th></tr>
+<tr><td>Yaklaşık akım</td><td>~16 A</td><td>~21–25 A</td><td>~28–32 A</td><td>~36–40 A</td><td>~50–55 A</td><td>~66–75 A</td><td>~88–95 A</td></tr>
+</table>
+<p style="font-size:13px">Bu değerler <b>kabaca</b>dır. Gerçek kapasite döşemeye bağlı: boru içinde mi, açıkta mı, kanalda kaç kablo yan yana, ortam kaç derece. Bunlara <b>düzeltme katsayıları</b> denir — birden fazla kablo bir arada, 30 °C üstü sıcaklık veya yalıtımlı duvar içi geçiş kapasiteyi <b>düşürür</b>.</p>
+<p><b>Kriter 2 — Gerilim düşümü</b> (en çok ihmal edilen): Uzun hatta akım kabloda gerilim kaybeder; cihaz kısık/verimsiz çalışır. Sınır: aydınlatmada ≤<b>%3</b>, kuvvet (priz/motor) hatlarında ≤<b>%5</b>. <b>Hat 30–40 m'yi geçiyorsa mutlaka kontrol et</b>; akım kapasitesi yetse bile kesiti büyütmen gerekebilir.</p>
+<p><b>Kriter 3 — Koruma uyumu (kısa devre):</b> Kablo, sigorta atana kadar akıma dayanmalı. Kural:</p>
+<div class="formula"><b>Yük akımı ≤ Sigorta anma akımı ≤ Kablonun taşıma kapasitesi</b></div>
+<div class="warn">Sigortayı kablodan büyük seçersen, <b>kablo sigortadan önce yanar → yangın</b>. Sigorta yükten büyük (gereksiz kesmesin), kablodan küçük (kablo yanmadan atsın) olacak.</div>
+
+<h3>Baştan sona örnek</h3>
+<p>Atölyede <b>5,5 kW</b> üç fazlı tezgah motoru; 400 V, cosφ=0,82; panodan motora <b>55 m</b> kablo, boru içinde.</p>
+<table>
+<tr><th>Adım</th><th>Sonuç</th></tr>
+<tr><td>Akım: I = 5500 / (1,73×400×0,82)</td><td><b>≈ 9,7 A</b></td></tr>
+<tr><td>Akıma göre kesit</td><td>1,5 mm² (~16 A) kâğıtta yeter görünür; motor + boru içi katsayısı için güvenli tarafta <b>2,5 mm²</b></td></tr>
+<tr><td>Gerilim düşümü (55 m, kısa değil)</td><td>1,5 mm² sınırı aşar → <b>2,5–4 mm²</b> gerekir (%5 altını doğrula)</td></tr>
+<tr><td>Koruma</td><td>9,7 A yük → 16 A motor koruma şalteri (+ termik) → kablo kapasitesi bunun üstünde</td></tr>
+</table>
+<div class="tip"><b>Sonuç:</b> Akım tek başına 1,5 mm² derdi; ama mesafe ve motor karakteri kesiti <b>2,5–4 mm²</b>'ye çıkardı. Üç kriterden en kalını kazandı. Saha mantığı budur.</div>
+<div class="note"><b>Cebine yazılacak sıra:</b> ① Yükleri topla + eşzamanlılık → toplam güç · ② Tek faz mı üç faz mı, doğru formülle → akım · ③ Kesiti 3 kritere göre kontrol et (akım kapasitesi · gerilim düşümü · koruma uyumu) · ④ En kalın çıkanı seç · ⑤ Sigortayı "yük ≤ koruma ≤ kablo" kuralıyla belirle.</div>
+</div>
+
+<!-- ===== 14 YILDIZ-ÜÇGEN ===== -->
+<h2 class="sec" id="s14"><span class="n">14</span>Yıldız-Üçgen Bağlantı Nasıl Yapılır?</h2>
+<div class="card">
+<p>Üç fazlı asenkron motorun klemens kutusunda <b>altı uç</b> vardır: sargı başları <b>U1, V1, W1</b> (üst sıra) ve sargı sonları <b>W2, U2, V2</b> (alt sıra). Motoru <b>yıldız</b> ya da <b>üçgen</b> bağlamak, bu uçları klemens köprüleriyle nasıl birleştirdiğine bağlıdır.</p>
+
+<figure class="fig" style="background:#fff;border:1px solid var(--line)">
+  <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3GAM4t5LIrVnoytOwhQqVixxnvj/hf_20260712_125954_40d5090e-0b2a-4893-b7aa-bec1a864b3d0.png" alt="Yıldız ve üçgen klemens bağlantısı" style="width:100%;max-height:460px;object-fit:contain;border-radius:8px">
+  <figcaption style="color:#5b6675">Klemens kutusunda yıldız (soldaki) ve üçgen (sağdaki) köprüleme</figcaption>
+</figure>
+
+<table>
+<tr><th>Bağlantı</th><th>Köprüler (klemens)</th><th>Besleme (L1-L2-L3)</th><th>Her sargının gördüğü gerilim</th></tr>
+<tr><td><b>Yıldız (Y)</b></td><td>W2 – U2 – V2 birbirine köprülenir (yıldız noktası)</td><td>U1, V1, W1</td><td>Hat gerilimi / √3 &nbsp;(400 V şebekede ≈ 230 V)</td></tr>
+<tr><td><b>Üçgen (Δ)</b></td><td>U1–W2, &nbsp; V1–U2, &nbsp; W1–V2</td><td>U1, V1, W1</td><td>Hat gerilimine <b>eşit</b> &nbsp;(400 V şebekede 400 V)</td></tr>
+</table>
+
+<h3>Etiketteki "400/690 V" ne demek? (Δ/Y)</h3>
+<p>Motor etiketinde <b>400/690 V</b> yazıyorsa: motor <b>üçgende 400 V</b>, <b>yıldızda 690 V</b> şebekeye bağlanır. Yani her sargı 400 V'a dayanacak şekilde tasarlanmıştır.</p>
+<div class="tip"><b>Kural — motoru hangi bağlantıyla bağlamalı?</b> Şebeke hat gerilimi, etiketin <b>küçük değerine</b> eşitse <b>ÜÇGEN</b> bağla; büyük değerine eşitse <b>YILDIZ</b> bağla.<br>
+Örnek (etiket 400/690 V): Türkiye şebekesi <b>400 V</b> → küçük değere eşit → <b>ÜÇGEN bağlanır</b> (her sargı tam 400 V görür ve motor tam gücünü verir). 690 V şebekede olsaydı yıldız bağlanırdı.</div>
+<div class="warn"><b>Neden önemli?</b> 400 V şebekede motoru yanlışlıkla <b>yıldız</b> bağlarsan, her sargı yalnız 230 V görür → motor <b>gücünü veremez, zorlanır, ısınır</b>. Tersine, yıldız bağlanması gereken motoru üçgen bağlarsan sargılar aşırı gerilimde <b>yanar</b>.</div>
+
+<h3>Yıldız-üçgen YOL VERME (ayrı bir amaç)</h3>
+<p>Büyük motorlar kalkışta <b>5–7 kat akım</b> çeker; bu ani akımı düşürmek için <b>yıldız-üçgen yol verme</b> kullanılır. Mantık aynı klemens köprülerini bir kontaktör düzeniyle otomatik değiştirmektir:</p>
+<ul>
+<li><b>Kalkış:</b> Motor önce <b>YILDIZ</b> bağlanır → her sargı düşük gerilim (≈230 V) görür → başlangıç akımı ve momenti yaklaşık <b>1/3</b>'e iner. Yumuşak kalkış.</li>
+<li><b>Çalışma:</b> Motor hızlanınca (birkaç saniye sonra, zaman rölesiyle) <b>ÜÇGEN</b>'e geçilir → sargılar tam gerilimi görür → motor tam gücüyle döner.</li>
+</ul>
+<div class="note"><b>Özet:</b> "Yıldız-üçgen bağlantı" iki bağlamda geçer — ① motorun şebeke gerilimine göre <b>sabit</b> bağlanması (etiket kuralı), ② büyük motorlarda <b>yol verme</b> (önce yıldız, sonra üçgen). İkisi de aynı U1V1W1 / W2U2V2 köprüleme mantığını kullanır.</div>
 </div>
 
 </div>

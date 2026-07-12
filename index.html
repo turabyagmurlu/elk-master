@@ -2412,6 +2412,23 @@ function elk101check(){
 }
 
 
+/* ===== EK: yıldız-üçgen gerçekçi görsel + kablo seçimi soruları ===== */
+Object.assign(DIAG,{
+25:`<img src="https://d8j0ntlcm91z4.cloudfront.net/user_3GAM4t5LIrVnoytOwhQqVixxnvj/hf_20260712_125954_40d5090e-0b2a-4893-b7aa-bec1a864b3d0.png" alt="Yıldız ve üçgen klemens bağlantısı" style="width:100%;max-height:420px;object-fit:contain;background:#fff;border-radius:6px" loading="lazy">`
+});
+TEORI[25]=(TEORI[25]||'')+`<br><b>Klemens köprüleme:</b> Yıldız → <b>W2-U2-V2</b> köprülenir (yıldız noktası), besleme U1-V1-W1'e. Üçgen → <b>U1-W2, V1-U2, W1-V2</b> köprülenir. Etiketi <b>400/690 V</b> olan motor <b>400 V</b> şebekede <b>ÜÇGEN</b> bağlanır (her sargı tam 400 V görür); 690 V'ta yıldız.`;
+QBANK[25]=QBANK[25].concat([
+ {q:"Etiketi 400/690 V olan motor 400 V şebekeye nasıl bağlanır?",opts:["Yıldız","Üçgen","Bağlanmaz","Seri"],ans:1,ex:"Küçük değer (400 V) şebekeye eşitse ÜÇGEN bağlanır; her sargı tam 400 V görür ve motor tam gücünü verir."},
+ {q:"Yıldız bağlantıda klemenste hangi uçlar köprülenir?",opts:["U1-V1-W1","W2-U2-V2","U1-W2","Hiçbiri"],ans:1,ex:"Yıldız noktası, sargı sonları W2-U2-V2 köprülenerek oluşur."},
+ {q:"Yıldız-üçgen yol vermede motor önce hangi bağlantıda kalkar?",opts:["Üçgen","Yıldız","İkisi birden","Seri"],ans:1,ex:"Önce yıldız (düşük akım/moment), sonra üçgen (tam güç)."}
+]);
+QBANK[27]=QBANK[27].concat([
+ {q:"Üç fazlı akım formülü hangisidir?",opts:["I = P/(V·cosφ)","I = P/(√3·V·cosφ)","I = P·√3·V","I = V/P"],ans:1,ex:"Üç fazda I = P/(√3·U·cosφ); √3≈1,73. Tek fazda I = P/(V·cosφ)."},
+ {q:"Kablo kesitini belirleyen 3 kriterden hangisi seçilir?",opts:["En incesi","En kalını","Ortalaması","Rastgele"],ans:1,ex:"Akım kapasitesi, gerilim düşümü ve koruma uyumundan EN KALIN çıkan kesit seçilir."},
+ {q:"Sigorta–kablo uyumunda doğru sıra?",opts:["Kablo ≤ sigorta ≤ yük","Yük ≤ sigorta ≤ kablo kapasitesi","Sigorta ≤ yük ≤ kablo","Hepsi eşit"],ans:1,ex:"Yük akımı ≤ sigorta anma akımı ≤ kablo taşıma kapasitesi (kablo yanmadan sigorta atmalı)."}
+]);
+
+
 refreshHeader();
 go('home');
 
