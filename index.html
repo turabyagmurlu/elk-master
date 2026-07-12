@@ -508,6 +508,33 @@
   ::-webkit-scrollbar-thumb:hover{background:var(--acc2)}
   #app>*{animation:rise .22s ease}
   @keyframes rise{from{opacity:.6;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  /* KİTAP AKIŞI */
+  .kapak{min-height:calc(100vh - 130px);display:flex;align-items:center;justify-content:center;padding:16px}
+  .book{position:relative;width:100%;max-width:480px;border-radius:16px;overflow:hidden;box-shadow:0 30px 80px #00000055;border:1px solid #24425a}
+  .book .cover-img{width:100%;display:block;aspect-ratio:896/1200;object-fit:cover}
+  .book .cover-overlay{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:30px 26px;background:linear-gradient(180deg,#0a1622cc 0%,#0a162200 26%,#0a162200 52%,#0a1622f2 100%)}
+  .book .ct{text-align:center;color:#fff}
+  .book .kicker{letter-spacing:3px;font-size:11px;color:#bfe3ea;text-transform:uppercase}
+  .book .bot h1{font-family:Georgia,'Times New Roman',serif;font-size:38px;margin:8px 0 6px;color:#fff;letter-spacing:1px;text-shadow:0 2px 14px #000a}
+  .book .bot .sub{color:#dbe9ef;font-size:13px;margin-bottom:16px}
+  .book .openbtn{font-size:16px;padding:13px 28px}
+  .book .authors{color:#cfe0e6;font-size:11.5px;margin-top:12px}
+  .bookpage{max-width:840px;margin:0 auto;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:34px 42px;box-shadow:0 12px 34px #13283d12}
+  .bp-kicker{text-align:center;letter-spacing:3px;font-size:11px;color:var(--acc);text-transform:uppercase;margin-bottom:6px}
+  .bookpage h1{font-family:Georgia,'Times New Roman',serif;font-size:27px;margin:0 0 4px;text-align:center;color:var(--txt)}
+  .book-sub{text-align:center;color:var(--muted);margin-bottom:20px;font-size:13px}
+  .toc-book{columns:2;column-gap:36px}
+  @media(max-width:640px){.toc-book{columns:1}}
+  .tcat{break-inside:avoid;margin-bottom:12px}
+  .tcat-h{font-weight:800;font-size:11.5px;text-transform:uppercase;letter-spacing:.6px;margin:6px 0 3px}
+  .trow{display:flex;justify-content:space-between;gap:10px;border-bottom:1px dashed var(--line);padding:6px 2px;font-size:13.5px;cursor:pointer;color:var(--txt)}
+  .trow:hover{color:var(--acc)}
+  .trow .tnum{color:var(--muted);font-variant-numeric:tabular-nums}
+  .bp-sep{height:1px;background:var(--line);margin:26px 0}
+  .onsoz{line-height:1.95;font-size:14px;color:var(--txt);max-width:640px;margin:0 auto}
+  .onsoz p{margin:10px 0}
+  .onsoz .drop::first-letter{font-family:Georgia,serif;font-size:52px;line-height:.75;float:left;padding:8px 12px 0 0;color:var(--acc)}
 </style>
 </head>
 <body>
@@ -517,6 +544,7 @@
     <div><h1>ELK MASTER</h1><div class="sub">Elektrik Uzmanlık Akademisi · DHMİ</div></div>
   </div>
   <nav class="main" id="nav">
+    <button data-v="kapak" onclick="go('kapak')">📖 Kitap</button>
     <button data-v="home" onclick="go('home')">Pano</button>
     <button data-v="modules" onclick="go('modules')">Modüller</button>
     <button data-v="exam" onclick="go('exam')">Deneme Sınavı</button>
@@ -2429,8 +2457,61 @@ QBANK[27]=QBANK[27].concat([
 ]);
 
 
+/* ===== KİTAP AKIŞI: Kapak → İçindekiler/Önsöz → Modüller ===== */
+function renderKapak(){
+  document.querySelectorAll('#nav button').forEach(b=>b.classList.remove('active'));
+  var b=document.querySelector('#nav button[data-v="kapak"]'); if(b) b.classList.add('active');
+  app().innerHTML=`<div class="kapak"><div class="book">
+    <img class="cover-img" src="https://d8j0ntlcm91z4.cloudfront.net/user_3GAM4t5LIrVnoytOwhQqVixxnvj/hf_20260712_131403_d8ee47d8-260d-4f6e-9bf1-9858c3e24981.png" alt="ELK MASTER kapağı">
+    <div class="cover-overlay">
+      <div class="ct top"><div class="kicker">DHMİ · Elektrik Uzmanlık Akademisi</div></div>
+      <div class="ct bot"><div class="kicker">Sıfırdan Ustalığa</div><h1>ELK&nbsp;MASTER</h1><div class="sub">Elektrik Teknikerliği · Teori · Uygulama · Saha · MYK</div><button class="btn openbtn" onclick="go('onsoz')">📖 Kitabı Aç</button><div class="authors">36 modül · 256 soru · interaktif · sürüm 6.0</div></div>
+    </div>
+  </div></div>`;
+}
+function renderOnsoz(){
+  document.querySelectorAll('#nav button').forEach(b=>b.classList.remove('active'));
+  var toc='';
+  for(const k of Object.keys(CATS)){
+    const ms=MODS.filter(m=>m.cat===k);
+    toc+=`<div class="tcat"><div class="tcat-h" style="color:${CATS[k].c}">${CATS[k].n}</div>`;
+    ms.forEach(m=>{ toc+=`<div class="trow" onclick="go('module',${m.id})"><span>${m.ic} ${m.t}</span><span class="tnum">${m.id}</span></div>`; });
+    toc+=`</div>`;
+  }
+  app().innerHTML=`<span class="breadcrumb" onclick="go('kapak')">← Kapak</span>
+   <div class="bookpage">
+     <div class="bp-kicker">ELK MASTER</div>
+     <h1>İçindekiler</h1><div class="book-sub">${MODS.length} modül · ${Object.keys(CATS).length} bölüm</div>
+     <div class="toc-book">${toc}</div>
+     <div class="bp-sep"></div>
+     <h1>Önsöz</h1><div class="book-sub">Bu kitabı neden yaptık</div>
+     <div class="onsoz">
+       <p class="drop">Elektrik görünmez ama hayatın her yerinde: evini aydınlatan lambadan fabrikayı döndüren motora, uçağı geceleyin yere indiren pist ışığına kadar. Onu anlamak, önce ondan korkmayı bırakmakla başlar.</p>
+       <p>Bu kitap sıfırdan başlayan biri için tasarlandı. Önce <b>"neden"i</b>, sonra <b>"nasıl"ı</b> öğretir. Her modülde aynı yol var: önce <b>📖 Teori</b>'yi oku, sonra <b>🎯 Uygulama</b>'da kaydırıcılarla dene, <b>📝 Quiz</b>'de kendini sına, yanlışta <b>Teoriye dön</b>, <b>📘 Föy</b>'de pekiştir.</p>
+       <p>Acele etme. Bir günde tek bir modül bile büyük ilerlemedir. Serini büyüt, rozetleri topla, deneme sınavlarıyla kendini ölç. Bittiğinde elektrik senin için bir bilmece değil, konuştuğun bir dil olacak.</p>
+       <p style="text-align:center;color:var(--muted);font-style:italic;margin-top:16px">Hazırsan, sayfayı çevir.</p>
+     </div>
+     <div class="row" style="justify-content:center;margin-top:26px"><button class="btn" style="font-size:15px;padding:12px 26px" onclick="go('modules')">Modüllere Başla ▶</button></div>
+   </div>`;
+  window.scrollTo(0,0);
+}
+function go(view,arg){
+  document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('active',b.dataset.v===view));
+  window.scrollTo(0,0);
+  if(view==='kapak')renderKapak();
+  else if(view==='onsoz')renderOnsoz();
+  else if(view==='home')renderHome();
+  else if(view==='modules')renderModules();
+  else if(view==='module')openModule(arg);
+  else if(view==='exam')renderExam();
+  else if(view==='review')renderReview();
+  else if(view==='glossary')renderGlossary();
+  else if(view==='settings')renderSettings();
+  else if(view==='myk')renderMYK();
+}
+
 refreshHeader();
-go('home');
+go('kapak');
 
 </script>
 </body>
