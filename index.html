@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ELK MASTER — Elektrik Uzmanlık Akademisi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#0b0e13; --bg2:#0e131b; --panel:#141b25; --panel2:#1b2430; --line:#26313f;
@@ -535,6 +536,118 @@
   .onsoz{line-height:1.95;font-size:14px;color:var(--txt);max-width:640px;margin:0 auto}
   .onsoz p{margin:10px 0}
   .onsoz .drop::first-letter{font-family:Georgia,serif;font-size:52px;line-height:.75;float:left;padding:8px 12px 0 0;color:var(--acc)}
+
+  /* ═══════════ v7 · PREMIUM DESIGN REVOLUTION ═══════════ */
+  html{scroll-behavior:smooth}
+  body{font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+    background:
+      radial-gradient(900px 520px at 88% -12%, #d4f2f6 0%, transparent 55%),
+      radial-gradient(760px 460px at -12% 18%, #e2ecff 0%, transparent 55%),
+      radial-gradient(900px 640px at 50% 118%, #e6fbf3 0%, transparent 60%),
+      #f4f8fc;
+    -webkit-font-smoothing:antialiased}
+  h1,h2,h3,.lh-t,.hero h2,.brand h1,.bookpage h1,.cert .nm{font-family:'Fraunces',Georgia,'Times New Roman',serif;letter-spacing:.1px}
+  ::selection{background:#14b8a640}
+  button:focus-visible,a:focus-visible{outline:2px solid #10b3c2;outline-offset:2px;border-radius:6px}
+
+  /* header — floating glass */
+  header.top{background:rgba(255,255,255,.72);backdrop-filter:blur(18px) saturate(1.5);-webkit-backdrop-filter:blur(18px) saturate(1.5);border-bottom:1px solid #e3ebf380;box-shadow:0 6px 24px -12px #1f6fe024}
+  .logo{border-radius:14px;box-shadow:0 6px 18px #1f6fe042,inset 0 1px 0 #ffffff55}
+  nav.main button{border-radius:999px;padding:8px 14px;transition:.25s;border-bottom:none}
+  nav.main button:hover{background:#e9f2fb;color:var(--txt)}
+  nav.main button.active{color:#fff;background:linear-gradient(135deg,#14b8a6,#2563eb);border-bottom:none;border-radius:999px;box-shadow:0 6px 16px #2563eb38}
+  nav.main a.foynav{border-radius:999px}
+  .chip,.hstats .chip{border-radius:999px}
+
+  /* surfaces */
+  .panel{border-radius:20px;border:1px solid #e4ecf4;box-shadow:0 14px 40px -14px #13283d14,0 1px 0 #ffffff inset}
+  .panel2{border-radius:14px}
+  .modal{border-radius:22px}
+  .toast{border-radius:14px;backdrop-filter:blur(10px);background:rgba(255,255,255,.88)}
+
+  /* HOME hero — Higgsfield banner */
+  .panel.hero{position:relative;overflow:hidden;border-radius:24px;min-height:190px;
+    background:linear-gradient(90deg,#ffffff 0%,#ffffffF2 40%,#ffffff99 62%,#ffffff00 96%),
+    url('https://d8j0ntlcm91z4.cloudfront.net/user_3GsQa4HBJ49oduhafl3gjVBJXbb/hf_20260730_123446_4699c19f-1525-468b-b571-b5420bb6a9d0.png') right center/cover no-repeat;
+    border:1px solid #e0eaf3;box-shadow:0 24px 60px -18px #1f6fe026}
+  .panel.hero::before{display:none!important}
+  .hero h2{font-size:29px;font-weight:700}
+
+  /* cards — luxe */
+  .card{border-radius:18px;transition:transform .32s cubic-bezier(.22,.8,.3,1),box-shadow .32s,border-color .32s;will-change:transform}
+  .card:hover{transform:translateY(-6px) scale(1.013);box-shadow:0 26px 52px -14px #1f6fe033;border-color:#8fd8e2}
+  .card .ico{width:46px;height:46px;display:inline-flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#e7fbf9,#e9f0ff);border-radius:14px;box-shadow:inset 0 0 0 1px #d8eaf2}
+  .card::after{height:3px;background:linear-gradient(90deg,#14b8a6,#2563eb,#7c5cff)}
+  .grid>.card{animation:pop .55s cubic-bezier(.22,.8,.3,1) both}
+  .grid>.card:nth-child(2){animation-delay:.04s}.grid>.card:nth-child(3){animation-delay:.08s}
+  .grid>.card:nth-child(4){animation-delay:.12s}.grid>.card:nth-child(5){animation-delay:.16s}
+  .grid>.card:nth-child(6){animation-delay:.20s}.grid>.card:nth-child(7){animation-delay:.24s}
+  .grid>.card:nth-child(8){animation-delay:.28s}.grid>.card:nth-child(n+9){animation-delay:.32s}
+  @keyframes pop{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:none}}
+  .cardbadge{border-radius:999px;letter-spacing:.4px}
+
+  /* buttons — gradient + shine sweep */
+  .btn{position:relative;overflow:hidden;border-radius:12px;letter-spacing:.2px;transition:.28s}
+  .btn::after{content:"";position:absolute;top:0;left:-70%;width:44%;height:100%;background:linear-gradient(100deg,transparent,#ffffff59,transparent);transform:skewX(-20deg)}
+  .btn:hover::after{animation:shine .6s ease}
+  @keyframes shine{to{left:130%}}
+  .btn:active{transform:translateY(0) scale(.98)}
+
+  /* KPI — gradient numerals */
+  .kpi{border-radius:16px;transition:.25s}
+  .kpi:hover{transform:translateY(-2px);border-color:#8fd8e2}
+  .kpi .v{background:linear-gradient(135deg,#0ea5b7,#2563eb);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;font-weight:800}
+
+  /* tabbar — segmented pill control */
+  .tabbar{background:#ecf2f9;border:1px solid #e1eaf3;border-bottom:1px solid #e1eaf3;border-radius:999px;padding:4px;gap:2px;flex-wrap:wrap}
+  .tabbar button{border:none;border-bottom:none;border-radius:999px;padding:8px 15px;transition:.22s}
+  .tabbar button.active{background:#fff;color:var(--acc2);border-bottom:none;box-shadow:0 3px 10px #13283d16;font-weight:700}
+  .tabbar button:hover{color:var(--txt)}
+
+  /* quiz options */
+  .opt{border-radius:14px;transition:.22s;border-width:1.5px}
+  .opt:hover{transform:translateX(4px);border-color:var(--acc);box-shadow:0 6px 16px -6px #10b3c23d}
+  .opt.sel{box-shadow:0 0 0 3px #10b3c226}
+  .pill{border-radius:999px;transition:.2s}
+  .pill:hover{transform:translateY(-1px)}
+
+  /* progress — flowing gradient */
+  .scorebar,.mini{border-radius:999px;overflow:hidden}
+  .scorebar>i,.mini>i{border-radius:999px;background:linear-gradient(90deg,#14b8a6,#2563eb,#14b8a6);background-size:220% 100%;animation:flow 3.2s linear infinite}
+  @keyframes flow{to{background-position:-220% 0}}
+
+  /* lesson head + edu */
+  .lessonhead{border-radius:16px;border-left:5px solid transparent;background:linear-gradient(#f2f8fd,#f7fbff) padding-box,linear-gradient(180deg,#14b8a6,#2563eb) border-box;border-left-style:solid}
+  .edu,.foy,.expl,.answerbox{border-radius:0 12px 12px 0}
+  .fig{border-radius:12px;box-shadow:0 10px 26px -10px #0d1b2c66}
+
+  /* badges */
+  .badge{border-radius:16px;transition:.25s}
+  .badge.on{transform:none;box-shadow:0 10px 26px -10px #1f6fe03d;border-color:#8fd8e2}
+  .badge.on:hover{transform:translateY(-3px)}
+
+  /* KİTAP — living cover */
+  .kapak{perspective:1200px}
+  .book{animation:floaty 6s ease-in-out infinite;box-shadow:0 46px 100px -24px #0a162280,0 0 0 1px #ffffff1f inset;border-radius:18px}
+  @keyframes floaty{0%,100%{transform:translateY(0) rotateX(0)}50%{transform:translateY(-10px) rotateX(1.2deg)}}
+  .book .openbtn{animation:glowPulse 2.6s ease-in-out infinite}
+  @keyframes glowPulse{0%,100%{box-shadow:0 6px 16px #1f6fe029}50%{box-shadow:0 8px 34px #19c6d69e}}
+  .bookpage{border-radius:24px;border:1px solid #e6edf4;background:linear-gradient(180deg,#ffffff,#fbfdff);box-shadow:0 34px 80px -26px #13283d2b}
+  .trow{transition:.18s;border-radius:8px}
+  .trow:hover{background:#ecf7fb;padding-left:8px;color:var(--accd)}
+  .tcat-h{letter-spacing:.6px}
+
+  /* tables (yeni içerik tabloları) */
+  #app table{border-radius:10px;overflow:hidden}
+  #app table tr:nth-child(even) td{background:#f7fafd}
+  #app table tr:hover td{background:#eef7fb}
+
+  /* scrollbar + footer */
+  ::-webkit-scrollbar{width:11px}
+  ::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#b7ccdd,#9fb9cf);border:3px solid #eef3f8;border-radius:999px}
+  footer{letter-spacing:.3px}
+  #app>*{animation:rise .3s cubic-bezier(.22,.8,.3,1)}
+
 </style>
 </head>
 <body>
@@ -2509,6 +2622,48 @@ function go(view,arg){
   else if(view==='settings')renderSettings();
   else if(view==='myk')renderMYK();
 }
+
+/* ===== EK v7: Kaçak akım rölesi harf tipleri + kablo-sigorta-güç tablosu ===== */
+TEORI[26]=(TEORI[26]||'')+`<br><br><b style="font-size:15px">🔠 Kaçak Akım Rölesindeki HARFLER ne anlama gelir?</b><br>
+<img src="https://d8j0ntlcm91z4.cloudfront.net/user_3GsQa4HBJ49oduhafl3gjVBJXbb/hf_20260730_123427_6add5b0f-e015-4338-a450-c21033644961.png" alt="AC, A, F, B, S, K tipi kaçak akım röleleri DIN ray üzerinde" style="width:100%;max-height:340px;object-fit:cover;border-radius:10px;margin:8px 0;border:1px solid #dbe4ee" loading="lazy"><br>
+Hepsi kaçak akım rölesidir ama <b>hepsi aynı işi yapmaz</b>. Röle üzerindeki harf, cihazın <b>hangi tür kaçak akımı algılayabildiğini</b> gösterir. Yanlış tip seçersen röle seni <b>korumayabilir</b> — modern inverterli cihazlar, rölenin "göremediği" DC bileşenli kaçaklar üretebilir.
+<table style="width:100%;border-collapse:collapse;margin:10px 0;font-size:13px">
+<tr style="background:rgba(20,184,166,.08)"><th style="padding:7px;border:1px solid #dbe4ee;text-align:left">Tip</th><th style="padding:7px;border:1px solid #dbe4ee;text-align:left">Algıladığı kaçak türleri</th><th style="padding:7px;border:1px solid #dbe4ee;text-align:left">Nerede kullanılır</th></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b style="color:#16a34a">AC</b></td><td style="padding:7px;border:1px solid #dbe4ee">Sadece sinüzoidal AC</td><td style="padding:7px;border:1px solid #dbe4ee">Aydınlatma, klasik priz, rezistif yükler (eski tesisat)</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b style="color:#2563eb">A</b></td><td style="padding:7px;border:1px solid #dbe4ee">AC + darbeli DC</td><td style="padding:7px;border:1px solid #dbe4ee">Çamaşır/bulaşık makinesi, elektronik güç kaynakları, inverterli cihazlar — <b>bugün çoğu ev için en uygun seçim</b></td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b style="color:#7c3aed">F</b></td><td style="padding:7px;border:1px solid #dbe4ee">AC + darbeli DC + yüksek frekanslı</td><td style="padding:7px;border:1px solid #dbe4ee">İnverter klima, ısı pompası, frekans kontrollü motorlar</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b style="color:#dc2626">B</b></td><td style="padding:7px;border:1px solid #dbe4ee">AC + darbeli DC + <b>düz DC</b> + yüksek frekanslı — <b>en geniş koruma</b></td><td style="padding:7px;border:1px solid #dbe4ee">Elektrikli araç şarj istasyonu, güneş (PV) sistemleri, endüstriyel sürücüler (VFD), UPS</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b style="color:#ea580c">S</b></td><td style="padding:7px;border:1px solid #dbe4ee"><b>Gecikmeli açma</b> (selektif) — kısa süreli kaçakta açmaz, kalıcı kaçakta açar</td><td style="padding:7px;border:1px solid #dbe4ee">Ana panolar; alt kaçak rölesiyle <b>selektivite</b> kurmak için (genelde 300 mA)</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b style="color:#ca8a04">K</b></td><td style="padding:7px;border:1px solid #dbe4ee">AC, darbeli DC, düz DC + 10 kHz'e kadar yüksek frekanslı</td><td style="padding:7px;border:1px solid #dbe4ee">Tıbbi cihazlar, veri merkezleri, hassas elektronik sistemler</td></tr>
+</table>
+<b>IΔn (açma eşiği) seçimi:</b> <b>30 mA</b> = insan hayatını koruma standardı (priz/son devreler). <b>100–300 mA</b> = yangın koruması ve ana pano selektivitesi. Kural: kişi koruması istenen her son devrede 30 mA şart; ana panoda S tipi 300 mA ile kademelendirilir ki mutfaktaki kaçak bütün binayı karartmasın.<br>
+<b>Saha özeti:</b> Eski aydınlatma tesisatı → AC tipi yeter · Modern ev → A tipi · İnverter klima/ısı pompası → F · EV şarj + solar + VFD → mutlaka B · Ana pano → S (gecikmeli).`;
+
+QBANK[26]=QBANK[26].concat([
+ {q:"Elektrikli araç şarj istasyonu devresinde hangi tip kaçak akım rölesi kullanılmalıdır?",opts:["AC tipi","A tipi","B tipi","S tipi"],ans:2,ex:"EV şarjı düz DC kaçak üretebilir; bunu yalnız B tipi algılar. AC/A tipleri düz DC kaçağı 'göremez' ve koruma sağlamaz."},
+ {q:"Kaçak akım rölesindeki 'A' harfi neyi ifade eder?",opts:["Sadece AC kaçakları algılar","AC + darbeli DC kaçakları algılar","Sadece DC algılar","Gecikmeli açar"],ans:1,ex:"A tipi, sinüzoidal AC'ye ek olarak darbeli DC kaçak akımlarını da algılar — çamaşır/bulaşık makinesi gibi elektronik yüklü modern evler için en uygun tiptir."},
+ {q:"S tipi kaçak akım rölesinin özelliği nedir?",opts:["Yüksek frekans algılar","Zamana gecikmeli açar (selektivite)","Sadece DC algılar","30 mA'dan küçüktür"],ans:1,ex:"S = selektif/gecikmeli. Kısa süreli kaçakta açmaz; ana panoda kullanılır ki önce alt devredeki 30 mA röle açsın, bina komple karanlığa gömülmesin."},
+ {q:"İnsan hayatını korumak için son devrelerde standart IΔn değeri kaçtır?",opts:["10 mA","30 mA","100 mA","300 mA"],ans:1,ex:"30 mA insan koruması standardıdır. 100–300 mA değerleri yangın koruması ve ana pano selektivitesi içindir."},
+ {q:"İnverter klima ve ısı pompası devresi için tercih edilen röle tipi?",opts:["AC","A","F","S"],ans:2,ex:"F tipi; AC + darbeli DC'ye ek yüksek frekanslı kaçakları algılar. İnverter teknolojisi yüksek frekanslı kaçak üretebilir; F tipi hem korur hem gereksiz açmayı azaltır."}
+]);
+
+TEORI[3]=(TEORI[3]||'')+`<br><br><b style="font-size:15px">📏 Cep Tablosu: Kesit → Sigorta → Maks. Güç → Tipik Kullanım (230 V tek faz)</b>
+<table style="width:100%;border-collapse:collapse;margin:10px 0;font-size:13px">
+<tr style="background:rgba(37,99,235,.07)"><th style="padding:7px;border:1px solid #dbe4ee">Kesit</th><th style="padding:7px;border:1px solid #dbe4ee">Sigorta</th><th style="padding:7px;border:1px solid #dbe4ee">Maks. güç</th><th style="padding:7px;border:1px solid #dbe4ee">Tipik kullanım</th></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b>1,5 mm²</b></td><td style="padding:7px;border:1px solid #dbe4ee">10 A</td><td style="padding:7px;border:1px solid #dbe4ee">~2300 W</td><td style="padding:7px;border:1px solid #dbe4ee">💡 Aydınlatma devreleri</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b>2,5 mm²</b></td><td style="padding:7px;border:1px solid #dbe4ee">16 A</td><td style="padding:7px;border:1px solid #dbe4ee">~3600 W</td><td style="padding:7px;border:1px solid #dbe4ee">🔌 Priz devreleri</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b>4 mm²</b></td><td style="padding:7px;border:1px solid #dbe4ee">20–25 A</td><td style="padding:7px;border:1px solid #dbe4ee">~5750 W</td><td style="padding:7px;border:1px solid #dbe4ee">❄️ Klima, ankastre ocak</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b>6 mm²</b></td><td style="padding:7px;border:1px solid #dbe4ee">32 A</td><td style="padding:7px;border:1px solid #dbe4ee">~7360 W</td><td style="padding:7px;border:1px solid #dbe4ee">🚿 Şofben, elektrikli fırın hattı</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b>10 mm²</b></td><td style="padding:7px;border:1px solid #dbe4ee">40–50 A</td><td style="padding:7px;border:1px solid #dbe4ee">~9200 W</td><td style="padding:7px;border:1px solid #dbe4ee">⚙️ Motor hatları, güçlü yükler</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b>10–16 mm²</b></td><td style="padding:7px;border:1px solid #dbe4ee">63 A</td><td style="padding:7px;border:1px solid #dbe4ee">~14500 W</td><td style="padding:7px;border:1px solid #dbe4ee">🏠 Ana besleme / ev girişi (kolon hattı)</td></tr>
+</table>
+<b>Nasıl okunur?</b> Maks. güç ≈ V × I (230 × sigorta akımı). Bu tablo <b>hızlı saha kontrolü</b> içindir; kesin seçimde üç kriteri (akım kapasitesi · gerilim düşümü · koruma uyumu) mutlaka uygula. Sıra hep aynı: <b>yük ≤ sigorta ≤ kablo kapasitesi</b>.`;
+
+QBANK[3]=QBANK[3].concat([
+ {q:"Aydınlatma devresi için standart kesit ve sigorta ikilisi hangisidir?",opts:["1,5 mm² – 10 A","2,5 mm² – 16 A","4 mm² – 25 A","6 mm² – 32 A"],ans:0,ex:"Aydınlatma: 1,5 mm² + 10 A (~2300 W). Priz devresi ise 2,5 mm² + 16 A ile çekilir."},
+ {q:"2,5 mm² kablo + 16 A sigortalı priz hattından güvenle çekilebilecek yaklaşık maksimum güç?",opts:["1500 W","2300 W","3600 W","7360 W"],ans:2,ex:"P ≈ V×I = 230×16 ≈ 3600 W. Bu yüzden 2000 W'lık iki ısıtıcıyı aynı priz hattına takmak sigortayı attırır."},
+ {q:"Şofben/fırın gibi 7 kW'a yaklaşan sabit yük için doğru hat?",opts:["1,5 mm² – 10 A","2,5 mm² – 16 A","6 mm² – 32 A","Priz hattına takılır"],ans:2,ex:"~7360 W için 6 mm² + 32 A müstakil hat gerekir; böyle yükler asla ortak priz devresine bağlanmaz."}
+]);
 
 refreshHeader();
 go('kapak');
