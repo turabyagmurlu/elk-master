@@ -648,6 +648,138 @@
   footer{letter-spacing:.3px}
   #app>*{animation:rise .3s cubic-bezier(.22,.8,.3,1)}
 
+
+/* ═══════════ v8 · POLISH LAYER ═══════════ */
+/* WCAG: soluk gri metinleri koyulaştır (küçük puntolar AA'ya çıkar) */
+:root{ --muted:#4c6178; }
+.card .cat{font-size:10.5px;color:#456075}
+footer{font-size:12px;color:#4c6178}
+.kpi .l,.kc .k span,.badge .bd{color:#4c6178}
+
+/* WCAG: turkuaz butonda beyaz metin kontrastı — gradyanı bir ton derinleştir */
+.btn{background:linear-gradient(135deg,#0da2b4,#1f5fc9)}
+.btn.blue{color:#1a5cc0;border-color:#1a5cc0}
+nav.main button.active{background:linear-gradient(135deg,#0ea5b7,#2563eb)}
+
+/* Tipografik ritim: başlık satır yükseklikleri ve gövde okunurluğu */
+h1,h2,h3{line-height:1.25;text-wrap:balance}
+.hero h2{line-height:1.2}
+.sectiontitle h2{font-size:20px}
+.card h3{font-size:15px;line-height:1.35}
+.card p{font-size:12.5px;line-height:1.55}
+.edu{font-size:13.5px;line-height:1.8}
+.foy{font-size:13.5px;line-height:1.8}
+.expl,.answerbox{font-size:13px;line-height:1.7}
+.q .qtxt{line-height:1.5}
+.opt{line-height:1.5}
+.onsoz{font-size:14.5px}
+
+/* Görsel gürültü azaltma: sonsuz akan progress animasyonu sabitlensin */
+.scorebar>i,.mini>i{animation:none;background:linear-gradient(90deg,#10b3c2,#1f6fe0)}
+
+/* details/summary (föy) okunurluğu: ok işareti, boşluk, hover */
+.foy summary{list-style:none;position:relative;padding-right:26px}
+.foy summary::-webkit-details-marker{display:none}
+.foy summary::after{content:"▾";position:absolute;right:2px;top:0;color:var(--ok);transition:.2s}
+.foy:not([open]) summary::after{transform:rotate(-90deg)}
+.foy summary:hover{opacity:.85}
+
+/* Erişilebilirlik: tüm etkileşimli öğelerde görünür odak */
+.opt:focus-visible,.pill:focus-visible,summary:focus-visible,
+input:focus-visible,select:focus-visible,textarea:focus-visible{
+  outline:2px solid #1f6fe0;outline-offset:2px}
+input[type=number]:focus,input[type=text]:focus,select:focus,textarea:focus{
+  border-color:var(--acc2);box-shadow:0 0 0 3px #1f6fe01f}
+
+/* İçerik tabloları: yumuşak çizgiler, hizalı sayılar, kart içinde taşma koruması */
+#app table{font-variant-numeric:tabular-nums;box-shadow:0 1px 0 #dbe4ee}
+#app table th{background:#eef5fb;font-weight:800;color:#22384e}
+.edu{overflow-x:auto}
+
+/* Kart rozetleri ve chipler: dikey hizalama incelmesi */
+.cardbadge{line-height:1.4}
+.chip{line-height:1.3}
+
+/* MOBİL ≤680px: nav yatay kaydırma, sıkışan header, ritim daralması */
+@media(max-width:680px){
+  header.top{flex-wrap:wrap;row-gap:4px;padding:10px 12px;gap:10px}
+  nav.main{order:3;width:100%;margin-left:0;flex-wrap:nowrap;overflow-x:auto;
+    -webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px}
+  nav.main::-webkit-scrollbar{display:none}
+  nav.main button,nav.main a.foynav{white-space:nowrap;flex:0 0 auto;font-size:13px;padding:7px 11px}
+  .hstats{margin-left:auto;gap:8px;font-size:12px}
+  .wrap{padding:16px 13px 48px}
+  .panel{padding:15px 13px;border-radius:16px}
+  .panel.hero{min-height:0;background:
+    linear-gradient(90deg,#ffffff 0%,#ffffffF2 55%,#ffffffcc 100%),
+    url('https://d8j0ntlcm91z4.cloudfront.net/user_3GsQa4HBJ49oduhafl3gjVBJXbb/hf_20260730_123446_4699c19f-1525-468b-b571-b5420bb6a9d0.png') right center/cover no-repeat}
+  .hero h2{font-size:22px}
+  .hero{gap:16px}
+  .kpis{grid-template-columns:repeat(2,1fr);gap:10px}
+  .kpi .v{font-size:21px}
+  .cards{grid-template-columns:1fr;gap:12px}
+  .sectiontitle h2{font-size:17px}
+  .lessonhead{padding:12px 13px;gap:11px}
+  .lessonhead .lh-ic{font-size:28px}
+  .lh-t{font-size:15.5px}
+  .bookpage{padding:22px 16px;border-radius:18px}
+  .bookpage h1{font-size:22px}
+  .book .bot h1{font-size:29px}
+  .book .cover-overlay{padding:22px 18px}
+  .tabbar{border-radius:14px}
+  .tabbar button{padding:8px 12px;font-size:13px}
+  .edu,.foy{padding:13px;font-size:13px}
+  /* iOS odak zoom'unu önle */
+  input[type=number],input[type=text],select,textarea{font-size:16px}
+  /* tablolar yatay kaydırılabilir olsun, kartı patlatmasın */
+  #app table{display:block;overflow-x:auto;white-space:nowrap;max-width:100%}
+  #app table td,#app table th{white-space:normal;min-width:110px}
+  .modal{padding:16px;border-radius:16px}
+  .cert{padding:22px 14px}
+  .cert h2{font-size:21px}
+  .cert .nm{font-size:24px}
+}
+
+/* Çok dar ekran ≤380px: kc kartları tek kolon */
+@media(max-width:380px){
+  .kc{grid-template-columns:1fr}
+  .kpis{grid-template-columns:1fr 1fr}
+  .brand .sub{display:none}
+}
+
+/* Dokunmatik hedef boyutu: küçük butonlar min 34px yüksekliğe */
+.btn.sm{min-height:34px}
+.pill{min-height:34px;display:inline-flex;align-items:center}
+
+/* Hareket azaltma: v7'nin eklediği smooth scroll ve sonsuz döngüler kapansın */
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  .book,.book .openbtn,.grid>.card,.btn::after,.scorebar>i,.mini>i{animation:none!important}
+  .card,.card:hover,.kpi:hover,.opt:hover,.badge.on:hover{transform:none!important}
+}
+
+/* Baskı cilası: sertifika temiz beyaz, gradyan/gölge yok */
+@media print{
+  body{background:#fff!important}
+  #cert{box-shadow:none!important;border:2px solid #333!important;color:#000}
+  #cert .nm{color:#000;-webkit-text-fill-color:#000}
+  .toast{display:none!important}
+}
+
+/* İnce mikro-detaylar: breadcrumb tıklanabilirlik ipucu, trow odak, seçim rengi */
+.breadcrumb{padding:4px 2px;border-radius:6px}
+.breadcrumb:hover{background:#e9f4fb}
+.trow:focus-visible{outline:2px solid #1f6fe0;outline-offset:1px}
+::selection{background:#10b3c233;color:#0d2438}
+
+/* Kart giriş animasyonu daha kısa ve sakin (görsel gürültü ↓) */
+.grid>.card{animation-duration:.4s}
+.grid>.card:nth-child(n+6){animation-delay:.18s}
+
+/* Panel içi ikincil yüzeylerde nefes payı */
+.panel2{padding:14px 15px}
+.msg{line-height:1.55}
+
 </style>
 </head>
 <body>
@@ -658,6 +790,7 @@
   </div>
   <nav class="main" id="nav">
     <button data-v="kapak" onclick="go('kapak')">📖 Kitap</button>
+    <button data-v="program" onclick="go('program')">🎓 Saha Programı</button>
     <button data-v="home" onclick="go('home')">Pano</button>
     <button data-v="modules" onclick="go('modules')">Modüller</button>
     <button data-v="exam" onclick="go('exam')">Deneme Sınavı</button>
@@ -2664,6 +2797,529 @@ QBANK[3]=QBANK[3].concat([
  {q:"2,5 mm² kablo + 16 A sigortalı priz hattından güvenle çekilebilecek yaklaşık maksimum güç?",opts:["1500 W","2300 W","3600 W","7360 W"],ans:2,ex:"P ≈ V×I = 230×16 ≈ 3600 W. Bu yüzden 2000 W'lık iki ısıtıcıyı aynı priz hattına takmak sigortayı attırır."},
  {q:"Şofben/fırın gibi 7 kW'a yaklaşan sabit yük için doğru hat?",opts:["1,5 mm² – 10 A","2,5 mm² – 16 A","6 mm² – 32 A","Priz hattına takılır"],ans:2,ex:"~7360 W için 6 mm² + 32 A müstakil hat gerekir; böyle yükler asla ortak priz devresine bağlanmaz."}
 ]);
+
+/* ===== EK v8: KNX & Otomasyon modülleri (37-38) ===== */
+MODS.push({id:37, t:"KNX & Bina Otomasyonu", cat:"oto", ic:"🏢", d:"KNX nedir? Bus, telegram, ETS, aktör/sensör."});
+MODS.push({id:38, t:"Pano İçi Otomasyon & Ekipmanlar", cat:"oto", ic:"🎛️", d:"Kontaktör, röleler, PLC, kumanda devreleri."});
+Object.assign(TEORI,{
+37:`<b style="font-size:15px">🔹 KNX Nedir, Neden Dünya Standardı?</b><br>
+KNX, bina otomasyonu için geliştirilmiş, üreticiden bağımsız <b>dünya standardıdır (ISO/IEC 14543-3)</b>. Yani ABB'nin butonu, Siemens'in aktörü, Schneider'in sensörü aynı hatta sorunsuz konuşur; sen tek bir yazılımla (ETS) hepsini programlarsın. Havalimanı terminalleri, oteller, hastaneler gibi büyük binalarda aydınlatma, panjur, HVAC ve enerji izleme neredeyse hep KNX ile yapılır. DHMİ tesislerindeki modern terminal binalarında da aydınlatma sahneleri ve merkezi kumanda tipik KNX işidir.<br><br>
+<b style="font-size:15px">🔹 Klasik Tesisat ile Farkı</b><br>
+Klasik tesisatta buton ile lamba arasında <b>fiziksel bir kablo</b> vardır; buton neyi keserse o yanar-söner. Bir butonun görevini değiştirmek istersen duvarı kırar, kablo çekersin. KNX'te ise buton lambaya değil, <b>bus hattına</b> bağlıdır. Buton "1/2/3 grubuna AÇ komutu" diye bir mesaj (telegram) atar; o grubu dinleyen aktör röle çeker, lamba yanar. Görev değişikliği = sadece yazılımda parametre değişikliği. Su benzetmesi: klasik tesisat her muslukten her lavaboya ayrı boru çekmek gibidir; KNX ise tek ana boru (bus) üzerinden herkesin adresli koli aldığı bir kargo sistemi gibidir.<br><br>
+<b style="font-size:15px">🔹 Bus Topolojisi: Line, Area, Coupler</b><br>
+KNX'in en küçük yapı taşı <b>hat (line)</b> segmentidir. <b>Bir segmente en fazla 64 cihaz</b> bağlanır; repeater ile hat genişletilebilir. Hatlar <b>line coupler (hat kuplörü)</b> ile ana hatta, ana hatlar da <b>area coupler (alan kuplörü)</b> ile omurgaya (backbone) bağlanır. Kuplörler aynı zamanda <b>filtre</b> görevi görür: sadece karşı tarafı ilgilendiren telegramları geçirir, gereksiz trafiği keser. 15 alan x 15 hat yapısıyla dev binalar kurulabilir.<br><br>
+<b style="font-size:15px">🔹 Güç Kaynağı ve Bus Kablosu</b><br>
+Her hattın kendi <b>KNX güç kaynağı</b> vardır: <b>29V DC, SELV</b> (güvenlik çok düşük gerilim, şebekeden güvenli izoleli). Kaynak içinde bir <b>şok bobini (choke)</b> bulunur; bu bobin DC beslemeyi verirken telegram sinyalinin kısa devre olmasını engeller. Bus kablosu meşhur <b>yeşil KNX kablosudur: 2x2x0.8 mm</b>. Kullanılan çift: <b>KIRMIZI = + , SİYAH = −</b>. Sarı/beyaz çift yedektir. Cihazlar bus'tan hem beslenir hem haberleşir; tek kabloda "elektrik + veri" birlikte taşınır (yine su benzetmesi: aynı borudan hem su hem faturanın bilgisi akar gibi).<br><br>
+<b style="font-size:15px">🔹 Adresleme: Fiziksel Adres ve Grup Adresi</b><br>
+<table style="width:100%;border-collapse:collapse;font-size:13px">
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b>Adres türü</b></td><td style="padding:7px;border:1px solid #dbe4ee"><b>Örnek</b></td><td style="padding:7px;border:1px solid #dbe4ee"><b>Anlamı</b></td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Fiziksel adres</td><td style="padding:7px;border:1px solid #dbe4ee"><b>1.1.5</b></td><td style="padding:7px;border:1px solid #dbe4ee">Alan 1, Hat 1, Cihaz 5 — cihazın "TC kimlik no"su, hatta benzersizdir</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Grup adresi</td><td style="padding:7px;border:1px solid #dbe4ee"><b>1/2/3</b></td><td style="padding:7px;border:1px solid #dbe4ee">Ana grup/orta grup/alt grup — fonksiyonun adresi ("Kat 1 koridor aydınlatma AÇ/KAPA" gibi)</td></tr>
+</table><br>
+Telegram mantığı şöyledir: buton, grup adresi <b>1/2/3</b>'e "1" (AÇ) değerini yayınlar. Bus'taki BÜTÜN cihazlar mesajı duyar ama sadece o grup adresine abone olan aktörler harekete geçer. Radyo yayını gibi: herkes frekansı duyar, sadece o kanalı dinleyen tepki verir. Bir grup adresine birden çok buton ve birden çok aktör bağlanabilir — merkezi kapama bu sayede tek telegramla yapılır.<br><br>
+<b style="font-size:15px">🔹 Sensör mü Aktör mü?</b><br>
+<b>Sensörler bilgi üretir ve telegram GÖNDERİR:</b> buton, sıcaklık sensörü, hareket (PIR) dedektörü, lüks (aydınlık) sensörü, hava istasyonu. <b>Aktörler telegramı ALIR ve yükü sürer:</b> röle (anahtarlama) aktörü lambayı açar, dimmer aktörü parlaklığı ayarlar, jaluzi/panjur aktörü motoru yukarı-aşağı sürer, vana aktörü ısıtmayı kısar. Kural basit: parmağın/ortam değeri → sensör; 230V yükü süren → aktör.<br><br>
+<b style="font-size:15px">🔹 ETS ile Programlama Akışı</b><br>
+1) ETS'te proje aç, bina yapısını (kat/oda) kur. 2) Üreticilerin ürün veritabanlarını içe aktar, cihazları odalara yerleştir. 3) Topolojiyi kur, her cihaza fiziksel adres ver. 4) Grup adreslerini oluştur, sensör ve aktör nesnelerini aynı gruba bağla. 5) Cihaz parametrelerini ayarla (dim eğrisi, panjur süresi vb.). 6) Sahada cihazın <b>programlama butonuna</b> basıp fiziksel adresi yükle, sonra uygulama programını indir. 7) Test et, projeyi yedekle (proje dosyası ve şifresi kaybolursa bina yeniden programlanır — pahalı ders!).<br><br>
+<b style="font-size:15px">🔹 Tipik Senaryolar ve Saha Kontrolü</b><br>
+Aydınlatma sahneleri (toplantı/sunum/temizlik modu), panjur-güneş takibi, HVAC gece-gündüz rejimi, "binadan çıkarken tek tuşla merkezi kapama", lüks sensörüyle gün ışığına göre otomatik dim. <b>Devreye alma sırası:</b> önce bus kablo sürekliliği ve polarite, sonra güç kaynağı enerjilendir, <b>hat sonunda gerilimi ölç</b> (kaynak boşta ~30V gösterir; yüklü hatta cihaz ucunda <b>en az 21V</b> olmalı), sonra adres yükle, en son grup bağlantılarını test et. <b>Sık hatalar:</b> kırmızı-siyah <b>polarite ters</b> bağlanması (cihaz çalışmaz), aynı fiziksel adresin iki cihaza verilmesi (<b>adres çakışması</b>, programlama kilitlenir), hat sonunda gerilim düşümü (kablo çok uzun/ek hatalı), bus kablosunun 230V hatla aynı boruda taşınması.`,
+38:`<b style="font-size:15px">🔹 Pano: Otomasyonun Kalbi</b><br>
+Bir kumanda panosu, orkestra gibidir: kontaktör kaslardır, röleler sinir sistemi, PLC beyindir, klemensler eklemlerdir. Sahada arıza bulmanın yolu her elemanın görevini ve <b>klemens numarasını</b> ezbere bilmekten geçer.<br><br>
+<b style="font-size:15px">🔹 Kontaktör</b><br>
+Elektromıknatısla çalışan güç anahtarıdır. <b>A1/A2</b> uçları bobindir; A1'e faz (veya 24V), A2'ye nötr verilir, bobin enerjilenince nüve çeker ve <b>ana kontaklar (1-2, 3-4, 5-6)</b> kapanıp motora güç verir. Üzerindeki küçük <b>yardımcı kontaklar</b> kumanda içindir: <b>13-14 NO</b> (normalde açık), <b>21-22 NC</b> (normalde kapalı). <b>AC-3</b> kullanım sınıfı, sincap kafesli asenkron motorların yol alma ve durdurulması içindir (kalkış akımı 6-8xIn'i kaldırır); rezistif yükler için AC-1 yeter. Su benzetmesi: bobin, küçük bir el gücüyle koca ana vanayı açan servo koldur.<br><br>
+<b style="font-size:15px">🔹 Termik Aşırı Yük Rölesi ve Motor Koruma Şalteri</b><br>
+Termik röle, kontaktörün altına takılır; içindeki bimetal şeritler motor akımıyla ısınır. <b>Ayar akımı motor etiket akımına (In) ayarlanır.</b> Aşırı yükte atar: <b>95-96 NC kontağı AÇILIR</b> ve kumanda devresini kesip kontaktörü bıraktırır; <b>97-98 NO kontağı KAPANIR</b> ve arıza lambasını yakar. Termik kısa devreyi KESMEZ — kısa devre koruması sigorta/şalterin işidir. <b>Motor koruma şalteri (MKŞ)</b> ise termik + manyetik korumayı tek gövdede birleştirir; küçük motorlarda sigorta+termik ikilisinin yerini alır.<br><br>
+<b style="font-size:15px">🔹 Zaman Röleleri</b><br>
+<b>Çekmede gecikmeli (on-delay):</b> enerji gelince süre saymaya başlar, süre dolunca kontak konum değiştirir (örn. fan, kompresörden 5 sn sonra başlasın). <b>Bırakmada gecikmeli (off-delay):</b> enerji kesilince kontak bir süre daha tutar (örn. motor durunca soğutma fanı 30 sn daha dönsün). <b>Yıldız-üçgen zaman rölesi:</b> motoru önce yıldızda çalıştırır, ayarlanan süre sonunda (araya 50 ms civarı ölü zaman koyarak) üçgene geçirir; yıldız ve üçgen kontaktörlerinin AYNI ANDA çekmesini önlemek hayati önemdedir (faz arası kısa devre!).<br><br>
+<b style="font-size:15px">🔹 Koruma ve Fonksiyon Röleleri</b><br>
+<b>Faz koruma / faz sırası rölesi:</b> faz kesilmesi, düşük/yüksek gerilim ve ters faz sırasını izler; sıra tersse çıkış kontağını çekmez, motorun ters dönmesini engeller (asansör, pompa, apron köprüsü gibi yerlerde şart). <b>Sıvı seviye rölesi:</b> depodaki elektrotlarla su seviyesini algılar, pompayı kuru çalışmadan korur ve depo dolunca durdurur. <b>Darbe akım rölesi (impuls röle):</b> her buton darbesinde konum değiştirir (bas-yan, bas-sön); koridor aydınlatmasında çok butonla tek devre kumandası. <b>Merdiven otomatiği:</b> butona basılınca lambayı yakar, ayarlanan süre (örn. 3 dk) sonunda kendiliğinden söndürür.<br><br>
+<b style="font-size:15px">🔹 Akıllı Röle / Mini PLC (Logo, Zelio, Easy)</b><br>
+Klasik röle ormanının yerini alan programlanabilir kutu. <b>Ladder (merdiven) mantığı</b> kullanılır: seri bağlı kontaklar <b>AND</b> (hepsi kapalıysa çıkış var), paralel kontaklar <b>OR</b> (biri kapalıysa yeter). <b>Self-holding (mühürleme):</b> çıkışın kendi kontağı, start butonuna paralel bağlanır; buton bırakılsa da devre "kendini hatırlar". Zamanlayıcı, sayıcı, haftalık saat gibi fonksiyonlar yazılımla eklenir; pano küçülür, kablolama azalır, senaryo değişikliği program değişikliğine döner.<br><br>
+<b style="font-size:15px">🔹 Buton/Lamba Renkleri, Klemens ve Numaralandırma</b><br>
+<table style="width:100%;border-collapse:collapse;font-size:13px">
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b>Renk (IEC 60204-1)</b></td><td style="padding:7px;border:1px solid #dbe4ee"><b>Buton</b></td><td style="padding:7px;border:1px solid #dbe4ee"><b>Sinyal lambası</b></td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Kırmızı</td><td style="padding:7px;border:1px solid #dbe4ee">DUR / acil durdurma</td><td style="padding:7px;border:1px solid #dbe4ee">Arıza, tehlike</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Yeşil</td><td style="padding:7px;border:1px solid #dbe4ee">ÇALIŞTIR / başlat</td><td style="padding:7px;border:1px solid #dbe4ee">Normal çalışma</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Sarı</td><td style="padding:7px;border:1px solid #dbe4ee">Anormal duruma müdahale</td><td style="padding:7px;border:1px solid #dbe4ee">Uyarı, anormal durum</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Mavi / Beyaz</td><td style="padding:7px;border:1px solid #dbe4ee">Reset / genel amaç</td><td style="padding:7px;border:1px solid #dbe4ee">Zorunlu bilgi / genel bilgi</td></tr>
+</table><br>
+<b>Selektör şalter</b> (0-1, El-0-Oto) çalışma modunu seçer. <b>Ray klemensler</b> DIN rayına dizilir; <b>sarı-yeşil topraklama klemensi</b> raya kendinden temaslıdır. Çok telli iletken uçlarına <b>ferrül (yüksük)</b> takılır, her kablo iki ucundan <b>numaralandırılır</b> — projede 13 numaralı tel panoda da 13'tür; arıza bulmanın yarısı budur.<br><br>
+<b style="font-size:15px">🔹 Kumanda Devresi ve Güç Devresi</b><br>
+<b>Güç devresi</b> motoru besleyen kalın damarlı devredir (3x400V). <b>Kumanda devresi</b> ise butonlar, bobinler, lambalarla kurulan ince kesitli beyin devresidir; genellikle <b>230V AC veya güvenlik için 24V AC/DC</b> (kumanda trafosu üzerinden) çalışır. İkisi ayrı çizilir, ayrı sigortalanır.<br><br>
+<b style="font-size:15px">🔹 Başlat-Durdur Mühürleme Devresi — ADIM ADIM</b><br>
+1) Fazdan kumanda sigortasına gir. 2) Sigorta çıkışını termik rölenin <b>95-96 NC</b> kontağından geçir (termik atarsa her şey dursun). 3) Seri olarak <b>STOP butonunu (NC)</b> bağla. 4) Seri olarak <b>START butonunu (NO)</b> bağla. 5) Start çıkışını kontaktör bobini <b>A1</b>'e, <b>A2</b>'yi nötre bağla. 6) Kontaktörün <b>13-14 NO yardımcı kontağını START butonuna PARALEL</b> bağla — mühür budur. Çalışma: Start'a basınca bobin çeker, 13-14 kapanır; elini çeksen de akım 13-14 üzerinden dolaşır, motor çalışmaya devam eder. Stop'a basınca veya termik atınca bobin bırakır, 13-14 açılır, mühür çözülür. Enerji kesilip gelince motor KENDİLİĞİNDEN kalkmaz — bu, mühürlemenin sağladığı en önemli iş güvenliği özelliğidir.`
+});
+Object.assign(FOY,{
+37:`💊 <b>Hap bilgiler — KNX</b><br>
+• Standart: <b>ISO/IEC 14543-3</b>, üreticiden bağımsız.<br>
+• Bus gerilimi: <b>29V DC SELV</b>; kaynak boşta ~30V, cihaz ucunda en az <b>21V</b>.<br>
+• Kablo: yeşil <b>2x2x0.8</b> — <b>kırmızı +, siyah −</b> (sarı/beyaz yedek).<br>
+• Segment başına <b>64 cihaz</b>; hatlar line coupler, alanlar area coupler ile bağlanır.<br>
+• Fiziksel adres <b>1.1.5</b> = Alan.Hat.Cihaz (kimlik). Grup adresi <b>1/2/3</b> = fonksiyon (komut kanalı).<br>
+• Sensör telegram gönderir, aktör yükü sürer. Programlama: <b>ETS</b>.<br>
+• Sık hata: polarite ters, adres çakışması, hat sonu gerilim düşümü. Proje dosyasını YEDEKLE.<br><br>
+📋 <b>Cebe yaz:</b> "29V-64 cihaz-kırmızı artı" + "önce polarite ölç, sonra adres yükle".<br><br>
+🛠️ <b>Adım adım örnek — koridor lambasını butona bağlama:</b><br>
+1) ETS'te grup adresi oluştur: 1/0/1 "Koridor aydınlatma".<br>
+2) Butonun (fiziksel adres 1.1.10) anahtarlama nesnesini 1/0/1'e sürükle.<br>
+3) Röle aktörünün (1.1.20) A kanalı nesnesini de 1/0/1'e bağla.<br>
+4) İki cihaza da programı indir.<br>
+5) Butona bas: buton 1/0/1'e "1" telegramı yollar, aktör röleyi çeker, lamba yanar. Grup izleme (group monitor) ekranından telegramı canlı izle.`,
+38:`💊 <b>Hap bilgiler — Pano</b><br>
+• Kontaktör bobini: <b>A1/A2</b>. Ana kontaklar 1-2/3-4/5-6. Yardımcı: <b>13-14 NO</b>, 21-22 NC.<br>
+• Termik röle: <b>95-96 NC</b> kumandayı keser, <b>97-98 NO</b> arıza lambası. Ayar = motor etiket akımı.<br>
+• Motor yolvermede kontaktör sınıfı: <b>AC-3</b>.<br>
+• Zaman röleleri: on-delay (çekmede), off-delay (bırakmada), yıldız-üçgen özel röle.<br>
+• Renkler: <b>kırmızı=DUR, yeşil=ÇALIŞ</b>, sarı=uyarı, mavi=reset. Toprak klemensi <b>sarı-yeşil</b>.<br>
+• Kumanda devresi 230V/24V ince kesit; güç devresi ayrı. Her tel iki uçtan numaralı + ferrüllü.<br>
+• Ladder: seri=AND, paralel=OR, mühürleme=self-holding.<br><br>
+📋 <b>Cebe yaz:</b> "95-96 keser, 97-98 söyler; 13-14 mühürler".<br><br>
+🛠️ <b>Adım adım örnek — başlat-durdur mühürleme:</b><br>
+1) Faz → kumanda sigortası → termik 95-96 → STOP (NC) → START (NO) → bobin A1; A2 → nötr.<br>
+2) K1'in 13-14 kontağını START'a paralel bağla.<br>
+3) Start'a bas: bobin çeker, 13-14 kapanır (mühür), motor döner.<br>
+4) Eli çek: motor çalışmaya devam eder (akım 13-14'ten dolaşır).<br>
+5) Stop'a bas veya termik atsın: bobin bırakır, mühür çözülür, motor durur. Enerji gidip gelince motor kendiliğinden KALKMAZ — güvenlik böyle sağlanır.`
+});
+Object.assign(QBANK,{
+37:[
+{q:"KNX bus hattının nominal besleme gerilimi kaçtır?",opts:["12V DC","24V AC","29V DC","48V DC"],ans:2,ex:"KNX güç kaynağı 29V DC SELV verir. Boşta ~30V ölçülür; cihazlar 21V'a kadar çalışabilir. SELV olduğu için şebekeden güvenli izolelidir."},
+{q:"Bir KNX hat segmentine en fazla kaç cihaz bağlanabilir?",opts:["32","128","256","64"],ans:3,ex:"Segment başına sınır 64 cihazdır. Daha fazlası için repeater kullanılır veya line coupler ile yeni hat açılır."},
+{q:"Yeşil KNX bus kablosunda (2x2x0.8) hangi damar çifti kullanılır ve polarite nasıldır?",opts:["Kırmızı +, siyah −","Sarı +, beyaz −","Kahve +, mavi −","Siyah +, kırmızı −"],ans:0,ex:"Kırmızı damar +, siyah damar − olarak bağlanır; sarı/beyaz çift yedektir. Polarite ters bağlanırsa cihaz haberleşemez — sahadaki en sık hatalardan biridir."},
+{q:"1.1.5 şeklindeki KNX adresi neyi ifade eder?",opts:["Grup adresi: ana/orta/alt grup","Fiziksel adres: Alan 1, Hat 1, Cihaz 5","IP adresi kısaltması","Telegram öncelik kodu"],ans:1,ex:"Nokta ile ayrılan adres fiziksel adrestir (Alan.Hat.Cihaz) ve cihazın kimliğidir. Bölü ile ayrılan (1/2/3) ise fonksiyonu taşıyan grup adresidir."},
+{q:"Bir buton lambayı KNX üzerinden nasıl yakar?",opts:["Butondan lambaya doğrudan 230V gider","Buton grup adresine telegram yollar, o adrese bağlı aktör röleyi çeker","Buton lambaya radyo frekansıyla enerji aktarır","Güç kaynağı butonun akımını lambaya yönlendirir"],ans:1,ex:"Buton (sensör) bus'a grup adresli bir telegram yayınlar. O grup adresine abone olan anahtarlama aktörü mesajı alır ve 230V yük kontağını kapatır. Buton ile lamba arasında güç kablosu yoktur."},
+{q:"Aşağıdakilerden hangisi bir AKTÖRDÜR?",opts:["Lüks sensörü","Hareket dedektörü","Jaluzi (panjur) aktörü","Sıcaklık sensörü"],ans:2,ex:"Aktörler telegramı alıp yükü sürer: röle aktörü, dimmer, jaluzi aktörü, vana aktörü. Sensörler ise ortamdan bilgi toplayıp telegram gönderir."},
+{q:"ETS yazılımının görevi nedir?",opts:["Sadece enerji tüketimini faturalandırır","Bus kablosunun direncini ölçer","Yalnızca üretici ABB cihazlarını yapılandırır","KNX cihazlarını adresleme, parametre ayarı ve grup bağlantısı ile programlar"],ans:3,ex:"ETS (Engineering Tool Software) üreticiden bağımsız TEK resmi devreye alma aracıdır: topoloji, fiziksel adres, grup adresleri, parametreler ve indirme hep ETS ile yapılır. Proje dosyası mutlaka yedeklenmelidir."},
+{q:"Line coupler (hat kuplörü) ne işe yarar?",opts:["Bus gerilimini 29V'tan 230V'a yükseltir","Hatları birbirine bağlar ve filtre tablosuyla gereksiz telegramları geçirmez","Cihazlara fiziksel adres dağıtır","Lambaların parlaklığını ayarlar"],ans:1,ex:"Kuplör hem topolojik bağlantı hem trafik filtresidir: yalnızca karşı hattı ilgilendiren telegramları geçirir. Böylece büyük binalarda bus trafiği yönetilebilir kalır."},
+{q:"Devreye almada hat sonunda bus gerilimi ölçülüyor. Kaynak boşta ~30V iken cihaz ucunda en az kaç volt olmalıdır?",opts:["9V","15V","21V","29V"],ans:2,ex:"KNX cihazları 21-30V aralığında çalışır. Hat sonunda 21V'un altı ölçülüyorsa kablo çok uzundur, ek hatalıdır veya hatta aşırı cihaz vardır; cihazlar kararsız çalışır."},
+{q:"Aynı fiziksel adresin iki cihaza verilmesi sahada nasıl bir soruna yol açar?",opts:["Hiçbir sorun olmaz, adresler paylaşılabilir","Adres çakışması olur; programlama ve haberleşme kilitlenir","Bus gerilimi iki katına çıkar","Sadece lamba renkleri değişir"],ans:1,ex:"Fiziksel adres cihazın benzersiz kimliğidir. Çakışmada ETS indirmeleri hata verir, telegramlar karışır. Çözüm: cihazlardan birine programlama moduna alıp yeni adres yüklemek."}
+],
+38:[
+{q:"Kontaktör bobininin bağlantı uçları hangileridir?",opts:["13-14","95-96","A1-A2","1-2"],ans:2,ex:"A1/A2 bobin uçlarıdır; A1'e kumanda gerilimi (faz veya 24V), A2'ye nötr/eksi bağlanır. 1-2/3-4/5-6 ana güç kontakları, 13-14 yardımcı NO kontaktır."},
+{q:"Termik aşırı yük rölesi attığında 95-96 kontağı ne yapar?",opts:["Kapanır ve motoru tekrar çalıştırır","Açılır ve kumanda devresini keserek kontaktörü bıraktırır","Arıza lambasını doğrudan söndürür","Güç devresini kısa devre eder"],ans:1,ex:"95-96 NC (normalde kapalı) kontaktır; termik atınca AÇILIR ve bobin enerjisi kesilir. 97-98 NO kontak ise KAPANIR ve arıza sinyal lambasını yakar. Termik kısa devreyi kesmez; o iş sigorta/şalterindir."},
+{q:"Sincap kafesli asenkron motorun yol alma/durdurma anahtarlaması için kontaktör hangi kullanım sınıfında seçilir?",opts:["AC-1","AC-15","DC-5","AC-3"],ans:3,ex:"AC-3, motorun 6-8 kat kalkış akımını anahtarlamaya uygun sınıftır. AC-1 rezistif yükler içindir; motorda AC-1 kontaktör seçilirse kontaklar erken yanar."},
+{q:"Yıldız-üçgen zaman rölesinin kritik görevi nedir?",opts:["Motoru sürekli yıldızda tutmak","Süre sonunda araya ölü zaman koyarak yıldızdan üçgene geçirmek, iki kontaktörün aynı anda çekmesini önlemek","Motor akımını ölçüp faturalamak","Faz sırasını düzeltmek"],ans:1,ex:"Yıldız ve üçgen kontaktörleri AYNI ANDA çekerse fazlar arası kısa devre oluşur. Özel röle, ayarlanan süre sonunda yıldızı bırakıp ~50 ms ölü zaman sonrası üçgeni çektirir; ayrıca elektriksel kilitleme (NC kontaklarla) yapılır."},
+{q:"Mühürleme (self-holding) devresinde kontaktörün hangi kontağı start butonuna paralel bağlanır?",opts:["95-96 NC","21-22 NC","13-14 NO","A1-A2"],ans:2,ex:"13-14 NO yardımcı kontak start'a paralel bağlanır. Bobin çekince 13-14 kapanır ve buton bırakılsa da akım bu kontaktan dolaşır — devre kendini mühürler."},
+{q:"IEC renk standardına göre butonlarda kırmızı ve yeşilin anlamı nedir?",opts:["Kırmızı=çalıştır, yeşil=dur","Kırmızı=dur/acil, yeşil=çalıştır","İkisi de yalnızca sinyal içindir","Renk seçimi tamamen serbesttir"],ans:1,ex:"IEC 60204-1: kırmızı = durdurma/acil durdurma, yeşil = başlatma. Sinyal lambasında kırmızı arıza/tehlike, yeşil normal çalışma, sarı uyarı anlamındadır."},
+{q:"Faz sırası rölesi hangi tehlikeyi önler?",opts:["Faz sırası ters bağlandığında motorun ters yönde dönmesini","Motorun aşırı ısınmasını","Kumanda sigortasının atmasını","Bus geriliminin düşmesini"],ans:0,ex:"Üç fazlı motorda iki fazın yeri değişirse dönüş yönü tersine döner; asansör, pompa, konveyör gibi yerlerde bu tehlikelidir. Röle sırayı izler, sıra yanlışsa çıkış kontağını çektirmez, motor hiç kalkmaz."},
+{q:"Kumanda devresi ile güç devresi arasındaki temel fark nedir?",opts:["Kumanda devresi her zaman 400V'tur","Güç devresi motoru besler (kalın kesit), kumanda devresi buton-bobin-lamba mantığını taşır (ince kesit, 230V veya 24V)","İkisi aynı devredir, sadece rengi farklıdır","Kumanda devresinde sigorta kullanılmaz"],ans:1,ex:"Güç devresi 3x400V ile motoru sürer; kumanda devresi ise bobinleri ve sinyalleri yöneten ayrı sigortalı, ince kesitli devredir. Güvenlik istenirse kumanda trafo ile 24V'a düşürülür."},
+{q:"Merdiven otomatiğinin çalışma prensibi nedir?",opts:["Butona basılınca lamba yanar ve ayarlanan süre sonunda kendiliğinden söner","Lamba sürekli yanar, buton söndürür","Her basışta konum değiştirir","Sadece gündüz çalışır"],ans:0,ex:"Merdiven otomatiği bir zaman rölesidir: darbe alınca çıkışı çeker, ayarlanan süre (örn. 1-5 dk) dolunca söndürür. Her basışta konum değiştiren cihaz ise darbe akım (impuls) rölesidir — ikisini karıştırma."},
+{q:"Ladder (merdiven) mantığında seri ve paralel bağlı kontaklar hangi mantık işlemine karşılık gelir?",opts:["Seri=OR, paralel=AND","Seri=AND, paralel=OR","İkisi de NOT","Seri=XOR, paralel=NAND"],ans:1,ex:"Seri kontakların HEPSİ kapalıysa akım geçer = AND. Paralel kollardan BİRİ kapalıysa yeter = OR. Mühürleme, çıkış kontağının start'a paralel (OR) bağlanmasıyla kurulan bir hafızadır."}
+]
+});
+Object.assign(DIAG,{
+37:`<svg viewBox="0 0 440 200" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="440" height="200" fill="#0d1520"/><text x="220" y="18" fill="#33b1ff" font-size="12" text-anchor="middle" font-weight="bold">KNX BUS TOPOLOJİSİ (1 HAT SEGMENTİ)</text><rect x="20" y="40" width="86" height="46" rx="4" fill="#20303f" stroke="#8a98ab"/><text x="63" y="58" fill="#ffb000" font-size="10" text-anchor="middle">GÜÇ KAYNAĞI</text><text x="63" y="72" fill="#8a98ab" font-size="9" text-anchor="middle">29V DC SELV</text><rect x="128" y="40" width="70" height="46" rx="4" fill="#20303f" stroke="#8a98ab"/><text x="163" y="58" fill="#33b1ff" font-size="10" text-anchor="middle">BUTON</text><text x="163" y="72" fill="#8a98ab" font-size="9" text-anchor="middle">sensör 1.1.10</text><rect x="218" y="40" width="76" height="46" rx="4" fill="#20303f" stroke="#8a98ab"/><text x="256" y="58" fill="#33b1ff" font-size="10" text-anchor="middle">PIR SENSÖR</text><text x="256" y="72" fill="#8a98ab" font-size="9" text-anchor="middle">sensör 1.1.11</text><rect x="314" y="40" width="86" height="46" rx="4" fill="#20303f" stroke="#8a98ab"/><text x="357" y="58" fill="#f85149" font-size="10" text-anchor="middle">RÖLE AKTÖRÜ</text><text x="357" y="72" fill="#8a98ab" font-size="9" text-anchor="middle">aktör 1.1.20</text><line x1="63" y1="86" x2="63" y2="120" stroke="#3fb950" stroke-width="3"/><line x1="163" y1="86" x2="163" y2="120" stroke="#3fb950" stroke-width="3"/><line x1="256" y1="86" x2="256" y2="120" stroke="#3fb950" stroke-width="3"/><line x1="357" y1="86" x2="357" y2="120" stroke="#3fb950" stroke-width="3"/><line x1="30" y1="120" x2="420" y2="120" stroke="#3fb950" stroke-width="4"/><text x="225" y="136" fill="#3fb950" font-size="10" text-anchor="middle">YEŞİL KNX BUS 2x2x0.8 — KIRMIZI(+) / SİYAH(−) — maks. 64 cihaz</text><line x1="357" y1="86" x2="357" y2="86" stroke="#8a98ab"/><line x1="380" y1="40" x2="380" y2="26" stroke="#ffb000" stroke-width="2"/><circle cx="380" cy="20" r="6" fill="none" stroke="#ffb000" stroke-width="2"/><line x1="376" y1="16" x2="384" y2="24" stroke="#ffb000" stroke-width="1.5"/><line x1="384" y1="16" x2="376" y2="24" stroke="#ffb000" stroke-width="1.5"/><text x="406" y="24" fill="#ffb000" font-size="9">230V lamba</text><text x="30" y="160" fill="#8a98ab" font-size="10">Telegram: buton 1/2/3 grubuna AÇ komutu yayınlar,</text><text x="30" y="174" fill="#8a98ab" font-size="10">aynı gruba abone aktör röleyi çeker → lamba yanar.</text><text x="30" y="190" fill="#33b1ff" font-size="9">Line coupler ile diğer hatlara, area coupler ile omurgaya bağlanır.</text></svg>`,
+38:`<svg viewBox="0 0 440 200" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="440" height="200" fill="#0d1520"/><text x="220" y="16" fill="#33b1ff" font-size="12" text-anchor="middle" font-weight="bold">BAŞLAT-DURDUR MÜHÜRLEME (KUMANDA DEVRESİ)</text><line x1="40" y1="30" x2="40" y2="180" stroke="#f85149" stroke-width="2"/><text x="28" y="40" fill="#f85149" font-size="10">L1</text><line x1="400" y1="30" x2="400" y2="180" stroke="#33b1ff" stroke-width="2"/><text x="406" y="40" fill="#33b1ff" font-size="10">N</text><line x1="40" y1="70" x2="70" y2="70" stroke="#8a98ab" stroke-width="2"/><rect x="70" y="62" width="34" height="16" fill="#20303f" stroke="#ffb000"/><text x="87" y="74" fill="#ffb000" font-size="9" text-anchor="middle">F1</text><line x1="104" y1="70" x2="130" y2="70" stroke="#8a98ab" stroke-width="2"/><rect x="130" y="58" width="46" height="24" fill="#20303f" stroke="#8a98ab"/><text x="153" y="68" fill="#f85149" font-size="9" text-anchor="middle">TERMİK</text><text x="153" y="79" fill="#8a98ab" font-size="8" text-anchor="middle">95-96 NC</text><line x1="176" y1="70" x2="200" y2="70" stroke="#8a98ab" stroke-width="2"/><rect x="200" y="58" width="42" height="24" fill="#20303f" stroke="#f85149"/><text x="221" y="68" fill="#f85149" font-size="9" text-anchor="middle">STOP</text><text x="221" y="79" fill="#8a98ab" font-size="8" text-anchor="middle">NC</text><line x1="242" y1="70" x2="264" y2="70" stroke="#8a98ab" stroke-width="2"/><rect x="264" y="58" width="42" height="24" fill="#20303f" stroke="#3fb950"/><text x="285" y="68" fill="#3fb950" font-size="9" text-anchor="middle">START</text><text x="285" y="79" fill="#8a98ab" font-size="8" text-anchor="middle">NO</text><line x1="306" y1="70" x2="336" y2="70" stroke="#8a98ab" stroke-width="2"/><circle cx="352" cy="70" r="16" fill="#20303f" stroke="#ffb000" stroke-width="2"/><text x="352" y="74" fill="#ffb000" font-size="10" text-anchor="middle">K1</text><text x="336" y="52" fill="#8a98ab" font-size="8">A1</text><text x="372" y="92" fill="#8a98ab" font-size="8">A2</text><line x1="368" y1="70" x2="400" y2="70" stroke="#8a98ab" stroke-width="2"/><line x1="264" y1="70" x2="264" y2="120" stroke="#3fb950" stroke-width="2"/><line x1="306" y1="70" x2="306" y2="120" stroke="#3fb950" stroke-width="2"/><line x1="264" y1="120" x2="272" y2="120" stroke="#3fb950" stroke-width="2"/><rect x="272" y="110" width="26" height="20" fill="#20303f" stroke="#3fb950"/><text x="285" y="121" fill="#3fb950" font-size="8" text-anchor="middle">K1</text><text x="285" y="129" fill="#8a98ab" font-size="7" text-anchor="middle">13-14</text><line x1="298" y1="120" x2="306" y2="120" stroke="#3fb950" stroke-width="2"/><text x="285" y="146" fill="#3fb950" font-size="9" text-anchor="middle">MÜHÜR (paralel)</text><text x="40" y="168" fill="#8a98ab" font-size="9">Start basılınca K1 çeker, 13-14 kapanır; el çekilse de devre</text><text x="40" y="181" fill="#8a98ab" font-size="9">mühür üzerinden beslenir. Stop veya termik (95-96) devreyi çözer.</text><text x="40" y="194" fill="#ffb000" font-size="9">K1 ana kontakları (1-2/3-4/5-6) güç devresinde motoru sürer.</text></svg>`
+});
+
+/* ===== EK v8: AG/OG + Pano Tasarımı modülleri (39-40) ===== */
+MODS.push({id:39, t:"AG / OG Dağıtım Mimarisi", cat:"oto", ic:"🏗️", d:"OG hücreler, trafo, ADP, bara, kompanzasyon."});
+MODS.push({id:40, t:"Pano Tasarımı & Senaryolar", cat:"oto", ic:"📐", d:"Yerleşim, form, ısı hesabı, 'ne yaparsak ne olur?'"});
+
+Object.assign(TEORI,{
+39:`<b style="font-size:15px">🔹 AG mi, OG mi? Önce Tanımlar</b><br>
+Elektrik dağıtımında gerilim seviyeleri sınıflara ayrılır: <b>AG (Alçak Gerilim)</b> 1000 V (1 kV) ve altındaki gerilimlerdir; Türkiye'de tipik AG değeri <b>0,4 kV (400 V faz arası / 230 V faz-nötr)</b> olur. <b>OG (Orta Gerilim)</b> 1 kV ile 36 kV arasıdır; Türkiye dağıtım şebekesinde en yaygın OG değeri <b>34,5 kV</b>'tur (bazı bölgelerde 15,8 kV ve 6,3 kV da görülür). Bunun üstü <b>YG (Yüksek Gerilim)</b> iletim seviyesidir: 154 kV ve 380 kV.<br><br>
+<b style="font-size:15px">🔹 Enerji Zinciri: Santralden Prize</b><br>
+Enerji şu yolu izler: <b>Santral</b> (üretim, genelde 10-20 kV'ta üretilir) → yükseltici trafo ile <b>iletim hattı (154/380 kV)</b> → indirici trafo merkezleri → <b>OG dağıtım (34,5 kV)</b> → mahalledeki/tesisteki <b>dağıtım trafosu (34,5/0,4 kV)</b> → <b>AG ana dağıtım panosu (ADP)</b> → tali panolar → yükler. Gerilimi yükseltmenin sebebi basittir: aynı güç için gerilim arttıkça akım düşer, akım düşünce hat kaybı (I²R) ve iletken kesiti düşer.<br><br>
+<b style="font-size:15px">🔹 OG Hücreleri: Trafo Merkezinin Odaları</b><br>
+OG tarafı "hücre" adı verilen, metal muhafazalı, tip testli modüler bölmelerden kurulur. Tipik bir müşteri trafo merkezinde dizilim: <b>Giriş hücresi</b> (şebekeden gelen kablo buraya girer), gerekirse <b>çıkış hücresi</b> (ring şebekede enerjiyi bir sonraki merkeze aktarır), <b>ölçü hücresi</b> (OG gerilim ve akım trafoları ile sayaç ölçümü) ve <b>trafo koruma hücresi</b> (trafoyu besleyen ve koruyan hücre). Hücreler iki ana tipe ayrılır: <b>yük ayırıcılı</b> hücre yük akımını açıp kapatabilir ama kısa devreyi kesemez; kısa devre koruması seri bağlı OG sigortasıyla yapılır (küçük trafolar için ekonomiktir). <b>Kesicili</b> hücre ise kısa devre akımını kesebilen gerçek bir kesici içerir ve röle ile koordineli çalışır; büyük güçlerde zorunludur. Kesicilerde ark söndürme ortamı olarak <b>vakum</b> (dağıtımda en yaygın, bakım gerektirmez) veya <b>SF6 gazı</b> kullanılır; SF6 çok iyi yalıtkandır ama güçlü bir sera gazı olduğundan kaçak takibi ister ve yeni tesislerde vakum/temiz hava çözümleri tercih edilmektedir.<br><br>
+<b style="font-size:15px">🔹 Dağıtım Trafosu ve Dyn11</b><br>
+Dağıtım trafosu 34,5 kV'u 0,4 kV'a indirir. Etiketteki <b>Dyn11</b> bağlantı grubudur: <b>D</b> = primer (OG) sargı üçgen, <b>yn</b> = sekonder (AG) sargı yıldız ve nötrü dışarı çıkarılmış, <b>11</b> = sekonder gerilimin primerden 11×30° = 330° kaydığı (yani 30° ileride olduğu) anlamına gelir. Yıldız sekonder sayesinde AG tarafında nötr elde edilir ve tek fazlı yükler beslenir. Soğutma tipine göre <b>yağlı tip</b> (ONAN: yağ doğal, hava doğal; ucuz, dış ortama uygun ama yangın/sızıntı riski) ve <b>kuru tip</b> (döküm reçineli; bina içi, yangın riski düşük, biraz pahalı) ayrımı vardır. Yağlı trafolarda <b>Buchholz rölesi</b> kazan ile genleşme deposu arasına takılır; içeride ark/aşırı ısınma sonucu gaz oluşursa veya ani yağ akışı olursa önce alarm, ağır arızada açma verir. Termometre, yağ seviye göstergesi ve basınç ventili diğer koruma donanımlarıdır.<br><br>
+<b style="font-size:15px">🔹 AG Ana Dağıtım Panosu (ADP)</b><br>
+Trafodan gelen AG besleme ADP'ye girer. Girişte <b>ACB (açık tip hava kesici)</b> bulunur: yüksek akımlarda (630 A - 6300 A) ayarlanabilir elektronik koruma üniteli ana kesicidir. Enerji ACB'den <b>bakır baralara</b> dağılır. Bara kesiti, taşınacak sürekli akıma, kısa devre dayanımına ve ısınmaya göre seçilir; kabaca çıplak bakır barada cm² başına 1,5-2 A/mm² mertebesi değil, pratik tablolarla (örn. 30x10 mm bara ≈ 700-800 A) belirlenir. İletken tanıma renkleri: <b>L1 kahverengi, L2 siyah, L3 gri, N açık mavi, PE yeşil-sarı</b>. Çıkış kolonları çoğu tesiste <b>NH bıçaklı sigortalı</b> yük ayırıcılarla korunur; NH boyları güç kademesini belirler: <b>NH00 (≤160 A), NH1 (≤250 A), NH2 (≤400 A), NH3 (≤630 A)</b>. Ölçü için baralara <b>akım trafoları</b> (örn. 1000/5 A) takılır; sayaç ve analizörler bu 5 A'lik sekonderden beslenir. Akım trafosunun sekonderi yük altında asla açık bırakılmaz.<br><br>
+<table style="width:100%;border-collapse:collapse;font-size:13px">
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b>Seviye</b></td><td style="padding:7px;border:1px solid #dbe4ee"><b>Tipik değer (TR)</b></td><td style="padding:7px;border:1px solid #dbe4ee"><b>Görev</b></td><td style="padding:7px;border:1px solid #dbe4ee"><b>Ana ekipman</b></td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">YG iletim</td><td style="padding:7px;border:1px solid #dbe4ee">154 / 380 kV</td><td style="padding:7px;border:1px solid #dbe4ee">Uzak mesafe taşıma</td><td style="padding:7px;border:1px solid #dbe4ee">İletim hattı, oto trafo</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">OG dağıtım</td><td style="padding:7px;border:1px solid #dbe4ee">34,5 kV</td><td style="padding:7px;border:1px solid #dbe4ee">Bölge içi dağıtım</td><td style="padding:7px;border:1px solid #dbe4ee">Hücreler, kesici, ayırıcı</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Trafo</td><td style="padding:7px;border:1px solid #dbe4ee">34,5/0,4 kV Dyn11</td><td style="padding:7px;border:1px solid #dbe4ee">İndirme</td><td style="padding:7px;border:1px solid #dbe4ee">Yağlı/kuru trafo, Buchholz</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">AG</td><td style="padding:7px;border:1px solid #dbe4ee">0,4 kV / 230 V</td><td style="padding:7px;border:1px solid #dbe4ee">Son kullanım</td><td style="padding:7px;border:1px solid #dbe4ee">ADP, ACB, NH, bara</td></tr>
+</table><br>
+<b style="font-size:15px">🔹 Kompanzasyon</b><br>
+Motorlar, trafolar, balastlar şebekeden <b>endüktif reaktif güç</b> çeker; bu güç iş yapmaz ama hatları ve trafoyu meşgul eder, cosφ'yi düşürür. Dağıtım şirketi belirli oranın üstündeki reaktif tüketime <b>ceza</b> keser (yönetmelikte tipik sınırlar: aktif enerjinin endüktifte %20'si, kapasitifte %15'i; abone grubuna göre değişebilir, güncel tarifeyi kontrol edin). Çözüm: ADP baralarına <b>kademeli kondansatör grupları</b> bağlanır; <b>reaktif güç kontrol rölesi</b> akım trafosundan yükü izler, cosφ'yi hedefe (pratikte 0,95-1,00 endüktif bölge) çekecek kadar kademeyi kontaktörlerle devreye alır/çıkarır. Harmonikli tesislerde kondansatörler filtre reaktörleriyle birlikte kullanılır.<br><br>
+<b style="font-size:15px">🔹 Selektivite ve Jeneratör Bağlantısı</b><br>
+<b>Selektivite</b>: arıza olduğunda sadece arızaya en yakın koruma elemanının açması, üst kademelerin devrede kalmasıdır. Bunun için kademeler arasında akım ve/veya zaman ayrımı bırakılır (örn. çıkış NH 160 A → ADP girişi ACB 1000 A, ACB'nin kısa gecikme kademesi NH'nin ergime süresinin üstünde). Jeneratörlü tesiste <b>enversör (transfer) şalter veya ATS</b> ADP'nin giriş bölümündedir: şebeke ve jeneratör baraya asla aynı anda bağlanamaz; elektriksel ve mekanik kilitleme zorunludur. ATS şebeke kesilince jeneratöre start verir, gerilim oturunca yükü aktarır; şebeke dönünce geri transfer edip jeneratörü soğutma çalışmasından sonra durdurur.`,
+
+40:`<b style="font-size:15px">🔹 İyi Pano Tasarımı Neden Önemli?</b><br>
+Pano, tesisin kalbidir; arızaların büyük kısmı ya kötü bağlantıdan ya kötü yerleşimden çıkar. İyi tasarlanmış panoda enerji akışı gözle takip edilebilir, her elemanın etiketi şemadaki adıyla birebirdir, ısı kontrol altındadır ve bir arızada tekniker dakikalar içinde doğru noktaya iner.<br><br>
+<b style="font-size:15px">🔹 Yerleşim Düzeni</b><br>
+Enerji akışı mantıklı bir yön izlemelidir: yaygın uygulama <b>giriş şalterinin altta veya üstte</b> olması ve akışın tek yönde (örn. alttan giriş → yukarı bara → çıkışlar) ilerlemesidir; kablo girişi alttan ise ana şalteri alta koymak kablo boyunu kısaltır. <b>Güç devresi ile kumanda devresi ayrılır</b>: güç solda kumanda sağda, ya da ayrı bölme/ayrı pano. Böylece 400 V güç kabloları ile 24 V sinyal kabloları yan yana koşmaz, parazit ve kaza riski düşer. Isı üreten elemanlar (sürücüler, frenleme dirençleri, trafolar) panonun üst-arka bölgesine ve havalandırma çıkışına yakın konur; elektronik (PLC, röleler) ısı kaynağının altına/uzağına yerleşir. <b>Kablo kanalları en fazla ~%70 doldurulur</b>; kalan hacim hem ısı hem de gelecekteki ilaveler içindir. <b>Klemensler işlevine göre gruplanır</b> (güç, dijital giriş, dijital çıkış, analog, besleme) ve analog sinyaller ekranlı kabloyla, güçten ayrı kanaldan taşınır.<br><br>
+<b style="font-size:15px">🔹 Form Ayrımı (IEC 61439)</b><br>
+Form sınıfı, pano içindeki iç bölmelendirmeyi tanımlar: <b>Form 1</b> hiç bölme yok (tek hacim). <b>Form 2</b> baralar fonksiyonel ünitelerden ayrılmış. <b>Form 3</b> ek olarak fonksiyonel üniteler birbirinden ayrılmış. <b>Form 4</b> bunlara ilave çıkış klemensleri de her ünite için ayrı bölmede. Form büyüdükçe bir bölmede çalışırken diğerleri enerjili ve dokunmaya karşı korumalı kalabilir; hastane, endüstri ana panoları gibi kesintinin kabul edilmediği yerlerde Form 3b/4 istenir.<br><br>
+<b style="font-size:15px">🔹 IP Koruma Sınıfı</b><br>
+İlk rakam katı cisim/toz, ikinci rakam su korumasıdır. Kuru, temiz iç mekân panoları için <b>IP20-IP31</b> yeterli olabilir; tozlu atölye için <b>IP54</b>; dış ortam ve yıkamalı alanlar için <b>IP54-IP65</b> seçilir. IP arttıkça pano sızdırmazlaşır, bu da ısıyı içeride hapseder: yüksek IP + yüksek kayıp gücü = klima veya ısı eşanjörü ihtiyacı.<br><br>
+<b style="font-size:15px">🔹 Isıl Hesap ve Havalandırma</b><br>
+Panodaki her cihaz kayıp güç (watt) yayar: sürücü etiketinde yazar (kabaca anma gücünün %2-3'ü), kontaktör bobini + kontaklar birkaç W, sigorta ve klemensler, baralar, güç kaynakları... <b>Tüm kayıp güçler toplanır (Pk)</b>. Pano yüzeyi doğal yolla yaklaşık k×A×ΔT kadar ısı atar (boyalı sac için k ≈ 5,5 W/m²K, A etkin yüzey). Hesaplanan iç sıcaklık, içerideki en hassas cihazın sınırını (çoğu elektronik için 40-50°C) aşıyorsa <b>filtreli fan</b> eklenir; ortam çok tozlu/sıcaksa fan yerine <b>ısı eşanjörü veya pano kliması</b> gerekir. Fan alttan filtreden temiz hava alıp üstten atacak şekilde, çapraz akış oluşturur.<br><br>
+<b style="font-size:15px">🔹 Renk, Etiket, Ferrül, Yedek Alan</b><br>
+İletken renkleri: L1 kahverengi, L2 siyah, L3 gri, N açık mavi, PE yeşil-sarı; kumandada tipik uygulama 230 VAC kumanda kırmızı, 24 VDC mavi (+ ve - ayrımı), yabancı gerilim turuncudur (projede tanımlanır). <b>Her kablonun iki ucunda ferrül (numara makaronu)</b> bulunur ve bu numara şemadaki hat numarasının aynısıdır; şema-pano birebirliği bozulursa pano "okunamaz" hale gelir. Her cihazın üstünde şemadaki kodu (Q1, K3, F12...) yazan kalıcı etiket olmalıdır. Ray ve kanal yerleşiminde <b>%20-30 yedek alan</b> bırakılır; hiçbir tesis kurulduğu gibi kalmaz. Koruma tarafında <b>selektivite</b> (alt kademe önce açar) ve gerekirse <b>kaskad (back-up) koruma</b> (üstteki kesicinin, alttaki daha düşük kesme kapasiteli şalteri kısa devrede koruması — üretici tablosuyla doğrulanır) planlanır.<br><br>
+<b style="font-size:15px">🔹 NE YAPARSAK NE OLUR? — Saha Senaryoları</b><br>
+<table style="width:100%;border-collapse:collapse;font-size:13px">
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b>Yaparsak</b></td><td style="padding:7px;border:1px solid #dbe4ee"><b>Ne olur</b></td><td style="padding:7px;border:1px solid #dbe4ee"><b>Doğrusu</b></td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Kablo kanalını %100 doldurursak</td><td style="padding:7px;border:1px solid #dbe4ee">Isı birikir, yalıtım erken yaşlanır, kablo eklemek/arıza izlemek imkansızlaşır</td><td style="padding:7px;border:1px solid #dbe4ee">Max ~%70 doluluk, gerekirse kanal büyüt</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Termiği motor etiket akımından yükseğe ayarlarsak</td><td style="padding:7px;border:1px solid #dbe4ee">Aşırı yükte röle açmaz, sargı yanana kadar motor korumasız çalışır</td><td style="padding:7px;border:1px solid #dbe4ee">Termik = motor etiketindeki In (anma akımı)</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">N ve PE'yi panoda birleştirirsek (TN-S sistemde)</td><td style="padding:7px;border:1px solid #dbe4ee">Yük akımı PE üzerinden döner; kaçak akım röleleri gereksiz açar, gövdelerde gerilim düşümü oluşur, koruma bozulur</td><td style="padding:7px;border:1px solid #dbe4ee">N-PE ayrımı sadece besleme başında (TN-C-S geçiş noktası) yapılır, sonrasında asla birleşmez</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Bara ek yerini gevşek sıkarsak</td><td style="padding:7px;border:1px solid #dbe4ee">Temas direnci → ısı → oksitlenme → daha çok ısı → ark → pano yangını</td><td style="padding:7px;border:1px solid #dbe4ee">Tork anahtarıyla üretici değerinde sık, periyodik termal kamera kontrolü yap</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Havalandırma filtresini tıkalı bırakırsak</td><td style="padding:7px;border:1px solid #dbe4ee">Hava debisi düşer, iç sıcaklık yükselir; sürücüler ısıl arızaya geçer, elektronik ömrü kısalır (her +10°C ömrü kabaca yarılar)</td><td style="padding:7px;border:1px solid #dbe4ee">Filtreyi bakım planına al, tıkanma alarmı/termostat kullan</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Etiketleme ve ferrül yapmazsak</td><td style="padding:7px;border:1px solid #dbe4ee">Arızada kablo izlemek saatler alır, yanlış kabloyu sökme = yeni arıza + kaza riski</td><td style="padding:7px;border:1px solid #dbe4ee">Her uç ferrüllü, her cihaz şema koduyla etiketli, şema pano gözünde güncel kopya</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Farklı kesitleri aynı klemense sıkarsak</td><td style="padding:7px;border:1px solid #dbe4ee">İnce iletken gevşek kalır; temassızlık, kıvılcım, kesik sinyal, ısınma</td><td style="padding:7px;border:1px solid #dbe4ee">Klemens başına uygun tek kesit; çoklu bağlantı için köprü/çift katlı klemens</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Sigortayı bir üst değere koyarsak</td><td style="padding:7px;border:1px solid #dbe4ee">Kablo koruması kalkar; kablo taşıyamayacağı akımda ısınır, yangın riski; selektivite bozulur</td><td style="padding:7px;border:1px solid #dbe4ee">Sigorta kabloyu korur: değer kablo kesitine ve yüke göre seçilir, keyfe göre büyütülmez</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Güç ve analog sinyal kablolarını aynı kanaldan geçirirsek</td><td style="padding:7px;border:1px solid #dbe4ee">Endüksiyonla sinyale parazit biner; ölçümler oynar, sürücüler hatalı referans alır</td><td style="padding:7px;border:1px solid #dbe4ee">Ayrı kanal, analoglar ekranlı kablo, ekran tek noktadan topraklı</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Yedek alan bırakmazsak</td><td style="padding:7px;border:1px solid #dbe4ee">İlk ilavede pano "yamalı bohça" olur; standart dışı montaj, ısı ve düzen problemi</td><td style="padding:7px;border:1px solid #dbe4ee">Ray ve kanalda %20-30 rezerv, birkaç yedek klemens ve sigorta yuvası</td></tr>
+</table>`
+});
+
+Object.assign(FOY,{
+39:`<b>💊 Hap bilgiler</b><br>
+• AG ≤ 1 kV (TR: 0,4 kV / 230 V) — OG 1-36 kV (TR: 34,5 kV) — YG iletim 154/380 kV<br>
+• Zincir: Santral → İletim YG → OG dağıtım → Trafo 34,5/0,4 → ADP → yükler<br>
+• Hücreler: giriş / çıkış / ölçü / trafo koruma; yük ayırıcılı = sigortalı ucuz çözüm, kesicili = röleli tam koruma<br>
+• Kesici: vakum (dağıtımda standart, bakımsız) — SF6 (iyi yalıtkan ama sera gazı)<br>
+• Dyn11: primer üçgen, sekonder yıldız + nötr, 30° faz kayması<br>
+• Buchholz: yağlı trafoda gaz/ani yağ akışı → alarm/açma<br>
+• ADP: ACB giriş → bakır bara (L1 kahverengi, L2 siyah, L3 gri, N mavi, PE yeşil-sarı) → NH çıkışlar<br>
+• NH boyları: NH00≤160 A, NH1≤250 A, NH2≤400 A, NH3≤630 A<br>
+• Akım trafosu sekonderi yük altında AÇIK BIRAKILMAZ (tehlikeli gerilim!)<br>
+• Kompanzasyon hedefi cosφ ≈ 0,95-1,00; ceza sınırları tipik endüktif %20 / kapasitif %15<br>
+• ATS/enversör: şebeke + jeneratör asla aynı anda barada olmaz (elektriksel + mekanik kilit)<br><br>
+<b>Saha özeti:</b> Trafo merkezine girerken önce hücre dizilimini oku: enerji hangi hücreden girip trafoya nereden gidiyor? ADP'de ana kesiciyi, bara düzenini ve NH çıkış etiketlerini tanı. Kompanzasyon panosunda kontrol rölesinin cosφ ekranına bak: 0,95 altında endüktifte kalıyorsa kademe/kondansatör kontrolü gerekir. OG bölümüne asla yetkisiz girilmez; topraklama ayırıcısı kapatılmadan ve gerilim yokluğu doğrulanmadan çalışma yapılmaz.<br><br>
+<b>İşlenmiş örnek — kompanzasyon kademe hesabı:</b><br>
+Tesis: P = 100 kW, mevcut cosφ1 = 0,80 → tanφ1 = 0,75. Hedef cosφ2 = 0,95 → tanφ2 = 0,33.<br>
+Gerekli kondansatör gücü: Qc = P × (tanφ1 − tanφ2) = 100 × (0,75 − 0,33) = <b>42 kVAr</b>.<br>
+Seçim: 45 kVAr'lık grup; kademeler 2×5 + 2×10 + 1×15 kVAr yapılırsa röle küçük yük değişimlerini de ince ayarla karşılar. Akım trafosu ana girişte (ör. 200/5 A) olmalı, sadece kondansatör hattında değil!`,
+
+40:`<b>💊 Hap bilgiler</b><br>
+• Akış tek yönlü: giriş şalteri → bara → çıkışlar; güç ve kumanda ayrı bölge<br>
+• Kablo kanalı doluluk max ~%70, yedek alan %20-30<br>
+• Form 1: bölmesiz — Form 2: bara ayrı — Form 3: üniteler de ayrı — Form 4: klemensler de ayrı<br>
+• IP20-31 temiz iç mekân, IP54 tozlu atölye, IP54-65 dış ortam; IP arttıkça ısı içeride kalır<br>
+• Isıl hesap: kayıp güçleri (W) topla → yüzeyden atılan ısıyla karşılaştır → gerekirse fan/klima<br>
+• Elektronik ömrü: iç sıcaklık her +10°C'de kabaca yarıya iner<br>
+• Ferrül iki uçta, numara = şema hat numarası; cihaz etiketi = şema kodu (Q1, K3, F12)<br>
+• Termik ayarı = motor etiket akımı; sigorta değeri kabloya göre, asla "atmasın diye" büyütülmez<br>
+• N-PE ayrımı panoda korunur (TN-S); birleştirme sadece besleme başında<br>
+• Bara/klemens bağlantıları tork anahtarıyla; devreye almada ve periyodik bakımda termal kontrol<br><br>
+<b>Saha özeti:</b> Panoya baktığında 30 saniyede şunu görebilmelisin: enerji nereden giriyor, ana şalter hangisi, hangi çıkış neyi besliyor. Göremiyorsan pano kötü tasarlanmış veya etiketler eksik demektir. Devreye almadan önce: bağlantı torkları, ferrül-şema kontrolü, yalıtım ölçümü, koruma ayarları (termik, kaçak akım testi) ve havalandırma yönü kontrol listesinden geçir.<br><br>
+<b>İşlenmiş örnek — pano ısı hesabı:</b><br>
+Cihaz kayıpları: hız sürücüsü 150 W + kontaktör/röleler 40 W + PLC ve güç kaynağı 30 W + bara/kablo/sigorta kayıpları 30 W → <b>Pk = 250 W</b>.<br>
+Pano 2000×800×400 mm, duvara bitişik; etkin ısı atma yüzeyi A ≈ 3,5 m², boyalı sac k ≈ 5,5 W/m²K.<br>
+Doğal ısınma: ΔT = Pk / (k × A) = 250 / (5,5 × 3,5) ≈ <b>13 K</b>. Ortam 35°C ise iç sıcaklık ≈ 48°C → sürücünün 45°C sınırı aşılıyor, <b>filtreli fan gerekli</b>.<br>
+Fan debisi (ΔT = 10 K hedefiyle, pratik formül): V ≈ 3,1 × Pk / ΔT = 3,1 × 250 / 10 ≈ <b>78 m³/h</b> → 100 m³/h filtreli fan + üstte çıkış filtresi seçilir; fan altta emiş, çıkış üstte olacak şekilde monte edilir.`
+});
+
+Object.assign(QBANK,{
+39:[
+{q:"Türkiye'de en yaygın OG dağıtım gerilimi ve AG değeri hangisidir?", opts:["11 kV / 0,23 kV","34,5 kV / 0,4 kV","66 kV / 0,4 kV","154 kV / 0,4 kV"], ans:1, ex:"Türkiye dağıtım şebekesinde standart OG 34,5 kV, AG ise 0,4 kV (400 V faz arası / 230 V faz-nötr) değeridir. 154 ve 380 kV iletim (YG) seviyeleridir."},
+{q:"Trafo etiketindeki 'Dyn11' ifadesinde 'yn' neyi belirtir?", opts:["Primer sargının üçgen bağlı olduğunu","Sekonder sargının yıldız bağlı ve nötrünün dışarı alındığını","Trafonun yağlı tip olduğunu","11 kV çıkış gerilimini"], ans:1, ex:"D = primer üçgen, yn = sekonder yıldız ve nötr ucu dışarı çıkarılmış, 11 = 11×30° = 330° faz kayması (sekonder 30° ileride). Yıldız sekonder sayesinde AG'de nötr elde edilir."},
+{q:"Buchholz rölesi ne zaman devreye girer?", opts:["Trafo aşırı yüklendiğinde gerilimi düşürür","Yağlı trafoda iç arıza sonucu gaz oluştuğunda veya ani yağ akışında alarm/açma verir","Kuru tip trafoda sargı sıcaklığını ölçer","Kondansatör kademelerini anahtarlar"], ans:1, ex:"Buchholz, kazan ile genleşme deposu arasındaki boruya takılır. İç arkın ürettiği gaz birikince alarm, ağır arızadaki ani yağ akışında açma kontağı çalışır. Sadece yağlı trafolarda bulunur."},
+{q:"NH bıçaklı sigortalarda boy-akım eşleşmesi hangisinde doğrudur?", opts:["NH00 ≤ 630 A","NH1 ≤ 250 A","NH2 ≤ 160 A","NH3 ≤ 100 A"], ans:1, ex:"Tipik sınırlar: NH00 ≤ 160 A, NH1 ≤ 250 A, NH2 ≤ 400 A, NH3 ≤ 630 A. Boy büyüdükçe hem akım hem fiziksel ölçü büyür; altlık ile buşon boyu aynı olmalıdır."},
+{q:"Yük ayırıcılı OG hücre ile kesicili hücrenin temel farkı nedir?", opts:["Yük ayırıcı kısa devre akımını kesebilir, kesici kesemez","Kesici kısa devre akımını kesebilir; yük ayırıcı yalnızca yük akımını açar, kısa devreyi seri OG sigortası temizler","İkisi de yalnızca boşta açma yapar","Yük ayırıcı sadece AG'de kullanılır"], ans:1, ex:"Yük ayırıcı anma yük akımını açıp kapatır ama kısa devre kesme kapasitesi yoktur; koruma OG sigortasıyla tamamlanır. Kesici ise röle komutuyla kısa devreyi kendisi keser, büyük trafolarda zorunludur."},
+{q:"OG kesicilerde vakum teknolojisinin SF6'ya göre öne çıkan avantajı hangisidir?", opts:["Daha iyi yalıtkan gaz içermesi","Sera gazı içermemesi ve dağıtım seviyesinde bakımsız uzun ömür","Daha yüksek gerilimlere tek kademede çıkabilmesi","Ark oluşturmaması"], ans:1, ex:"SF6 mükemmel yalıtkan ve ark söndürücüdür ama çok güçlü bir sera gazıdır; kaçak takibi ister. Vakum kesici dağıtım gerilimlerinde standarttır: gaz yok, kontak aşınması az, bakım ihtiyacı minimum."},
+{q:"AG panosunda iletken tanıma renkleri hangisinde doğru verilmiştir?", opts:["L1 kırmızı, L2 beyaz, L3 mavi, N siyah","L1 kahverengi, L2 siyah, L3 gri, N açık mavi, PE yeşil-sarı","L1 sarı, L2 yeşil, L3 mor, N gri","Hepsi siyah olabilir, renk zorunlu değildir"], ans:1, ex:"Güncel standart (IEC/TSE): fazlar kahverengi-siyah-gri, nötr açık mavi, koruma iletkeni yeşil-sarı. Yeşil-sarı başka hiçbir amaçla kullanılamaz."},
+{q:"Kompanzasyonda hedef cosφ ve tipik reaktif ceza mantığı nasıldır?", opts:["Hedef 0,50; endüktif tüketim serbesttir","Hedef 0,95-1,00; aktif enerjiye oranla endüktif ~%20, kapasitif ~%15 sınırı aşılırsa ceza uygulanır","Hedef tam 1,00 kapasitif; kondansatör ne kadar çok o kadar iyi","Ceza yalnızca kapasitif tüketime kesilir"], ans:1, ex:"Reaktif güç kontrol rölesi cosφ'yi 0,95-1,00 endüktif bandında tutacak şekilde kademe anahtarlar. Aşırı kondansatör de cezalıdır (kapasitif sınır); 'ne kadar çok o kadar iyi' yanlıştır. Oranlar tarifeye göre güncellenir."},
+{q:"Selektivite ne demektir?", opts:["Tüm kesicilerin aynı anda açması","Arızada yalnızca arızaya en yakın koruma elemanının açması, üst kademelerin beslemede kalması","En büyük sigortanın her zaman önce atması","Kaçak akım rölesinin termikten önce ayarlanması"], ans:1, ex:"Selektivite akım ve zaman kademelendirmesiyle sağlanır: çıkıştaki NH veya şalter, giriş ACB'sinden önce açmalıdır. Böylece tek arıza tüm tesisi karartmaz."},
+{q:"ATS/enversör bağlantısında en kritik kural hangisidir?", opts:["Jeneratörün sürekli çalışır durumda beklemesi","Şebeke ile jeneratörün baraya asla aynı anda bağlanmaması (elektriksel + mekanik kilitleme)","Transferin daima yük altında elle yapılması","Nötr hattının transfer edilmemesi her sistemde yasaktır"], ans:1, ex:"İki kaynak aynı anda baraya girerse faz farkı nedeniyle çok büyük dengeleme akımları akar; jeneratör ve pano hasar görür, şebekeye geri besleme can güvenliğini tehdit eder. Bu yüzden çift kilitleme zorunludur."},
+{q:"Akım trafosunun sekonder devresi yük altında neden açık bırakılmaz?", opts:["Sayaç sıfırlanacağı için","Açık sekonderde tehlikeli derecede yüksek gerilim indüklenir ve trafo aşırı doyuma gider","Sigortası atacağı için","Primer akım kesileceği için"], ans:1, ex:"Akım trafosu akım kaynağı gibi davranır: sekonder açılırsa tüm amper-sarım çekirdeği doyurur, uçlarda kV mertebesinde tepe gerilimler oluşur. Devre kesilecekse önce sekonder kısa devre edilir."}
+],
+40:[
+{q:"Pano içindeki kablo kanalları en fazla ne kadar doldurulmalıdır?", opts:["%100 — boş hacim israftır","Yaklaşık %70","%10","%50'nin altı yasaktır"], ans:1, ex:"~%70 üstü dolulukta ısı atılamaz, yalıtım erken yaşlanır ve kablo ekleme/izleme imkansızlaşır. Kalan %30 hem havalandırma hem gelecekteki ilaveler içindir."},
+{q:"IEC 61439'a göre 'Form 4' ayrımı ne anlama gelir?", opts:["Pano 4 kapılıdır","Baralar, fonksiyonel üniteler VE çıkış klemensleri birbirinden ayrı bölmelerdedir","Yalnızca baralar kapatılmıştır","Pano 4 mm sacdan yapılmıştır"], ans:1, ex:"Form 1 bölmesiz tek hacimdir; Form 2'de baralar, Form 3'te ek olarak üniteler, Form 4'te klemensler de ayrılır. Yüksek form, bir bölmede çalışırken diğerlerinin enerjili ve korumalı kalmasını sağlar."},
+{q:"IP54 kodunda rakamlar neyi ifade eder?", opts:["5: darbe dayanımı, 4: kapı sayısı","5: toz korumalı, 4: her yönden su sıçramasına dayanıklı","5: 5 bar basınç, 4: 4 metre derinlik","5: gerilim sınıfı, 4: akım sınıfı"], ans:1, ex:"İlk rakam katı cisim/toz (5 = toz korumalı, 6 = toz geçirmez), ikinci rakam su (4 = sıçrama, 5 = tazyiksiz jet, 65+ dış ortam/yıkama). IP arttıkça pano sızdırmazlaşır ve iç ısı yönetimi zorlaşır."},
+{q:"Pano ısıl hesabının ilk adımı nedir?", opts:["Fan kataloğundan en büyük fanı seçmek","İçerideki tüm cihazların kayıp güçlerini (W) toplamak","Pano rengini beyaz seçmek","Kapıya termometre takmak"], ans:1, ex:"Önce toplam kayıp güç Pk bulunur (sürücü, trafo, kontaktör, bara, güç kaynağı...). Sonra panonun doğal olarak atabileceği ısı (k×A×ΔT) ile karşılaştırılır; açık kalan fark fan, eşanjör veya klimayla karşılanır."},
+{q:"TN-S sistemde N ve PE panoda birleştirilirse ne olur?", opts:["Hiçbir şey olmaz, ikisi zaten aynı potansiyeldedir","Yük akımının bir kısmı PE'den döner; kaçak akım röleleri gereksiz açar ve koruma düzeni bozulur","Sigortalar daha hızlı atar, bu iyidir","Kompanzasyon devre dışı kalır"], ans:1, ex:"TN-S'nin amacı PE'nin normalde akımsız kalmasıdır. Birleştirme yapılırsa nötr akımı PE ve gövdeler üzerinden paylaşılır: RCD'ler dengesizliği kaçak sanıp açar, gövdelerde gerilim düşümü oluşur. N-PE bağlantısı yalnızca besleme başındadır."},
+{q:"Motor termik rölesi hangi değere ayarlanır?", opts:["Motor etiket akımının 2 katına, gereksiz atmasın diye","Motor etiketindeki anma akımına (In)","Sigorta değeriyle aynı değere","Mümkün olan en düşük değere"], ans:1, ex:"Termik, motoru aşırı yüke karşı korur; referansı motorun etiket akımıdır. Yükseğe ayarlanırsa motor sargısı yanana kadar açmaz; çok düşüğe ayarlanırsa normal çalışmada gereksiz durdurur."},
+{q:"Bara ek yerinin gevşek sıkılmasının tipik sonuç zinciri hangisidir?", opts:["Gerilim yükselir → sigorta atar","Temas direnci artar → ısınma → oksitlenme → ark → pano yangını","Akım düşer → motorlar yavaşlar","Kaçak akım rölesi devreye girer"], ans:1, ex:"Gevşek bağlantı milyohmluk ek direnç yaratır; I²R ısısı yüzeyi oksitler, direnç daha da artar ve kısır döngü arkla bitebilir. Çözüm: tork anahtarıyla montaj + termal kamerayla periyodik tarama."},
+{q:"Ferrül (uç numaralandırma) uygulamasının temel kuralı nedir?", opts:["Sadece güç kablolarına takılır","Her kablonun iki ucuna, şemadaki hat numarasıyla birebir aynı numara takılır","Numara yerine renk yeterlidir","Yalnızca devreye almada geçici takılır"], ans:1, ex:"Şema-pano birebirliği ferrülle sağlanır: şemada 105 numaralı hat, panoda iki ucunda da 105 yazan kablodur. Bu birebirlik bozulursa arıza takibi saatler alır ve yanlış müdahale riski doğar."},
+{q:"Farklı kesitteki iki iletkeni aynı klemens ağzına sıkarsak ne olur?", opts:["Daha sağlam bağlantı elde edilir","Kalın iletken sıkılır, ince olan gevşek kalır; temassızlık, ısınma ve kesik sinyal oluşur","Akım ikiye bölünür, sorun olmaz","Klemens otomatik olarak ikisini de kavrar"], ans:1, ex:"Klemens çenesi tek kesite göre kapanır; ince iletken boşta kalır. Çoklu bağlantı gerekiyorsa köprü barlı, çift katlı veya çift ağızlı klemens kullanılır."},
+{q:"Sürekli atan bir sigortayı 'bir üst değere' koymak neden yanlıştır?", opts:["Üst değer daha pahalıdır","Sigorta kabloyu korur; büyütülürse kablo taşıyamayacağı akımda ısınır, yangın riski doğar ve selektivite bozulur","Sigorta yuvasına sığmaz","Sayaç fazla yazar"], ans:1, ex:"Sigorta değeri kablo kesitine ve yüke göre hesaplanır. Atmanın sebebi (aşırı yük, kaçak, gevşek bağlantı) bulunmalıdır; değeri büyütmek sadece koruyucuyu susturur, tehlikeyi büyütür."}
+]
+});
+
+Object.assign(DIAG,{
+39:`<svg viewBox="0 0 440 200" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="440" height="200" fill="#141d26"/><text x="220" y="16" fill="#8a98ab" font-size="10" text-anchor="middle" font-family="monospace">TEK HAT: OG HÜCRELER → TRAFO → ADP</text><rect x="12" y="30" width="150" height="60" fill="#20303f" stroke="#8a98ab"/><text x="87" y="43" fill="#33b1ff" font-size="9" text-anchor="middle" font-family="monospace">OG 34,5 kV HÜCRELER</text><rect x="20" y="50" width="40" height="32" fill="#141d26" stroke="#8a98ab"/><text x="40" y="69" fill="#8a98ab" font-size="8" text-anchor="middle" font-family="monospace">GİRİŞ</text><rect x="66" y="50" width="40" height="32" fill="#141d26" stroke="#8a98ab"/><text x="86" y="69" fill="#8a98ab" font-size="8" text-anchor="middle" font-family="monospace">ÖLÇÜ</text><rect x="112" y="50" width="44" height="32" fill="#141d26" stroke="#ffb000"/><text x="134" y="64" fill="#ffb000" font-size="7" text-anchor="middle" font-family="monospace">TR KORUMA</text><text x="134" y="74" fill="#8a98ab" font-size="7" text-anchor="middle" font-family="monospace">kesici</text><line x1="162" y1="66" x2="196" y2="66" stroke="#33b1ff" stroke-width="2"/><circle cx="212" cy="58" r="12" fill="none" stroke="#3fb950" stroke-width="2"/><circle cx="212" cy="72" r="12" fill="none" stroke="#3fb950" stroke-width="2"/><text x="212" y="102" fill="#3fb950" font-size="8" text-anchor="middle" font-family="monospace">TRAFO 34,5/0,4</text><text x="212" y="112" fill="#8a98ab" font-size="7" text-anchor="middle" font-family="monospace">Dyn11</text><line x1="228" y1="66" x2="258" y2="66" stroke="#33b1ff" stroke-width="2"/><rect x="258" y="34" width="170" height="120" fill="#20303f" stroke="#8a98ab"/><text x="343" y="47" fill="#33b1ff" font-size="9" text-anchor="middle" font-family="monospace">ADP 0,4 kV</text><rect x="268" y="54" width="42" height="22" fill="#141d26" stroke="#f85149"/><text x="289" y="68" fill="#f85149" font-size="8" text-anchor="middle" font-family="monospace">ACB</text><line x1="310" y1="65" x2="330" y2="65" stroke="#ffb000" stroke-width="3"/><line x1="330" y1="52" x2="330" y2="140" stroke="#ffb000" stroke-width="3"/><text x="342" y="58" fill="#ffb000" font-size="7" font-family="monospace">BARA</text><line x1="330" y1="80" x2="352" y2="80" stroke="#8a98ab" stroke-width="2"/><rect x="352" y="72" width="36" height="16" fill="#141d26" stroke="#8a98ab"/><text x="370" y="83" fill="#8a98ab" font-size="7" text-anchor="middle" font-family="monospace">NH ÇIKIŞ</text><line x1="330" y1="104" x2="352" y2="104" stroke="#8a98ab" stroke-width="2"/><rect x="352" y="96" width="36" height="16" fill="#141d26" stroke="#3fb950"/><text x="370" y="107" fill="#3fb950" font-size="7" text-anchor="middle" font-family="monospace">KOMP.</text><line x1="330" y1="128" x2="352" y2="128" stroke="#8a98ab" stroke-width="2"/><rect x="352" y="120" width="36" height="16" fill="#141d26" stroke="#33b1ff"/><text x="370" y="131" fill="#33b1ff" font-size="7" text-anchor="middle" font-family="monospace">ATS/JEN</text><text x="87" y="180" fill="#8a98ab" font-size="8" font-family="monospace">Şebeke: 154/380 kV iletimden</text><text x="268" y="168" fill="#8a98ab" font-size="7" font-family="monospace">CT + sayaç, cosφ hedef 0,95</text></svg>`,
+40:`<svg viewBox="0 0 440 200" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="440" height="200" fill="#141d26"/><text x="220" y="16" fill="#8a98ab" font-size="10" text-anchor="middle" font-family="monospace">PANO YERLEŞİM KROKİSİ (Form 2, IP54)</text><rect x="30" y="26" width="270" height="160" fill="#20303f" stroke="#8a98ab" stroke-width="2"/><rect x="40" y="34" width="120" height="20" fill="#141d26" stroke="#f85149"/><text x="100" y="47" fill="#f85149" font-size="8" text-anchor="middle" font-family="monospace">BARA BÖLMESİ L1 L2 L3</text><rect x="40" y="60" width="120" height="36" fill="#141d26" stroke="#ffb000"/><text x="100" y="75" fill="#ffb000" font-size="8" text-anchor="middle" font-family="monospace">GÜÇ: sürücü + kontaktör</text><text x="100" y="88" fill="#8a98ab" font-size="7" text-anchor="middle" font-family="monospace">ısı kaynağı üstte</text><rect x="40" y="102" width="120" height="30" fill="#141d26" stroke="#33b1ff"/><text x="100" y="115" fill="#33b1ff" font-size="8" text-anchor="middle" font-family="monospace">KUMANDA: PLC + röle</text><text x="100" y="126" fill="#8a98ab" font-size="7" text-anchor="middle" font-family="monospace">24 VDC bölge</text><rect x="40" y="138" width="120" height="18" fill="#141d26" stroke="#3fb950"/><text x="100" y="150" fill="#3fb950" font-size="8" text-anchor="middle" font-family="monospace">KLEMENS GRUPLARI</text><rect x="170" y="34" width="26" height="122" fill="#141d26" stroke="#8a98ab" stroke-dasharray="4 3"/><text x="183" y="100" fill="#8a98ab" font-size="7" text-anchor="middle" font-family="monospace" transform="rotate(-90 183 100)">KANAL max %70</text><rect x="206" y="34" width="84" height="122" fill="#141d26" stroke="#8a98ab" stroke-dasharray="4 3"/><text x="248" y="90" fill="#8a98ab" font-size="8" text-anchor="middle" font-family="monospace">YEDEK ALAN</text><text x="248" y="102" fill="#3fb950" font-size="8" text-anchor="middle" font-family="monospace">%20-30</text><rect x="40" y="162" width="250" height="16" fill="#141d26" stroke="#f85149"/><text x="165" y="173" fill="#f85149" font-size="8" text-anchor="middle" font-family="monospace">ANA ŞALTER + ALT KABLO GİRİŞİ</text><rect x="316" y="40" width="14" height="26" fill="#141d26" stroke="#3fb950"/><text x="360" y="52" fill="#3fb950" font-size="7" font-family="monospace">çıkış filtresi</text><rect x="316" y="140" width="14" height="26" fill="#141d26" stroke="#33b1ff"/><text x="360" y="152" fill="#33b1ff" font-size="7" font-family="monospace">filtreli fan</text><line x1="323" y1="138" x2="323" y2="70" stroke="#33b1ff" stroke-width="1" stroke-dasharray="3 3"/><polygon points="319,72 327,72 323,64" fill="#33b1ff"/><text x="336" y="100" fill="#8a98ab" font-size="7" font-family="monospace">hava akışı</text><text x="336" y="110" fill="#8a98ab" font-size="7" font-family="monospace">alttan üste</text><text x="336" y="186" fill="#8a98ab" font-size="7" font-family="monospace">ferrül + etiket = şema</text></svg>`
+});
+
+/* ===== EK v8: Saha Senaryoları + Altın Kurallar (41-42) ===== */
+MODS.push({id:41, t:"Saha Senaryoları & Arıza Avcılığı", cat:"oto", ic:"🔧", d:"Gerçek vakalar: belirti→teşhis→çözüm."});
+MODS.push({id:42, t:"Olmazsa Olmazlar: Altın Kurallar", cat:"oto", ic:"🛡️", d:"5 altın kural, kesin yasaklar, son kontrol listesi."});
+
+Object.assign(TEORI,{
+41:`<b style="font-size:15px">🔹 Arıza Avcılığının Mantığı: Tahmin Etme, Ölç</b><br><br>
+Usta olmakla eskici olmak arasındaki fark şudur: Eskici parça değiştirir, usta arıza bulur. Sahada otuz yılda öğrendiğim en önemli ders şu — <b>arıza asla rastgele değildir; her belirtinin arkasında bir fizik vardır.</b> Belirtiyi doğru okur, doğru noktadan ölçersen arıza saklanacak yer bulamaz. Yöntemimiz hep aynı: <b>Belirti → Olası nedenler (ihtimal sırasına göre) → Ölçerek eleme → Çözüm → Kalıcı önlem.</b> Ve her ölçümden önce altın söz: <b>Enerjili devrede ölçüm yapıyorsan yalıtkan eldiven, kategori uyumlu (CAT III/IV) ölçü aleti ve sağlam prob şart. Direnç ve izolasyon ölçümleri ise MUTLAKA enerjisiz devrede yapılır.</b><br><br>
+
+<b style="font-size:15px">🔹 Vaka 1 — Kaçak Akım Rölesi (KAR) Sürekli Atıyor</b><br><br>
+<table style="width:100%;border-collapse:collapse;font-size:13px">
+<tr><td style="padding:7px;border:1px solid #dbe4ee;background:#f0f4f8"><b>Belirti</b></td><td style="padding:7px;border:1px solid #dbe4ee">30 mA KAR bazen hemen, bazen saatler sonra atıyor. Kurunca duruyor, sonra yine atıyor.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee;background:#f0f4f8"><b>Olası nedenler (sıralı)</b></td><td style="padding:7px;border:1px solid #dbe4ee">1) Bir cihazda toprak kaçağı (ısıtıcı rezistansı, çamaşır makinesi, eski buzdolabı) 2) Nemli ortamda izolasyon zayıflaması (banyo, bahçe hattı, buat içine su) 3) <b>Ortak nötr hatası:</b> KAR sonrası bir devrenin nötrü başka bir KAR'ın nötrüyle veya ana nötrle birleştirilmiş 4) Toplam süzülme kaçağının doğal olarak 15-20 mA'ya dayanması (çok cihazlı tesis) 5) Rölenin kendisinin arızası.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee;background:#f0f4f8"><b>Adım adım teşhis</b></td><td style="padding:7px;border:1px solid #dbe4ee">1) Tüm cihaz fişlerini çek, KAR'ı kur; yine atıyorsa arıza sabit tesisatta. 2) <b>Enerjiyi kes, kestiğini doğrula</b>, sonra sigortaları ve nötr klemenslerini tek tek ayırıp her devreyi <b>megger (izolasyon test cihazı) ile 500 V DC'de ölç:</b> L-PE ve N-PE arası. 1 MΩ altı şüpheli, 0,5 MΩ altı kesin sorun. 3) Değerler iyiyse ortak nötrü ara: KAR açıkken çıkış nötrü ile ana nötr arasında süreklilik ölç — süreklilik varsa nötrler karışmış demektir. 4) Cihaz kaçağı için: fişleri tek tek tak, kaçak akım pensi ile (faz+nötr birlikte kelepçelenir) hangi cihazda mA sıçradığını izle. 5) Röle şüphesi için test butonu ve KAR test cihazıyla açma akımı/süresi ölçülür.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee;background:#f0f4f8"><b>Çözüm</b></td><td style="padding:7px;border:1px solid #dbe4ee">Kaçaklı cihaz onarılır/değişir; nemli buat kurutulup contalı IP'li malzeme ile yenilenir; karışmış nötrler ait oldukları KAR'a ayrılır; kaçak toplamı yüksekse devreler ayrı 30 mA KAR'lara bölünür.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee;background:#f0f4f8"><b>Bir daha yaşanmasın</b></td><td style="padding:7px;border:1px solid #dbe4ee">Her ıslak hacme ayrı KAR; nötrleri panoda etiketle; yılda bir KAR test butonuna bas; megger ölçümünü periyodik bakıma yaz.</td></tr>
+</table><br>
+
+<b style="font-size:15px">🔹 Vaka 2 — Üç Fazlı Motor Kalkmıyor / Homurduyor</b><br><br>
+<table style="width:100%;border-collapse:collapse;font-size:13px">
+<tr><td style="padding:7px;border:1px solid #dbe4ee;background:#f0f4f8"><b>Belirti</b></td><td style="padding:7px;border:1px solid #dbe4ee">Motor start alınca uğultuyla homurduyor, dönmüyor veya çok yavaş dönüyor, kısa sürede ısınıyor; ya da hiç tepki yok.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee;background:#f0f4f8"><b>Olası nedenler (sıralı)</b></td><td style="padding:7px;border:1px solid #dbe4ee">1) <b>Faz kaybı</b> (sigorta bir fazda atmış, gevşek klemens, kopuk iletken) — homurtunun bir numaralı sebebi 2) Kontaktör ana kontağı yanmış/oksitlenmiş (bir kutup iletmiyor) 3) Termik röle atmış veya yanlış (düşük) ayarlanmış 4) Yıldız-üçgen zaman rölesi/yıldız kontaktörü arızası (üçgene geçemiyor, yıldızda kalıp zorlanıyor) 5) Mekanik sıkışma (rulman, yük) 6) Sargı arızası.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee;background:#f0f4f8"><b>Adım adım teşhis</b></td><td style="padding:7px;border:1px solid #dbe4ee">1) <b>Önce STOP'a bas, homurdayan motoru beklemede tutma — sargı dakikalar içinde yanar.</b> 2) Pano girişinde voltmetre ile üç faz arası ölç: L1-L2, L1-L3, L2-L3 hepsi ~400 V olmalı; biri düşükse/sıfırsa faz kaybı, sigortadan geriye doğru izle. 3) Giriş sağlamsa kontaktörü çektirip (güvenli test düzeninde) çıkış uçlarında üç fazı ölç; bir kutupta gerilim yoksa kontak yanık. Enerjisiz halde kontak direncini ohmmetre ile doğrula. 4) Termik rölenin atık göstergesine bak; atmışsa <b>nedenini bulmadan resetleyip bırakma</b> — pens ampermetre ile üç faz akımını ayrı ayrı ölç, etiket akımıyla kıyasla, dengesizlik %10'u geçmesin. 5) Yıldız-üçgende: zaman rölesinin geçiş yaptığını, üçgen kontaktörünün çektiğini gözle ve ölçerek doğrula. 6) Enerjisiz: sargı dirençlerini ölç (U-V-W üçü birbirine yakın olmalı), megger ile sargı-gövde izolasyonuna bak. Mili elle çevirip mekanik sıkışmayı kontrol et.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee;background:#f0f4f8"><b>Çözüm</b></td><td style="padding:7px;border:1px solid #dbe4ee">Atık sigorta/kopuk hat onarılır; yanık kontaktör kontağı takım halinde (tek kutup değil) değişir; termik motor etiket akımına göre ayarlanır; arızalı zaman rölesi yenilenir.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee;background:#f0f4f8"><b>Bir daha yaşanmasın</b></td><td style="padding:7px;border:1px solid #dbe4ee">Faz koruma rölesi (faz sırası/faz kaybı) tak; klemens tork kontrolünü bakım planına al; kontaktörü motor gücüne uygun AC-3 sınıfında seç.</td></tr>
+</table><br>
+
+<b style="font-size:15px">🔹 Vaka 3 — Sigorta Belirli Aralıklarla Atıyor</b><br><br>
+<table style="width:100%;border-collapse:collapse;font-size:13px">
+<tr><td style="padding:7px;border:1px solid #dbe4ee;background:#f0f4f8"><b>Belirti</b></td><td style="padding:7px;border:1px solid #dbe4ee">B16 otomat günde birkaç kez, genelde belli saatlerde atıyor. Kurulunca bir süre sorunsuz.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee;background:#f0f4f8"><b>Kritik ayrım</b></td><td style="padding:7px;border:1px solid #dbe4ee"><b>Anında, şak diye atıyorsa → kısa devre veya büyük kaçak</b> (manyetik açma). <b>Dakikalar sonra atıyorsa → aşırı yük</b> (termik açma). Bu ayrım teşhisin yarısıdır.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee;background:#f0f4f8"><b>Olası nedenler (sıralı)</b></td><td style="padding:7px;border:1px solid #dbe4ee">1) Devreye sonradan eklenen yüklerle toplam akımın otomat değerini aşması 2) Belirli bir cihazın kalkış akımı (kompresör, motor) 3) Gevşek bağlantının otomat klemensini ısıtıp termik açmayı erken tetiklemesi 4) Aralıklı (kesikli) kısa devre — ezilmiş kablo, titreşimle temas eden iletken 5) Yaşlanmış/değersiz otomat.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee;background:#f0f4f8"><b>Adım adım teşhis</b></td><td style="padding:7px;border:1px solid #dbe4ee">1) <b>Pens ampermetreyi</b> devre fazına kelepçele, yük açıkken izle; mümkünse min/max veya kayıt (inrush) fonksiyonu kullan. B16 için sürekli akım 16 A'ya dayanıyorsa sebep aşırı yük. 2) Atma anını yakalayamıyorsan cihazları sırayla devreden alıp hangisiyle akımın düştüğüne bak. 3) Otomat gövdesine elinin sırtıyla dokun (yalnızca kapağı kapalı, yalıtılmış gövdeye): aşırı ısınma gevşek klemens işaretidir — <b>enerjiyi kesip</b> klemensleri kontrol et, yanık izine bak. 4) Kesikli kısa devre şüphesinde enerjisiz halde megger ile hat izolasyonunu ölç, kabloyu hareket ettirerek değişimi izle. 5) Hiçbiri çıkmazsa otomatı aynı karakter ve değerde yenisiyle dene.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee;background:#f0f4f8"><b>Çözüm</b></td><td style="padding:7px;border:1px solid #dbe4ee">Aşırı yükte çözüm otomatı büyütmek DEĞİL, yükü bölmek veya hattı kesitiyle birlikte yenilemektir. <b>Otomat kabloyu korur; kablo 2,5 mm² ise 16 A üstüne çıkılmaz.</b> Kalkış akımı sorununda B yerine C karakter (kablo kesiti ve kısa devre şartları uygunsa) düşünülür.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee;background:#f0f4f8"><b>Bir daha yaşanmasın</b></td><td style="padding:7px;border:1px solid #dbe4ee">Devre yük listesi çıkar ve panoya as; yeni yük eklenirken hesap yap; yıllık termal tarama ve tork kontrolü.</td></tr>
+</table><br>
+
+<b style="font-size:15px">🔹 Vaka 4 — Prizde Gerilim Var Ama Cihaz Çalışmıyor</b><br><br>
+<table style="width:100%;border-collapse:collapse;font-size:13px">
+<tr><td style="padding:7px;border:1px solid #dbe4ee;background:#f0f4f8"><b>Belirti</b></td><td style="padding:7px;border:1px solid #dbe4ee">Kontrol kalemi prizde yanıyor, hatta bazen her iki delikte de yanıyor; ama cihaz çalışmıyor.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee;background:#f0f4f8"><b>Olası nedenler (sıralı)</b></td><td style="padding:7px;border:1px solid #dbe4ee">1) <b>Nötr kopuğu</b> (buatta veya priz klemensinde) — faz cihaz üzerinden nötr hattına yansıdığı için kontrol kalemi iki tarafta da yanar, bu klasik tuzaktır 2) Gevşek klemens (temassızlık, yük altında ark) 3) Priz yaylarının gevşemesi 4) Cihazın kendi arızası.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee;background:#f0f4f8"><b>Adım adım teşhis</b></td><td style="padding:7px;border:1px solid #dbe4ee">1) <b>Kontrol kalemine güvenme; iki problu voltmetre kullan.</b> Faz-Nötr ölç: 0 V veya kararsız ise ve Faz-PE ~230 V ise nötr kopuk demektir. 2) Cihazı başka prizde dene (cihazı aklamak için). 3) <b>Enerjiyi kes, doğrula</b>, priz kapağını aç: yanık, kararma, gevşek vida ara. Sağlamsa geriye doğru buatları aç, nötr eklerini kontrol et. 4) Süreklilik testi: enerjisiz hatta priz nötrü ile pano nötr barası arası ohmmetre ile ölçülür.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee;background:#f0f4f8"><b>Çözüm</b></td><td style="padding:7px;border:1px solid #dbe4ee">Kopuk/gevşek ek uygun klemensle (bant sarması değil!) yenilenir, yanmış priz komple değişir.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee;background:#f0f4f8"><b>Bir daha yaşanmasın</b></td><td style="padding:7px;border:1px solid #dbe4ee">Buat eklerinde burgu+bant yerine vidalı/yaylı klemens kullan; yüksek akımlı prizlerde (kombi, fırın) yıllık klemens kontrolü.</td></tr>
+</table><br>
+
+<b style="font-size:15px">🔹 Vaka 5 — Aydınlatma Titreşiyor, LED'ler Yanıp Sönüyor</b><br><br>
+<table style="width:100%;border-collapse:collapse;font-size:13px">
+<tr><td style="padding:7px;border:1px solid #dbe4ee;background:#f0f4f8"><b>Belirti</b></td><td style="padding:7px;border:1px solid #dbe4ee">Lambalar ara ara parlayıp sönükleşiyor; LED'ler kapalıyken bile hafif kırpışıyor; bazı dairelerde ampuller sık patlıyor.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee;background:#f0f4f8"><b>Olası nedenler (sıralı)</b></td><td style="padding:7px;border:1px solid #dbe4ee">1) <b>Nötr zayıflığı/kopmaya yüz tutmuş nötr</b> (üç fazlı tesiste yıldız noktası kayar: bir fazın gerilimi 260 V'a çıkarken diğeri 190 V'a düşer — ampul patlatan senaryo budur ve ACİLDİR) 2) Şebeke gerilim dalgalanması (büyük yüklerin kalkışı, trafo bölgesi sorunu) 3) LED driver/floresan balast arızası veya kalitesiz driver 4) Anahtardan geçirilmiş nötr ya da pilotlu anahtarın kaçak akımı (kapalıyken kırpışma) 5) Gevşek duy/klemens.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee;background:#f0f4f8"><b>Adım adım teşhis</b></td><td style="padding:7px;border:1px solid #dbe4ee">1) Ana panoda üç fazın faz-nötr gerilimlerini aynı anda/peş peşe ölç: biri yüksek biri düşükse <b>nötr sorunu — derhal ana kesiciyi aç, hassas cihazları koru, nötr hattını enerjisiz kontrol et.</b> 2) Gerilimler dengeli ama oynuyorsa min/max kayıtlı multimetre veya enerji analizörü bağla, dalgalanma saatlerini not et; sorun şebekedeyse dağıtım şirketine kayıt aç. 3) Tek armatürse driver/balastı sağlamıyla değiştirerek dene. 4) Kapalıyken kırpışan LED'de anahtarın fazı mı nötrü mü kestiğini kontrol et — anahtar daima FAZI kesmelidir.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee;background:#f0f4f8"><b>Çözüm</b></td><td style="padding:7px;border:1px solid #dbe4ee">Zayıf nötr eki yenilenir (kesiti faz kadar olmalı); kalitesiz driver markalı ve uyumlu olanla değişir; nötrden geçirilmiş anahtar düzeltilir.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee;background:#f0f4f8"><b>Bir daha yaşanmasın</b></td><td style="padding:7px;border:1px solid #dbe4ee">Nötr bağlantılarını da faz kadar ciddiye al; kritik tesislere gerilim koruma rölesi (aşırı/düşük gerilim kesici) tak.</td></tr>
+</table><br>
+
+<b style="font-size:15px">🔹 Vaka 6 — Pano Aşırı Isınıyor</b><br><br>
+<table style="width:100%;border-collapse:collapse;font-size:13px">
+<tr><td style="padding:7px;border:1px solid #dbe4ee;background:#f0f4f8"><b>Belirti</b></td><td style="padding:7px;border:1px solid #dbe4ee">Pano kapağı sıcak, içeriden plastik/vernik kokusu geliyor, bazı klemenslerde renk atması var.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee;background:#f0f4f8"><b>Olası nedenler (sıralı)</b></td><td style="padding:7px;border:1px solid #dbe4ee">1) <b>Gevşek bara/klemens bağlantısı</b> (temas direnci → noktasal ısı; pano yangınlarının bir numaralı sebebi) 2) Fazlar arası dengesiz yük dağılımı (bir faz aşırı yüklü) 3) Kapasitesinin üstünde yüklenmiş şalter/kablo 4) Havalandırma yetersizliği, tıkalı filtre 5) Harmonik yükler nedeniyle nötr iletkeninin aşırı ısınması.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee;background:#f0f4f8"><b>Adım adım teşhis</b></td><td style="padding:7px;border:1px solid #dbe4ee">1) <b>Termal kamera</b> ile yük altında tara: sağlıklı bağlantılar arasında 10-15°C üstü sıcak nokta = gevşek temas. Kamera yoksa <b>elinin SIRTINI</b> yaklaştırarak (asla dokunma, asla avuç içi — refleksle kavrarsın) ısı farkını hisset; bu yalnızca kapalı/yalıtılmış yüzeylerde yapılır, açık baralara el yaklaştırılmaz. 2) Pens ampermetre ile L1-L2-L3 ve N akımlarını ölç; fazlar arasında belirgin fark varsa yük dağılımı bozuk. Nötr akımı fazlara yakın/yüksekse harmonik şüphesi. 3) <b>Enerjiyi kesip, kestiğini doğrulayıp</b> tüm bara ve klemens vidalarını tork anahtarıyla üretici değerinde kontrol et; renk atmış, sertleşmiş izoleli iletkenlerin uçlarını kes-yenile.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee;background:#f0f4f8"><b>Çözüm</b></td><td style="padding:7px;border:1px solid #dbe4ee">Gevşek bağlantılar torklanır, yanmış klemens ve bara parçaları değişir; yükler fazlara dengeli dağıtılır; gerekirse havalandırma fanı/filtre eklenir.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee;background:#f0f4f8"><b>Bir daha yaşanmasın</b></td><td style="padding:7px;border:1px solid #dbe4ee">Yılda bir yük altında termal tarama; devreye almadan ve her bakımda tork kontrolü; pano yük etiketini güncel tut.</td></tr>
+</table><br>
+
+<b style="font-size:15px">🔹 Vaka 7 — Jeneratör Çalışıyor Ama Tesis Beslenmiyor</b><br><br>
+<table style="width:100%;border-collapse:collapse;font-size:13px">
+<tr><td style="padding:7px;border:1px solid #dbe4ee;background:#f0f4f8"><b>Belirti</b></td><td style="padding:7px;border:1px solid #dbe4ee">Şebeke kesilince jeneratör start alıp çalışıyor, motor sesi normal; ama tesis karanlıkta — yük jeneratöre aktarılmıyor.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee;background:#f0f4f8"><b>Olası nedenler (sıralı)</b></td><td style="padding:7px;border:1px solid #dbe4ee">1) <b>ATS (otomatik transfer) arızası:</b> transfer kontaktörü/motorlu şalter jeneratör tarafına geçmiyor (bobin arızası, sıkışmış mekanizma, kontrol rölesi) 2) <b>Enversör mekanik/elektriksel kilidi</b> takılı kalmış veya şebeke kontaktörü yapışık — kilit haklı olarak jeneratör kontaktörünün çekmesine izin vermiyor 3) Jeneratör çıkış kesicisi atmış/kapatılmamış 4) Kontrol kartı jeneratör gerilim/frekansını uygun görmüyor (gerilim düşük, frekans oturmamış) 5) Manuel-otomatik seçici anahtarın MANUEL veya OFF konumunda unutulması 6) Transfer kumanda sigortasının atık olması.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee;background:#f0f4f8"><b>Adım adım teşhis</b></td><td style="padding:7px;border:1px solid #dbe4ee">1) Kontrol paneli alarm/konum LED'lerini oku (çoğu vaka burada çözülür: seçici OFF'ta!). 2) Jeneratör çıkış klemenslerinde gerilim ve frekansı ölç: ~400 V / 50 Hz oturmuş mu? Değilse sorun jeneratör regülasyonunda. 3) Çıkış sağlamsa ATS girişinde jeneratör gerilimini ölç; var ama çıkışta yoksa arıza transfer düzeneğinde. 4) Jeneratör kontaktör bobinine kumanda geriliminin gelip gelmediğini ölç: geliyorsa ama çekmiyorsa bobin/mekanizma arızası; gelmiyorsa kontrol rölesi, kilit kontağı veya kumanda sigortasını izle. 5) Şebeke kontaktörünün gerçekten bıraktığını gözle doğrula — yapışıksa elektriksel kilit jeneratör tarafını bilerek engelliyordur. <b>UYARI: ATS içinde İKİ ayrı kaynak vardır; şebeke tarafı klemensler jeneratör çalışırken de, jeneratör tarafı şebeke varken de enerjili olabilir. Kilitleri asla iptal ederek köprüleme yapma — ters besleme hem tesisi hem hattaki görevliyi öldürür.</b></td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee;background:#f0f4f8"><b>Çözüm</b></td><td style="padding:7px;border:1px solid #dbe4ee">Arızalı bobin/röle değişir, yapışık kontaktör yenilenir, mekanik kilit ayarı yapılır, seçici anahtar OTO'ya alınır; kart parametreleri (gerilim/frekans penceresi, geçiş gecikmeleri) kontrol edilir.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee;background:#f0f4f8"><b>Bir daha yaşanmasın</b></td><td style="padding:7px;border:1px solid #dbe4ee">Ayda bir yükte transfer testi yap ve kaydet; akü ve kumanda sigortalarını bakım listesine al; ATS şemasını pano kapağının içine yapıştır.</td></tr>
+</table><br>
+
+<b style="font-size:15px">🔹 Usta Sözü</b><br><br>
+Arıza avcılığında acele eden iki kere gider: bir kere arızaya, bir kere hastaneye. <b>Ölçmeden karar verme, doğrulamadan dokunma, nedenini bulmadan resetleyip gitme.</b> Termik neden attı, KAR neden düştü, sigorta neden gitti — bunlar tesisatın sana yazdığı mektuplardır; okumazsan bir dahaki mektup yangın olur.`,
+
+42:`<b style="font-size:15px">🔹 Bu Modül Neden Var?</b><br><br>
+Elektrik affetmez; ama kurallara uyanı da yormaz. Bu modüldeki her madde, birilerinin canı yanarak öğrenildi. <b>Ezberlemeyeceksin, içselleştireceksin.</b> Sahada seni koruyacak olan tesisatın sağlamlığı değil, senin disiplinindir. Çünkü tesisat yalan söyler: "enerjisiz" görünen hat enerjili çıkar, "kimse açmaz" dediğin şalteri biri açar.<br><br>
+
+<b style="font-size:15px">🔹 5 Altın Güvenlik Kuralı (Sırası Bozulmaz)</b><br><br>
+<table style="width:100%;border-collapse:collapse;font-size:13px">
+<tr style="background:#f0f4f8"><td style="padding:7px;border:1px solid #dbe4ee"><b>#</b></td><td style="padding:7px;border:1px solid #dbe4ee"><b>Kural</b></td><td style="padding:7px;border:1px solid #dbe4ee"><b>Nasıl uygulanır</b></td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b>1</b></td><td style="padding:7px;border:1px solid #dbe4ee"><b>AÇ (tüm kaynaklardan ayır)</b></td><td style="padding:7px;border:1px solid #dbe4ee">Çalışılacak bölümü BÜTÜN besleme kaynaklarından ayır: şebeke, jeneratör, UPS, güneş inverteri, kompanzasyon kondansatörleri. Görünür ayırma aralığı olan cihaz (ayırıcı, çekilen sigorta buşonu) tercih edilir. Unutma: bir hattın iki ucu olabilir.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b>2</b></td><td style="padding:7px;border:1px solid #dbe4ee"><b>KİLİTLE & ETİKETLE (LOTO)</b></td><td style="padding:7px;border:1px solid #dbe4ee">Açtığın şalteri asma kilitle kilitle, anahtar CEBİNDE kalsın; üzerine "ÇALIŞMA VAR — AÇMAYINIZ" etiketi as (kim, ne iş, telefon). Kilitlenemiyorsa buşonları söküp yanına al, panoya nöbetçi koy. Birden çok ekip varsa herkes KENDİ kilidini takar (çoklu kilit mandalı).</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b>3</b></td><td style="padding:7px;border:1px solid #dbe4ee"><b>YOKLA (gerilim yokluğunu doğrula)</b></td><td style="padding:7px;border:1px solid #dbe4ee">İki kademeli doğrulama: <b>(a)</b> Ölçü aletini BİLİNEN canlı bir kaynakta test et — çalışıyor mu? <b>(b)</b> Çalışma yerinde TÜM iletkenler arasında ve toprağa karşı ölç (L1-L2, L1-L3, L2-L3, L1-N, L2-N, L3-N, hepsi-PE). <b>(c)</b> Aleti tekrar bilinen kaynakta doğrula. Ölmüş pilli dedektör "0 V" gösterir — bu üçlü sıra o yüzden vardır. Kontrol kalemi tek başına delil DEĞİLDİR.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b>4</b></td><td style="padding:7px;border:1px solid #dbe4ee"><b>TOPRAKLA & KISA DEVRE ET</b></td><td style="padding:7px;border:1px solid #dbe4ee">Özellikle YG'de ve uzun/çift beslemeli AG hatlarında zorunlu: önce topraklama ucunu toprağa, sonra faz uçlarına bağla (sökerken ters sıra). Bu, yanlışlıkla enerjilenme, indüklenme ve kondansatör boşalmasına karşı son kaledir. Topraklama teçhizatı beklenen kısa devre akımına dayanacak kesitte olmalı.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b>5</b></td><td style="padding:7px;border:1px solid #dbe4ee"><b>ÖRT & PERDELE</b></td><td style="padding:7px;border:1px solid #dbe4ee">Çalışma bölgesine komşu enerjili kısımları yalıtkan örtü, paravan veya bariyerle kapat; çalışma alanını şeritle sınırla. Yanındaki canlı baraya dirseğinle değen adam, kendi devresini kapatmış olmanın tesellisini yaşayamaz.</td></tr>
+</table><br>
+
+<b style="font-size:15px">🔹 KESİN YASAKLAR — Pazarlığı Yok</b><br><br>
+<table style="width:100%;border-collapse:collapse;font-size:13px">
+<tr style="background:#f0f4f8"><td style="padding:7px;border:1px solid #dbe4ee"><b>Yasak</b></td><td style="padding:7px;border:1px solid #dbe4ee"><b>Neden</b></td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Yük altında AYIRICI açmak</td><td style="padding:7px;border:1px solid #dbe4ee">Ayırıcının ark söndürme düzeni yoktur; yük altında açarsan ark patlaması yüzüne gelir. Önce kesici ile yükü kes, sonra ayırıcıyı aç.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Sigortayı telle/folyoyla köprülemek</td><td style="padding:7px;border:1px solid #dbe4ee">Korumasız kalan hat, kısa devrede kablo yangını ve patlama demektir. "Geçici" köprü diye bir şey yoktur; her köprü kalıcıdır.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">PE'yi (koruma iletkeni) devre iletkeni/nötr olarak kullanmak</td><td style="padding:7px;border:1px solid #dbe4ee">PE üzerinden yük akımı akarsa tüm cihaz gövdeleri gerilim altında kalır; PE koptuğu an her metal kasa öldürücü olur.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Islak elle, ıslak/iletken zeminde çalışmak</td><td style="padding:7px;border:1px solid #dbe4ee">Vücut direnci onlarca kat düşer; 50 V bile öldürebilir. Yalıtkan paspas/tabure kullan, teri ve yağmuru ciddiye al.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Etiketli/kilitli devreyi habersiz enerjilemek</td><td style="padding:7px;border:1px solid #dbe4ee">O etiketin ucunda hatta çalışan bir insan var. Etiketi yalnız asan kişi (veya yetkili iş sorumlusu) kaldırır — başkası ASLA.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Gerilim ölçülecek devrede aleti akım/ohm kademesinde bırakmak</td><td style="padding:7px;border:1px solid #dbe4ee">Amper kademesinde gerilim ölçmek aleti patlatır (kısa devre). Her ölçümden önce kademe ve prob soketini kontrol et.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Enerjili tesiste metal cetvel, çelik şerit metre, kolye-yüzük-saat</td><td style="padding:7px;border:1px solid #dbe4ee">İletken takı hem köprü kurar hem kısa devre arkında eriyip ete yapışır. Panoya girerken çıkar.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Tek başına yüksek riskli çalışma (YG, canlı çalışma, kapalı hacim)</td><td style="padding:7px;border:1px solid #dbe4ee">Çarpılırsan seni kim kurtaracak? Gözcü olmadan canlıya yaklaşma.</td></tr>
+</table><br>
+
+<b style="font-size:15px">🔹 Enerji Vermeden Önce SON KONTROL — 10 Madde</b><br><br>
+<b>1)</b> Hatta çalışan KİMSE kalmadı mı — tüm ekipten sözlü teyit aldın mı?<br>
+<b>2)</b> Tüm aletler, geçici topraklamalar ve kısa devre düzenekleri söküldü mü?<br>
+<b>3)</b> Kapaklar, bariyerler, klemens kapakları yerine takıldı mı?<br>
+<b>4)</b> Bağlantı noktaları uygun torkta sıkıldı mı, boşta uç kalmadı mı?<br>
+<b>5)</b> İzolasyon ölçümü yapıldı mı — değerler sınırın üstünde mi?<br>
+<b>6)</b> Faz sırası ve L-N-PE bağlantı doğruluğu kontrol edildi mi (motorda dönüş yönü!)?<br>
+<b>7)</b> Koruma elemanları (otomat, KAR, termik ayarı) doğru değerde ve konumda mı?<br>
+<b>8)</b> Kilitler ve etiketler yalnızca SAHİPLERİ tarafından kaldırıldı mı?<br>
+<b>9)</b> Enerjilenecek bölgedeki herkes bilgilendirildi mi, kimse temas mesafesinde mi?<br>
+<b>10)</b> Enerji verme kademeli mi planlandı (önce ana, sonra kollar) ve ilk yüklemede ölçüm/gözlem yapacak mısın?<br><br>
+
+<b style="font-size:15px">🔹 Elektrik Çarpmasında İlk Yardım — Sıra Hayat Kurtarır</b><br><br>
+<b>1) KAYNAĞI KES:</b> Şalteri indir, fişi çek. Kesemiyorsan kazazedeyi KURU yalıtkan cisimle (tahta sopa, plastik boru) kaynaktan ayır. YG'de yaklaşma — mesafeni koru, yetkiliye kestir.<br>
+<b>2) ÇIPLAK ELLE DOKUNMA:</b> Enerji kesilmeden dokunan, ikinci kazazede olur.<br>
+<b>3) 112'Yİ ARA:</b> Yer, durum, bilinç bilgisi ver. Kazazede "iyiyim" dese bile aramaktan vazgeçme — elektrik çarpmasında ritim bozukluğu saatler sonra gelebilir, hastane kontrolü şart.<br>
+<b>4) DEĞERLENDİR & CPR:</b> Bilinç ve solunum kontrolü; solunum yoksa göğüs basısına başla (dakikada 100-120, 5-6 cm derinlik, 30 bası / 2 solunum), varsa OED (defibrilatör) getirt ve sesli komutlarına uy. Yardım gelene ya da kazazede kendine gelene kadar devam.<br>
+<b>5)</b> Bilinçli kazazedeyi sırtüstü yatır, sıcak tut, yanıkları soğuk suyla soğut ama yapışan giysiyi koparma; yüksekten düşme varsa boynunu oynatma.<br><br>
+
+<b style="font-size:15px">🔹 Kişisel Koruyucu Donanım (KKD) ve Sınıflar</b><br><br>
+<table style="width:100%;border-collapse:collapse;font-size:13px">
+<tr style="background:#f0f4f8"><td style="padding:7px;border:1px solid #dbe4ee"><b>KKD</b></td><td style="padding:7px;border:1px solid #dbe4ee"><b>Sınıf / Not</b></td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Yalıtkan eldiven (EN 60903)</td><td style="padding:7px;border:1px solid #dbe4ee">Sınıf 00: 500 V — Sınıf 0: 1000 V — Sınıf 1: 7,5 kV — Sınıf 2: 17 kV — Sınıf 3: 26,5 kV — Sınıf 4: 36 kV (maks. kullanma gerilimi). Her kullanımdan önce şişirerek delik kontrolü; 6 ayda bir periyodik test; üzerine mekanik koruyucu (deri) eldiven giyilir.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Ark yüz siperi / ark kıyafeti</td><td style="padding:7px;border:1px solid #dbe4ee">Ark parlaması (arc flash) riskli pano işlerinde cal/cm² değerine göre seçilir; sentetik iç giysi YASAK (eriyip yapışır), pamuk veya aleve dayanıklı kumaş giyilir.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Yalıtkan baret, iş ayakkabısı, paspas, ıstanka</td><td style="padding:7px;border:1px solid #dbe4ee">Baret EN 397/EN 50365; ayakkabı yalıtkan tabanlı; YG manevralarında yalıtkan halı + ıstanka + eldiven birlikte kullanılır.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Ölçü aletleri</td><td style="padding:7px;border:1px solid #dbe4ee">Pano ve dağıtımda EN AZ CAT III (bina girişi/sayaç civarı CAT IV) sınıfı multimetre/pens; probları hasarsız, uçları korumalı olmalı.</td></tr>
+</table><br>
+
+<b style="font-size:15px">🔹 İş İzni (Çalışma İzni) Mantığı ve "Üç Kere Kontrol" Kültürü</b><br><br>
+İş izni bir kâğıt işi değil, bir <b>sorumluluk zinciridir:</b> İşi veren (tesis yetkilisi) bölgeyi ayırdığını yazıyla beyan eder, işi yapan (çalışma sorumlusu) güvenlik önlemlerini kurduğunu imzalar; iş bitince izin KAPATILMADAN enerji verilmez. Böylece "ben kestim sanıyordum" cümlesi tarihe karışır. Kim açtı, kim kapatacak, hangi şalter, hangi saat — hepsi kayıt altındadır.<br><br>
+<b>Üç kere kontrol</b> ustalık kültürüdür: <b>Bir</b> — yapmadan önce planı kontrol et (doğru devre mi, doğru şalter mi?). <b>İki</b> — yaparken kontrol et (ölçtün mü, doğruladın mı?). <b>Üç</b> — bitirdikten sonra kontrol et (tork, kapak, etiket, ölçüm). Acemi bir kere bakar, usta üç kere bakar; o yüzden usta yaşlanır, acemi yaşlanamaz.<br><br>
+
+<b style="font-size:15px">🔹 En Sık 8 Ölümcül Hata → Nasıl Önlenir</b><br><br>
+<table style="width:100%;border-collapse:collapse;font-size:13px">
+<tr style="background:#f0f4f8"><td style="padding:7px;border:1px solid #dbe4ee"><b>Ölümcül hata</b></td><td style="padding:7px;border:1px solid #dbe4ee"><b>Önleme</b></td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">"Enerjisizdir" varsayımıyla dokunmak</td><td style="padding:7px;border:1px solid #dbe4ee">Üç adımlı yoklama (test et-ölç-tekrar test et) olmadan hiçbir iletken ölü sayılmaz.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Kilitsiz-etiketsiz çalışmak</td><td style="padding:7px;border:1px solid #dbe4ee">LOTO şart; kilidin anahtarı cebinde, etiket şalterin üstünde.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Başkasının kestiğine güvenmek</td><td style="padding:7px;border:1px solid #dbe4ee">Kendi gözünle gör, kendi aletinle ölç; güven iyi, doğrulama daha iyidir.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Kondansatör/UPS/güneş gibi ikincil kaynakları unutmak</td><td style="padding:7px;border:1px solid #dbe4ee">Tek hat şemasından TÜM kaynakları listele; kondansatörleri boşalt ve boşaldığını ölç.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Yanlış kademede/kategoride ölçüm</td><td style="padding:7px;border:1px solid #dbe4ee">Ölçümden önce kademe-prob-kategori kontrolü; şüpheliysen ölçme, sor.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Aceleyle son kontrolü atlamak</td><td style="padding:7px;border:1px solid #dbe4ee">10 maddelik listeyi fiziken işaretle; acele işe şeytan değil, elektrik karışır.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Uygun olmayan KKD (delik eldiven, sentetik mont)</td><td style="padding:7px;border:1px solid #dbe4ee">KKD'yi işe göre seç, kullanmadan önce gözle-test et, süresi geçeni imha et.</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Yorgun, dalgın, öfkeli çalışmak</td><td style="padding:7px;border:1px solid #dbe4ee">Kafan yerinde değilse panoya girme; elektrikte ikinci şans yoktur, mola hakkın vardır.</td></tr>
+</table><br>
+
+<b style="font-size:15px">🔹 Usta Sözü</b><br><br>
+Bu meslekte kahramanlık, hızlı iş bitirmek değil; akşam evine iki elinle, iki gözünle dönmektir. Kurallar seni yavaşlatmak için değil, yaşlandırmak için var. <b>Aç, kilitle, yokla, toprakla, perdele — sonra çalış.</b> Gerisi teferruattır.`
+});
+
+Object.assign(FOY,{
+41:`<b>💊 Hap bilgiler</b><br>
+• Homurdayan 3 fazlı motor = %90 faz kaybı → önce STOP, sonra üç fazı ölç.<br>
+• KAR atıyor + tüm fişler çekiliyken de atıyorsa → arıza sabit tesisatta; megger ile devre devre ele.<br>
+• Kontrol kalemi iki delikte de yanıyorsa → klasik NÖTR KOPUĞU tuzağı; voltmetreyle L-N ölç.<br>
+• Sigorta ŞAK diye atarsa kısa devre, DAKİKALAR sonra atarsa aşırı yük.<br>
+• Bir faz 260 V, diğeri 190 V → ana nötr kopuyor; DERHAL kes, cihazları kurtar.<br>
+• Panoda sıcak nokta = gevşek klemens; termal kamera veya el SIRTI (dokunmadan!).<br>
+• Jeneratör çalışıyor, tesis karanlık → önce seçici anahtar (OTO'da mı?), sonra ATS.<br>
+• Termik/KAR/sigorta NEDENİNİ bulmadan resetlenmez.<br><br>
+<b>🔧 Cepte arıza akışı</b><br>
+BELİRTİ gözle → GÜVENLİK (kes-kilitle-yokla; canlı ölçüm gerekiyorsa KKD+CAT III) → ÖLÇ (V: var/yok-dengeli mi? → A: pens ile yük normal mi? → Ω/Megger: enerjisiz iken süreklilik-izolasyon) → DARALT (devreyi böl: pano→hat→buat→cihaz; yarıya bölerek ilerle) → ONAR → DOĞRULA (ölçerek) → KAYDET (ne buldun, ne yaptın) → ÖNLEM yaz.<br><br>
+<b>📏 Ölçüm hatırlatıcıları</b><br>
+• Megger yalnız ENERJİSİZ devrede; elektronik cihazları (driver, kart) ayırarak.<br>
+• Kaçak pensinde faz+nötr BİRLİKTE kelepçelenir; tek iletken kelepçelenirse yük akımı okursun.<br>
+• Ohm kademesiyle canlı devreye girme — alet gider.`,
+
+42:`<b>💊 Hap bilgiler</b><br>
+• 5 Altın Kural (sıra bozulmaz): AÇ → KİLİTLE-ETİKETLE → YOKLA → TOPRAKLA-KISA DEVRE → ÖRT-PERDELE.<br>
+• Yoklama üçlemesi: aleti canlıda TEST et → çalışma yerinde ÖLÇ → aleti tekrar TEST et.<br>
+• Etiketi yalnız ASAN kaldırır. Kilidin anahtarı CEBİNDE.<br>
+• Ayırıcı yük altında AÇILMAZ; sigorta telle KÖPRÜLENMEZ; PE'den yük akıtılmaz.<br>
+• Eldiven sınıfları: 00=500V, 0=1000V, 1=7,5kV, 2=17kV, 3=26,5kV, 4=36kV.<br>
+• Çarpılan "iyiyim" dese de 112 + hastane; ritim bozukluğu gecikmeli gelir.<br>
+• Pano işinde CAT III alet, panoya girerken saat-yüzük-kolye çıkar.<br>
+• Kafan dağınıksa panoya girme — elektrikte ikinci şans yok.<br><br>
+<b>⚡ Çarpılma anında sıra</b><br>
+KAYNAĞI KES → DOKUNMA (kuru yalıtkanla ayır) → 112 → solunum yoksa CPR (100-120/dk, 30:2) + OED → hastaneye sevk.<br><br>
+<b>✅ Enerji öncesi 10 madde (kısa)</b><br>
+1 Hatta kimse yok (teyitli) · 2 Alet/geçici topraklama söküldü · 3 Kapak-bariyer tamam · 4 Torklar sıkıldı · 5 İzolasyon ölçüldü · 6 Faz sırası/L-N-PE doğru · 7 Korumalar doğru değerde · 8 Kilit-etiket sahiplerince kalktı · 9 Herkes bilgilendirildi · 10 Kademeli enerji + ilk yük gözlemi.`
+});
+
+Object.assign(QBANK,{
+41:[
+{q:"30 mA kaçak akım rölesi, tesisteki TÜM cihaz fişleri çekilmişken bile atmaya devam ediyor. En doğru sonraki adım hangisidir?",opts:["Röleyi 300 mA'lık ile değiştirmek","Enerjiyi kesip devreleri ayırarak megger ile L-PE ve N-PE izolasyonunu devre devre ölçmek","Röleyi köprüleyip tesisi izlemek","Ana sigortayı büyütmek"],ans:1,ex:"Fişler çekiliyken atma sürüyorsa kaçak sabit tesisattadır. Doğru yöntem: enerjisiz devrede, sigorta ve nötrleri ayırarak her devrenin izolasyonunu megger ile ölçüp kaçaklı hattı bulmak. Röleyi büyütmek veya köprülemek can güvenliğini yok eder."},
+{q:"Üç fazlı motor start alınca homurduyor, dönmüyor ve hızla ısınıyor. İlk yapılacak iş ve ilk bakılacak yer?",opts:["Termiği resetleyip tekrar start vermek","Motoru söküp sargı ölçmek","STOP'a basıp motor besleme uçlarında üç fazın da var olup olmadığını ölçmek","Kondansatör eklemek"],ans:2,ex:"Homurtu tipik faz kaybı belirtisidir. İki fazda kalan motor kalkamaz ve sargısı dakikalar içinde yanar; bu yüzden önce durdurulur, sonra voltmetreyle üç faz kontrol edilir. Sargı sökümü en son adımdır."},
+{q:"Termik röle atmış. Ustaca yaklaşım hangisidir?",opts:["Resetleyip çalıştırmak, yine atarsa ayarını yükseltmek","Termiği iptal edip motoru direkt beslemek","Pens ampermetre ile üç faz akımını ayrı ayrı ölçüp etiket değeriyle ve birbirleriyle kıyasladıktan sonra nedeni gidermek","Termiği bir üst değere değiştirmek"],ans:2,ex:"Termik bir habercidir: aşırı yük, faz kaybı veya dengesizlik olabilir. Neden bulunmadan reset veya ayar yükseltme, motoru yakmanın kibar yoludur. Fazlar arası akım dengesizliği %10'u geçmemelidir."},
+{q:"B16 otomat, elektrikli ısıtıcı ve kettle aynı anda çalışınca 5-10 dakika sonra atıyor; anında atmıyor. Arızanın karakteri nedir?",opts:["Kısa devre (manyetik açma)","Aşırı yük (termik açma)","Kaçak akım","Otomat arızası"],ans:1,ex:"Gecikmeli atma, bimetalin ısınmasıyla oluşan TERMİK açmadır ve aşırı yükü gösterir. Anında (şak diye) atma manyetik açmadır ve kısa devreyi düşündürür. Çözüm otomatı büyütmek değil, yükü bölmektir — otomat kabloyu korur."},
+{q:"Prizde kontrol kalemi HER İKİ delikte de yanıyor, cihaz çalışmıyor. En olası arıza?",opts:["Faz kopuğu","Çift faz gelmesi","Nötr kopuğu — faz, cihaz üzerinden nötr hattına yansıyor","Topraklama kopuğu"],ans:2,ex:"Nötr koptuğunda faz, prize takılı cihazın direnci üzerinden nötr ucuna kadar uzanır; kontrol kalemi iki tarafta da yanar. Bu yüzden kontrol kalemine güvenilmez — iki problu voltmetre ile L-N ölçülür (0 V veya kararsız çıkar)."},
+{q:"Bir binada bazı lambalar aşırı parlak yanıp ampuller patlıyor, bazıları sönük yanıyor. Bu tablo neyin acil işaretidir?",opts:["Kompanzasyon arızası","Ana nötr iletkeninin kopması/zayıflaması (yıldız noktası kayması)","Trafo yağ eksikliği","Sayaç arızası"],ans:1,ex:"Üç fazlı sistemde nötr zayıflarsa yıldız noktası kayar: az yüklü fazın gerilimi 260 V'a tırmanır (ampul patlar), çok yüklü faz 190 V'a düşer (sönük yanar). Cihazları kurtarmak için derhal enerji kesilmeli, nötr hattı onarılmalıdır."},
+{q:"Pano termal taramasında bir klemens komşularından 25°C daha sıcak görünüyor. En olası neden ve doğru müdahale?",opts:["Normaldir; klemensler ısınır","Gevşek bağlantı; enerji kesilip doğrulandıktan sonra klemens tork anahtarıyla sıkılır, yanık uç varsa yenilenir","Kablo rengi koyu olduğu için sıcak görünür","Hemen soğutucu sprey sıkılır"],ans:1,ex:"Noktasal ısı artışı temas direncinin, yani gevşek bağlantının imzasıdır ve pano yangınlarının başlıca sebebidir. Müdahale mutlaka enerjisiz yapılır; el ile kontrol gerekiyorsa yalnızca kapalı yüzeylere elin SIRTI ile, dokunmadan yaklaşılır."},
+{q:"Şebeke kesildi, jeneratör start alıp normal çalışıyor ama tesis beslenmiyor. İlk kontrol edilecek şey hangisidir?",opts:["Jeneratör yakıt filtresi","ATS/kontrol paneli: seçici anahtar konumu (OTO mu?) ve alarm göstergeleri","Tesisin tüm sigortaları","Motor yağ seviyesi"],ans:1,ex:"Motor çalışıyorsa mekanik taraf görevini yapıyordur; sorun transfer tarafındadır. Vakaların önemli kısmı MANUEL/OFF'ta unutulmuş seçici anahtar veya ATS alarmıdır. Sonra jeneratör çıkış gerilimi/frekansı ve transfer kontaktör kumandası ölçülür."},
+{q:"ATS panosunda şebeke kontaktörü yapışmış, jeneratör kontaktörü kilit yüzünden çekmiyor. Kilidi iptal edip köprülemek neden ölümcül hatadır?",opts:["Jeneratör yakıtı çabuk biter","İki kaynak çakışır; ters besleme hem tesisi yakar hem şebekede çalışan görevliyi öldürebilir","Kontaktör bobini ısınır","Sayaç ters döner"],ans:1,ex:"Enversör kilidi iki kaynağın aynı anda bağlanmasını önler. Köprülenirse jeneratör şebekeye ters besleme yapar: kesinti sanıp hatta çalışan ekipler enerjiyle karşılaşır, kaynak çakışması patlamaya yol açar. Çözüm yapışık kontaktörün değişimidir, kilidin iptali değil."},
+{q:"Kaçak akım pensi ile bir cihazın kaçağını ölçerken kelepçeden hangi iletkenler geçirilmelidir?",opts:["Yalnız faz","Yalnız nötr","Faz ve nötr birlikte (PE hariç)","Faz, nötr ve PE birlikte"],ans:2,ex:"Faz ve nötr birlikte kelepçelenince giden-dönen akımlar birbirini siler; fark (yani toprağa kaçan mA) okunur. Tek iletken kelepçelenirse yük akımı okunur, PE de dahil edilirse kaçak akım da silinip ölçülemez."}
+],
+42:[
+{q:"5 Altın Güvenlik Kuralının doğru sırası hangisidir?",opts:["Yokla → Aç → Toprakla → Kilitle → Ört","Aç → Kilitle/Etiketle → Yokla → Toprakla/Kısa devre et → Ört/Perdele","Aç → Yokla → Kilitle → Ört → Toprakla","Kilitle → Aç → Toprakla → Yokla → Ört"],ans:1,ex:"Sıra mantık zinciridir: önce tüm kaynaklardan ayırırsın, sonra kimse geri kapatamasın diye kilitler-etiketlersin, gerilim yokluğunu ölçerek doğrularsın, yanlış enerjilenmeye karşı topraklar-kısa devre edersin, en son komşu canlı kısımları perdelersin. Sıra bozulursa zincir kopar."},
+{q:"Gerilim yokluğu doğrulamasında ölçü aleti önce ve sonra bilinen canlı bir kaynakta neden test edilir?",opts:["Aleti kalibre etmek için","Pili bitmiş veya arızalı bir alet '0 V' göstererek canlı hattı ölü gösterebilir; test bu ölümcül yanılgıyı önler","Prosedür öyle yazdığı için","Garanti şartı olduğu için"],ans:1,ex:"Arızalı dedektör her yerde 0 gösterir. Ölçümden ÖNCE canlıda test → çalışıyor; çalışma yerinde ölç → 0 V; SONRA tekrar canlıda test → alet hâlâ sağlam, demek ki 0 V gerçek. Üçlü sıranın her halkası hayatidir."},
+{q:"Yük altındaki bir hattı ayırıcı (seksiyoner) ile açmak neden yasaktır?",opts:["Ayırıcı kontakları paslanır","Ayırıcının ark söndürme düzeneği yoktur; yük akımı kesilirken oluşan ark patlamaya ve ağır yanıklara yol açar","Sigortalar atar","Gerilim yükselir"],ans:1,ex:"Kesici ark söndürme hücrelerine sahiptir, ayırıcı değildir. Doğru manevra sırası: önce KESİCİ ile yükü kes, sonra AYIRICI ile görünür ayırma sağla. Kapatırken sıra terstir: önce ayırıcı, sonra kesici."},
+{q:"PE (koruma iletkeni) neden asla nötr veya devre iletkeni olarak kullanılamaz?",opts:["Rengi farklı olduğu için karışıklık olur","Kesiti genelde küçüktür","PE'den yük akımı akarsa tüm cihaz gövdeleri gerilim altında kalır; PE koptuğu an her metal kasa öldürücü olur","Sayaç yük akımını ölçemez"],ans:2,ex:"PE'nin tek görevi arıza akımını taşımak ve gövdeleri toprak potansiyelinde tutmaktır. Üzerinden sürekli yük akıtılırsa gövdelerde gerilim düşümü oluşur; kopması halinde ise koruma tamamen kaybolur ve gövdeler faza kalır."},
+{q:"Panoda LOTO uygulandı. Etiket ve kilidi kim kaldırabilir?",opts:["İşletme müdürü","O anda panonun başındaki herhangi bir elektrikçi","Yalnızca etiketi/kilidi asan kişi (o yoksa tanımlı yetkili prosedürle)","Vardiya amiri her durumda"],ans:2,ex:"Kilit-etiket, hatta çalışanın can sigortasıdır. Ancak asan kişi işin bittiğini bilebilir; başkası kaldırırsa hatta hâlâ çalışan biri enerji altında kalır. İstisnalar bile yazılı, teyitli özel prosedüre bağlıdır."},
+{q:"Elektrik çarpması gören kişi kaynaktan ayrıldı, bilinci açık ve 'iyiyim' diyor. Doğru davranış?",opts:["Su içirip işe devam ettirmek","Yine de 112'yi aramak ve hastane kontrolüne göndermek; ritim bozukluğu saatler sonra ortaya çıkabilir","Yarım saat dinlendirip göndermek","Sadece yanık varsa hastaneye götürmek"],ans:1,ex:"Akım kalpten geçtiyse gecikmeli aritmi ve içsel doku hasarı riski vardır; kişi kendini iyi hissetse bile EKG ve gözlem gerekir. 'İyiyim' sözü tıbbi değerlendirmenin yerini tutmaz."},
+{q:"Bilinçsiz ve solunumu olmayan çarpılma kazazedesinde CPR nasıl uygulanır?",opts:["Dakikada 60 bası, 15:2","Dakikada 100-120 bası, 5-6 cm derinlik, 30 bası / 2 solunum; varsa OED getirtilir","Sadece suni solunum yapılır","Önce su serpilir, uyanmazsa CPR"],ans:1,ex:"Güncel temel yaşam desteği: göğüs merkezine dakikada 100-120 tempoda, 5-6 cm çökertecek bası; 30 basıya 2 solunum. OED (otomatik defibrilatör) elektrik çarpmasındaki ventriküler fibrilasyonda hayat kurtarır — gelir gelmez bağlanır."},
+{q:"400 V'luk bir panoda canlı yakın çalışma için EN AZ hangi sınıf yalıtkan eldiven uygundur?",opts:["Sınıf 00 (500 V)","Sınıf 2 (17 kV) şart","Sınıf 0 (1000 V) uygundur; Sınıf 00 (500 V) da gerilim olarak karşılar ama AG panoda yaygın tercih Sınıf 0'dır","Deri montaj eldiveni yeterlidir"],ans:2,ex:"EN 60903: Sınıf 00=500 V, Sınıf 0=1000 V, 1=7,5 kV, 2=17 kV, 3=26,5 kV, 4=36 kV. 400 V pano için Sınıf 0 standart tercihtir; eldiven her kullanım öncesi şişirilerek kontrol edilir ve üzerine mekanik koruyucu eldiven giyilir. Deri eldiven yalıtkan DEĞİLDİR."},
+{q:"Enerji vermeden önceki son kontrolde aşağıdakilerden hangisi ATLANIRSA en tipik 'unutulan topraklama' kazası yaşanır?",opts:["Faz sırası kontrolü","Geçici topraklama ve kısa devre düzeneklerinin söküldüğünün doğrulanması","Kapakların takılması","Yük listesinin güncellenmesi"],ans:1,ex:"Geçici topraklama unutulup enerji verilirse doğrudan kısa devre oluşur: ark patlaması, şalter hasarı, yaralanma. Bu yüzden takılan her topraklama numaralanır, kayda geçer ve sökülmeden enerji izni kapatılmaz."},
+{q:"Panoda ölçüme başlamadan önce multimetrede kontrol edilmesi gereken en kritik iki şey nedir?",opts:["Ekran ışığı ve pil yüzdesi","Kademe (V mi, A/Ω mı?) ve probların doğru sokette/sağlam olması + aletin CAT III/IV uygunluğu","Marka ve model yılı","Kılıfının rengi"],ans:1,ex:"Amper veya ohm kademesinde gerilim ölçmeye kalkmak aleti kısa devreye sokar; düşük kategorili (CAT II) alet pano enerjisinde ark patlamasına dayanamaz. Kademe-prob-kategori üçlüsü her ölçümün ön şartıdır."}
+]
+});
+
+Object.assign(DIAG,{
+41:`<svg viewBox="0 0 440 200" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="440" height="200" fill="#16212b" rx="8"/><text x="220" y="20" fill="#33b1ff" font-size="12" text-anchor="middle" font-weight="bold">ARIZA TEŞHİS AKIŞI</text><rect x="12" y="38" width="88" height="40" fill="#20303f" stroke="#8a98ab" rx="6"/><text x="56" y="55" fill="#33b1ff" font-size="10" text-anchor="middle" font-weight="bold">BELİRTİ</text><text x="56" y="69" fill="#8a98ab" font-size="8" text-anchor="middle">gözle / dinle / kokla</text><path d="M100 58 L124 58" stroke="#8a98ab" stroke-width="1.5" marker-end="none"/><polygon points="124,58 117,54 117,62" fill="#8a98ab"/><rect x="126" y="38" width="88" height="40" fill="#20303f" stroke="#ffb000" rx="6"/><text x="170" y="55" fill="#ffb000" font-size="10" text-anchor="middle" font-weight="bold">GÜVENLİK</text><text x="170" y="69" fill="#8a98ab" font-size="8" text-anchor="middle">kes · kilitle · yokla</text><path d="M214 58 L238 58" stroke="#8a98ab" stroke-width="1.5"/><polygon points="238,58 231,54 231,62" fill="#8a98ab"/><rect x="240" y="38" width="88" height="40" fill="#20303f" stroke="#33b1ff" rx="6"/><text x="284" y="55" fill="#33b1ff" font-size="10" text-anchor="middle" font-weight="bold">ÖLÇ</text><text x="284" y="69" fill="#8a98ab" font-size="8" text-anchor="middle">V → A → Ω / Megger</text><path d="M328 58 L352 58" stroke="#8a98ab" stroke-width="1.5"/><polygon points="352,58 345,54 345,62" fill="#8a98ab"/><rect x="354" y="38" width="74" height="40" fill="#20303f" stroke="#8a98ab" rx="6"/><text x="391" y="55" fill="#f0f4f8" font-size="10" text-anchor="middle" font-weight="bold">KARAR</text><text x="391" y="69" fill="#8a98ab" font-size="8" text-anchor="middle">daralt / böl</text><path d="M391 78 L391 102" stroke="#8a98ab" stroke-width="1.5"/><polygon points="391,102 387,95 395,95" fill="#8a98ab"/><rect x="240" y="104" width="188" height="36" fill="#20303f" stroke="#3fb950" rx="6"/><text x="334" y="119" fill="#3fb950" font-size="10" text-anchor="middle" font-weight="bold">ONAR + ÖLÇEREK DOĞRULA</text><text x="334" y="132" fill="#8a98ab" font-size="8" text-anchor="middle">nedeni gider, sonucu kanıtla</text><path d="M238 122 L214 122" stroke="#8a98ab" stroke-width="1.5"/><polygon points="214,122 221,118 221,126" fill="#8a98ab"/><rect x="12" y="104" width="200" height="36" fill="#20303f" stroke="#8a98ab" rx="6"/><text x="112" y="119" fill="#f0f4f8" font-size="10" text-anchor="middle" font-weight="bold">KAYDET + KALICI ÖNLEM</text><text x="112" y="132" fill="#8a98ab" font-size="8" text-anchor="middle">bir daha yaşanmasın</text><rect x="12" y="154" width="416" height="34" fill="#20303f" stroke="#f85149" rx="6"/><text x="220" y="169" fill="#f85149" font-size="9" text-anchor="middle" font-weight="bold">KURAL: Ölçmeden karar verme · Doğrulamadan dokunma · Nedeni bulmadan resetleme</text><text x="220" y="182" fill="#8a98ab" font-size="8" text-anchor="middle">Direnç ve izolasyon ölçümü daima enerjisiz devrede yapılır</text></svg>`,
+42:`<svg viewBox="0 0 440 200" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="440" height="200" fill="#16212b" rx="8"/><text x="220" y="20" fill="#3fb950" font-size="12" text-anchor="middle" font-weight="bold">5 ALTIN GÜVENLİK KURALI ZİNCİRİ</text><rect x="10" y="40" width="76" height="52" fill="#20303f" stroke="#33b1ff" rx="6"/><text x="48" y="58" fill="#33b1ff" font-size="13" text-anchor="middle" font-weight="bold">1</text><text x="48" y="72" fill="#f0f4f8" font-size="9" text-anchor="middle" font-weight="bold">AÇ</text><text x="48" y="84" fill="#8a98ab" font-size="7" text-anchor="middle">tüm kaynaklar</text><path d="M86 66 L96 66" stroke="#8a98ab" stroke-width="1.5"/><polygon points="98,66 92,62 92,70" fill="#8a98ab"/><rect x="99" y="40" width="76" height="52" fill="#20303f" stroke="#ffb000" rx="6"/><text x="137" y="58" fill="#ffb000" font-size="13" text-anchor="middle" font-weight="bold">2</text><text x="137" y="72" fill="#f0f4f8" font-size="9" text-anchor="middle" font-weight="bold">KİLİTLE</text><text x="137" y="84" fill="#8a98ab" font-size="7" text-anchor="middle">+ etiketle (LOTO)</text><path d="M175 66 L185 66" stroke="#8a98ab" stroke-width="1.5"/><polygon points="187,66 181,62 181,70" fill="#8a98ab"/><rect x="188" y="40" width="76" height="52" fill="#20303f" stroke="#f85149" rx="6"/><text x="226" y="58" fill="#f85149" font-size="13" text-anchor="middle" font-weight="bold">3</text><text x="226" y="72" fill="#f0f4f8" font-size="9" text-anchor="middle" font-weight="bold">YOKLA</text><text x="226" y="84" fill="#8a98ab" font-size="7" text-anchor="middle">test-ölç-test</text><path d="M264 66 L274 66" stroke="#8a98ab" stroke-width="1.5"/><polygon points="276,66 270,62 270,70" fill="#8a98ab"/><rect x="277" y="40" width="76" height="52" fill="#20303f" stroke="#3fb950" rx="6"/><text x="315" y="58" fill="#3fb950" font-size="13" text-anchor="middle" font-weight="bold">4</text><text x="315" y="72" fill="#f0f4f8" font-size="9" text-anchor="middle" font-weight="bold">TOPRAKLA</text><text x="315" y="84" fill="#8a98ab" font-size="7" text-anchor="middle">+ kısa devre et</text><path d="M353 66 L363 66" stroke="#8a98ab" stroke-width="1.5"/><polygon points="365,66 359,62 359,70" fill="#8a98ab"/><rect x="366" y="40" width="64" height="52" fill="#20303f" stroke="#33b1ff" rx="6"/><text x="398" y="58" fill="#33b1ff" font-size="13" text-anchor="middle" font-weight="bold">5</text><text x="398" y="72" fill="#f0f4f8" font-size="9" text-anchor="middle" font-weight="bold">ÖRT</text><text x="398" y="84" fill="#8a98ab" font-size="7" text-anchor="middle">perdele</text><rect x="10" y="106" width="206" height="38" fill="#20303f" stroke="#ffb000" rx="6"/><text x="113" y="121" fill="#ffb000" font-size="9" text-anchor="middle" font-weight="bold">YOKLAMA ÜÇLEMESİ</text><text x="113" y="135" fill="#8a98ab" font-size="8" text-anchor="middle">canlıda test → yerinde ölç → tekrar test</text><rect x="224" y="106" width="206" height="38" fill="#20303f" stroke="#f85149" rx="6"/><text x="327" y="121" fill="#f85149" font-size="9" text-anchor="middle" font-weight="bold">ETİKET KURALI</text><text x="327" y="135" fill="#8a98ab" font-size="8" text-anchor="middle">yalnız asan kaldırır · anahtar cebinde</text><rect x="10" y="154" width="420" height="34" fill="#20303f" stroke="#3fb950" rx="6"/><text x="220" y="169" fill="#3fb950" font-size="9" text-anchor="middle" font-weight="bold">SIRA BOZULMAZ: 1→2→3→4→5 · sonra çalış</text><text x="220" y="182" fill="#8a98ab" font-size="8" text-anchor="middle">Çarpılmada: kaynağı kes → dokunma → 112 → CPR (30:2, 100-120/dk)</text></svg>`
+});
+
+/* ===== EK v8: SAHA ÖNCESİ YETİŞTİRME PROGRAMI + oto kategorisi ===== */
+CATS.oto={n:"Otomasyon & Saha Ustalığı",c:"#0ea5b7"};
+
+const PROGRAM=[
+ {ic:"⚡", t:"Aşama 1 · Elektriğin Dili", hedef:"V, A, W, Ω kavramlarını su benzetmesiyle otur; Ohm kanunu ve devre mantığını çözünce gerisi kolay.", mods:[36,1,12,13,14]},
+ {ic:"🛡️", t:"Aşama 2 · Güvenlik & Ölçüm", hedef:"Önce hayatta kal: 5 altın kural, gerilim yokluğu doğrulama, ölçü aletlerini doğru kullanma.", mods:[42,4,17,29]},
+ {ic:"🔌", t:"Aşama 3 · Kablo & Saha Uygulama", hedef:"Kesit seç, ek yap, bağlantı standartlarına uy; sayaçtan panoya gerçek bağlantı kur.", mods:[3,2,16,15,35,22]},
+ {ic:"🎛️", t:"Aşama 4 · Pano & Otomasyon", hedef:"Pano içindeki her cihazı tanı; kontaktör-röle-PLC ile kumanda devresi kur; panoyu doğru tasarla.", mods:[38,5,18,28,40]},
+ {ic:"🏗️", t:"Aşama 5 · Güç Dağıtımı: AG/OG & Koruma", hedef:"OG hücreden ADP'ye enerji zincirini oku; trafo, bara, kompanzasyon, kaçak akım ve selektiviteyi yönet.", mods:[39,24,26,27,7,10,21]},
+ {ic:"🏢", t:"Aşama 6 · İleri Sistemler", hedef:"KNX bina otomasyonu, motorlar, elektronik ve sinyal — modern tesisin beyni.", mods:[37,25,11,30,31]},
+ {ic:"🔧", t:"Aşama 7 · Saha Provası", hedef:"Gerçek arıza senaryolarını çöz, havacılık sistemlerini ve prosedürleri bağla; deneme + MYK sınavıyla taçlandır.", mods:[41,9,23,8]}
+];
+
+function pModDone(id){ return (DB.scores[id]||0)>=70; }
+function renderProgram(){
+  document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('active',b.dataset.v==='program'));
+  let allMods=0, allDone=0, firstOpen=null;
+  PROGRAM.forEach(st=>{ st.mods.filter(id=>MODS.some(m=>m.id===id)).forEach(id=>{ allMods++; if(pModDone(id)) allDone++; else if(firstOpen===null) firstOpen=id; }); });
+  const gpct=allMods?Math.round(allDone/allMods*100):0;
+  let h=`<div class="panel" style="margin-bottom:16px">
+    <div class="row" style="justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+      <div><h2 style="margin:0">🎓 Saha Öncesi Yetiştirme Programı</h2>
+      <div class="muted" style="font-size:13px;margin-top:4px">7 aşama · ${allMods} modül · Bitirdiğinde sahada her işin bir ucundan tutabilecek donanımda olacaksın. Kural: sırayla git, her modülde quiz'den <b>%70+</b> al, aşamayı öyle kapat.</div></div>
+      <div style="text-align:right;min-width:150px"><div style="font-size:26px;font-weight:800;color:var(--acc)">%${gpct}</div><div class="muted" style="font-size:11px">${allDone}/${allMods} modül tamamlandı</div></div>
+    </div>
+    <div class="scorebar" style="margin-top:12px"><i style="width:${gpct}%"></i></div>
+    ${firstOpen!==null?`<div class="row" style="margin-top:14px"><button class="btn" onclick="go('module',${firstOpen})">▶ Kaldığın yerden devam: ${modById(firstOpen).ic} ${modById(firstOpen).t}</button></div>`:`<div class="msg ok" style="margin-top:14px">🎉 Programın tamamı bitti! Şimdi Deneme Sınavı ve MYK ile taçlandır.</div>`}
+  </div>`;
+  PROGRAM.forEach((st,si)=>{
+    const ids=st.mods.filter(id=>MODS.some(m=>m.id===id));
+    const done=ids.filter(pModDone).length;
+    const pct=ids.length?Math.round(done/ids.length*100):0;
+    const stDone=done===ids.length&&ids.length>0;
+    h+=`<div class="panel" style="margin-bottom:14px;${stDone?'border-color:var(--acc);':''}">
+      <div class="row" style="justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+        <h3 style="margin:0;font-size:17px">${st.ic} ${st.t} ${stDone?'<span style="color:var(--ok)">✓</span>':''}</h3>
+        <span class="muted" style="font-size:12px">${done}/${ids.length} · %${pct}</span></div>
+      <div class="muted" style="font-size:12.5px;margin:6px 0 10px">${st.hedef}</div>
+      <div class="mini"><i style="width:${pct}%"></i></div>
+      <div style="margin-top:10px">${ids.map((id,i)=>{
+        const m=modById(id); const sc=DB.scores[id]; const ok=pModDone(id);
+        return `<div class="trow" onclick="go('module',${id})" style="display:flex;justify-content:space-between;align-items:center;padding:8px 10px;cursor:pointer;border-bottom:1px solid var(--line)">
+          <span style="font-size:13.5px">${i+1}. ${m.ic} ${m.t}</span>
+          <span style="font-size:12px;font-weight:700;color:${ok?'var(--ok)':(sc!=null?'var(--warn)':'var(--muted)')}">${ok?'✅ %'+sc:(sc!=null?'%'+sc+' · tekrar dene':'başlanmadı')}</span></div>`;
+      }).join('')}</div>
+    </div>`;
+  });
+  h+=`<div class="panel" style="text-align:center">
+    <b>🏁 Final:</b> Tüm aşamalar bitince → <button class="btn sm" onclick="go('exam')">📝 Deneme Sınavı</button>
+    <button class="btn sm" onclick="go('myk')">🎖️ MYK Provası</button>
+    <a class="btn ghost sm" href="foy.html" target="_blank" rel="noopener" style="text-decoration:none">📘 Föyü yazdır, sahaya götür</a></div>`;
+  app().innerHTML=h;
+}
+function go(view,arg){
+  document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('active',b.dataset.v===view));
+  window.scrollTo(0,0);
+  if(view==='kapak')renderKapak();
+  else if(view==='onsoz')renderOnsoz();
+  else if(view==='program')renderProgram();
+  else if(view==='home')renderHome();
+  else if(view==='modules')renderModules();
+  else if(view==='module')openModule(arg);
+  else if(view==='exam')renderExam();
+  else if(view==='review')renderReview();
+  else if(view==='glossary')renderGlossary();
+  else if(view==='settings')renderSettings();
+  else if(view==='myk')renderMYK();
+}
 
 refreshHeader();
 go('kapak');
