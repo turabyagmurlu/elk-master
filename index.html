@@ -780,6 +780,99 @@ input[type=number]:focus,input[type=text]:focus,select:focus,textarea:focus{
 .panel2{padding:14px 15px}
 .msg{line-height:1.55}
 
+
+  /* ═══════════ v9 · SİNEMATİK KAPAK + İÇERİK CİLASI ═══════════ */
+  .cine{position:relative;border-radius:22px;overflow:hidden;min-height:calc(100vh - 150px);
+    display:flex;flex-direction:column;justify-content:flex-end;
+    box-shadow:0 30px 80px -28px #0a162299;border:1px solid #14304a;background:#0a1622}
+  .cine-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+    animation:cineZoom 22s ease-in-out infinite alternate}
+  @keyframes cineZoom{from{transform:scale(1)}to{transform:scale(1.07)}}
+  .cine-veil{position:absolute;inset:0;background:
+    linear-gradient(180deg,#0a1622cc 0%,#0a162200 26%,#0a162200 44%,#0a1622e8 82%,#0a1622 100%)}
+  .cine-top{position:absolute;top:0;left:0;right:0;padding:22px;text-align:center}
+  .cine-kick{font-size:11px;letter-spacing:3.5px;color:#bfe3ea;text-transform:uppercase}
+  .cine-glass{position:relative;margin:0 auto 34px;max-width:620px;width:calc(100% - 40px);
+    background:rgba(10,22,34,.55);backdrop-filter:blur(14px) saturate(1.4);-webkit-backdrop-filter:blur(14px) saturate(1.4);
+    border:1px solid #ffffff1f;border-radius:20px;padding:24px 26px 26px;text-align:center;
+    box-shadow:0 20px 50px -20px #000a}
+  .cine-kick2{font-size:11px;letter-spacing:3px;color:#8fd8e2;text-transform:uppercase;margin-bottom:6px}
+  .cine-title{font-family:'Fraunces',Georgia,serif;font-size:46px;line-height:1.05;margin:0 0 8px;
+    color:#fff;letter-spacing:1px;text-shadow:0 3px 20px #0009}
+  .cine-sub{color:#dbe9ef;font-size:13.5px;margin-bottom:16px}
+  .cine-chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:18px}
+  .cine-chip{font-size:12px;color:#cfe8ef;background:#ffffff14;border:1px solid #ffffff24;
+    padding:5px 13px;border-radius:999px}
+  .cine-chip b{color:#fff;font-weight:800}
+  .cine-chip.done{background:#14b8a626;border-color:#14b8a659;color:#a7f3e4}
+  .cine-cta{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  .cine-btn{font-size:15px;padding:12px 26px;animation:glowPulse 2.8s ease-in-out infinite}
+  .cine-btn2{background:#ffffff12;color:#e8f4f8;border:1px solid #ffffff33}
+  .cine-btn2:hover{background:#ffffff1f;border-color:#8fd8e2;color:#fff}
+  @media(max-width:680px){.cine{min-height:calc(100vh - 130px);border-radius:16px}
+    .cine-title{font-size:32px}.cine-glass{padding:18px 16px 20px;margin-bottom:20px}}
+
+  /* meta şerit */
+  .metabar{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 14px}
+  .metabar span{font-size:12px;color:var(--muted);background:var(--panel2);
+    border:1px solid var(--line);padding:4px 11px;border-radius:999px}
+  .metabar .mb-ok{color:var(--ok);border-color:#bfe6cc;background:#eefaf2}
+
+  /* şema çerçevesi */
+  .figwrap{border:1px solid var(--line);border-radius:14px;overflow:hidden;margin:12px 0 16px;background:var(--panel2)}
+  .fighead{font-size:12px;font-weight:700;color:var(--accd);padding:8px 12px;
+    background:linear-gradient(90deg,#e7fbf9,#eaf1ff);border-bottom:1px solid var(--line)}
+  .figwrap .fig{border:none;border-radius:0;margin:0}
+
+  /* içindekiler şeridi */
+  .tocbar{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:16px}
+  .tocbar-h{font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .tocchips{display:flex;flex-wrap:wrap;gap:6px}
+  .tocchip{font-size:12.5px;text-decoration:none;color:var(--txt);background:#fff;
+    border:1px solid var(--line);padding:5px 11px;border-radius:999px;transition:.18s}
+  .tocchip:hover{border-color:var(--acc);color:var(--accd);transform:translateY(-1px)}
+
+  /* bölüm kartları */
+  .lessonbody{background:transparent!important;border:none!important;padding:0!important;color:var(--txt)!important}
+  .secbox{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:12px;
+    box-shadow:0 4px 14px -8px #13283d1f}
+  .secbox:empty{display:none}
+  .sechead{display:flex;align-items:center;gap:10px;margin-bottom:10px;padding-bottom:9px;border-bottom:1px solid var(--line)}
+  .secno{flex:none;width:26px;height:26px;border-radius:9px;display:flex;align-items:center;justify-content:center;
+    font-size:13px;font-weight:800;color:#fff;background:linear-gradient(135deg,#14b8a6,#2563eb)}
+  .sectitle{font-family:'Fraunces',Georgia,serif;font-size:16px;font-weight:700;color:var(--txt)}
+
+  /* tablo cilası */
+  .tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;margin:10px 0}
+  .tblwrap table{margin:0!important;border:none!important;min-width:420px}
+  .tblwrap th{position:sticky;top:0;background:#eef6fb;font-weight:700;z-index:1}
+  .tblwrap tr:nth-child(even) td{background:#f8fbfd}
+  .tblwrap tr:hover td{background:#eef7fb}
+
+  /* özet sekmesi */
+  .ozetwrap{}
+  .ozethead{display:flex;align-items:center;gap:12px;background:linear-gradient(100deg,#eafaf1,#f2fbff);
+    border:1px solid var(--line);border-left:5px solid var(--ok);border-radius:14px;padding:13px 16px;margin-bottom:14px}
+  .ozetic{font-size:24px}
+  .ozett{font-family:'Fraunces',Georgia,serif;font-size:17px;font-weight:700;color:var(--txt)}
+  .ozets{font-size:12.5px;color:var(--muted);margin-top:2px}
+  .ozetbody{background:#fff!important;border:1px solid var(--line)!important;border-left:4px solid var(--ok)!important;
+    border-radius:0 12px 12px 0;padding:16px 18px!important;color:var(--txt)!important;line-height:1.75}
+  .ozetbody b{color:#0f3147}
+
+  /* renkli uyarı kutuları */
+  .alertbox{border-radius:0 12px 12px 0;padding:11px 14px;margin:10px 0;font-size:13.5px;line-height:1.7;
+    display:flex;gap:10px;align-items:flex-start}
+  .alertbox .ab-ic{font-size:17px;flex:none;line-height:1.4}
+  .ab-danger{background:#fdecec;border-left:4px solid var(--bad);color:#8f2230}
+  .ab-danger b{color:#6d1a25}
+  .ab-tip{background:#eafaf1;border-left:4px solid var(--ok);color:#1c5136}
+  .ab-tip b{color:#123a26}
+  .ab-field{background:#eaf3fd;border-left:4px solid var(--acc2);color:#1b4a75}
+  .ab-field b{color:#0f3355}
+  .ab-warn{background:#fff5e6;border-left:4px solid var(--warn);color:#7a4a06}
+  .ab-warn b{color:#5a3604}
+
 </style>
 </head>
 <body>
@@ -3601,6 +3694,143 @@ Object.assign(DIAG,{ 43:`<svg viewBox="0 0 440 210" xmlns="http://www.w3.org/200
 <text x="290" y="194" fill="#f85149" font-size="9">D: kaynak/agir kalkis</text>
 <text x="14" y="205" fill="#8a98ab" font-size="9">gG = asiri yuk + kisa devre (kablo) | aM = sadece kisa devre (motor, termik role ile)</text>
 </svg>` });
+
+/* renkli uyarı kutuları — satır başındaki emoji kalıplarını yakalar */
+function alertify(h){
+  if(!h) return h;
+  var rules=[
+    {re:/^(<b[^>]*>)?\s*(⚠️|❌|🚫|⛔)\s*/,cls:'ab-danger',ic:'⚠️'},
+    {re:/^(<b[^>]*>)?\s*(💡|✅|👍|🎯)\s*/,cls:'ab-tip',ic:'💡'},
+    {re:/^(<b[^>]*>)?\s*(🔧|🧰|🔩|📌|🏗️)\s*/,cls:'ab-field',ic:'🔧'},
+    {re:/^(<b[^>]*>)?\s*(🔥|❗|⚡)\s*/,cls:'ab-warn',ic:'⚡'}
+  ];
+  var parts=h.split(/<br>/);
+  for(var i=0;i<parts.length;i++){
+    var t=parts[i]; if(!t || !t.trim()) continue;
+    var s=t.replace(/^\s+/,'');
+    for(var j=0;j<rules.length;j++){
+      var r=rules[j];
+      if(r.re.test(s)){
+        var body=s.replace(r.re,'$1');
+        parts[i]='<div class="alertbox '+r.cls+'"><span class="ab-ic">'+r.ic+'</span><div>'+body+'</div></div>';
+        break;
+      }
+    }
+  }
+  var out=parts.join('<br>');
+  out=out.replace(/<br>\s*(<div class="alertbox)/g,'$1');
+  out=out.replace(/(<\/div><\/div>)\s*<br>/g,'$1');
+  return out;
+}
+/* ===== v9: Sinematik kapak + Özet-önce sekmeler + içerik cilası ===== */
+
+/* --- A) SİNEMATİK KAPAK --- */
+function renderKapak(){
+  document.querySelectorAll('#nav button').forEach(b=>b.classList.remove('active'));
+  var b=document.querySelector('#nav button[data-v="kapak"]'); if(b) b.classList.add('active');
+  var toplamSoru=Object.values(QBANK).reduce((a,x)=>a+x.length,0);
+  var bitti=MODS.filter(m=>(DB.scores[m.id]||0)>=70).length;
+  app().innerHTML=`<div class="cine">
+    <img class="cine-img" src="https://d8j0ntlcm91z4.cloudfront.net/user_3GAM4t5LIrVnoytOwhQqVixxnvj/hf_20260712_131403_d8ee47d8-260d-4f6e-9bf1-9858c3e24981.png" alt="ELK MASTER kapak görseli">
+    <div class="cine-veil"></div>
+    <div class="cine-top"><span class="cine-kick">DHMİ · Elektrik Uzmanlık Akademisi</span></div>
+    <div class="cine-glass">
+      <div class="cine-kick2">Sıfırdan ustalığa</div>
+      <h1 class="cine-title">ELK&nbsp;MASTER</h1>
+      <div class="cine-sub">Elektrik Teknikerliği · Teori · Uygulama · Saha · MYK</div>
+      <div class="cine-chips">
+        <span class="cine-chip"><b>${MODS.length}</b> modül</span>
+        <span class="cine-chip"><b>${toplamSoru}</b> soru</span>
+        <span class="cine-chip"><b>${Object.keys(CATS).length}</b> bölüm</span>
+        ${bitti?`<span class="cine-chip done"><b>${bitti}</b> tamamlandı</span>`:''}
+      </div>
+      <div class="cine-cta">
+        <button class="btn cine-btn" onclick="go('onsoz')">📖 Kitabı aç</button>
+        <button class="btn ghost cine-btn2" onclick="go('program')">🎓 Saha programı</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* --- B) ÖZET-ÖNCE SEKMELER + C) İÇERİK CİLASI --- */
+function okumaSuresi(id){
+  var t=(TEORI[id]||'')+(FOY[id]||'');
+  var kelime=t.replace(/<[^>]*>/g,' ').split(/\s+/).filter(Boolean).length;
+  return Math.max(2,Math.round(kelime/190));
+}
+function icerikSusle(html,id){
+  if(!html) return '';
+  var h=html;
+  /* bölüm başlıklarını numaralı karta çevir */
+  var no=0;
+  h=h.replace(/<b style="font-size:15px">([\s\S]*?)<\/b>/g,function(_,ic){
+    no++;
+    return '</div><div class="secbox" id="sec'+id+'_'+no+'"><div class="sechead"><span class="secno">'+no+'</span><span class="sectitle">'+ic+'</span></div>';
+  });
+  if(no>0) h='<div class="secbox">'+h+'</div>';
+  /* içindekiler şeridi */
+  var toc='';
+  if(no>1){
+    var re=/<span class="sectitle">([\s\S]*?)<\/span>/g,mm,i=0,items='';
+    while((mm=re.exec(h))!==null){ i++; items+='<a class="tocchip" href="#sec'+id+'_'+i+'">'+i+'. '+mm[1].replace(/<[^>]*>/g,'').replace(/^[^\wçğıöşüÇĞİÖŞÜ]+/,'')+'</a>'; }
+    if(items) toc='<div class="tocbar"><div class="tocbar-h">Bu bölümde</div><div class="tocchips">'+items+'</div></div>';
+  }
+  /* renkli uyarı kutuları */
+  h=alertify(h);
+  /* tabloları saracak */
+  h=h.replace(/<table/g,'<div class="tblwrap"><table').replace(/<\/table>/g,'</table></div>');
+  return toc+h;
+}
+function showTab(id,tab){
+  const m=modById(id);
+  document.querySelectorAll('#tabbar button').forEach(b=>b.classList.toggle('active',b.dataset.t===tab));
+  const c=el('mtab');
+  if(tab==='ozet'){
+    c.innerHTML=`<div class="ozetwrap">
+      <div class="ozethead"><span class="ozetic">💊</span><div><div class="ozett">Hızlı özet</div><div class="ozets">Konuyu ${Math.max(1,Math.round(okumaSuresi(id)/3))} dakikada kavra, sonra teoriye geç</div></div></div>
+      <div class="edu ozetbody">${FOY[id]||'<span class="muted">Bu modülde özet yok.</span>'}</div>
+      <div class="row" style="margin-top:14px"><button class="btn" onclick="showTab(${id},'teori')">📖 Teoriye geç →</button><button class="btn blue" onclick="showTab(${id},'quiz')">📝 Quiz çöz</button></div>
+    </div>`;
+    window.scrollTo(0,0);
+  }
+  else if(tab==='teori'){
+    c.innerHTML=`<div class="lesson">
+      <div class="lessonhead" style="border-left-color:${CATS[m.cat].c}">
+        <div class="lh-ic">${m.ic}</div>
+        <div><div class="lh-cat" style="color:${CATS[m.cat].c}">${CATS[m.cat].n}</div>
+        <div class="lh-t">Fasikül ${m.id} — ${m.t}</div></div></div>
+      <div class="metabar"><span>⏱ ≈${okumaSuresi(id)} dk okuma</span><span>📝 ${(QBANK[id]||[]).length} soru</span>${m.task?'<span>🎯 interaktif</span>':''}${DB.scores[id]!=null?`<span class="mb-ok">✅ en iyi %${DB.scores[id]}</span>`:''}</div>
+      <div class="figwrap"><div class="fighead">🔎 Şema — ${m.t}</div>${figureFor(id)}</div>
+      <div class="edu lessonbody">${icerikSusle(TEORI[id]||'',id)}</div>
+      <div class="row" style="margin-top:14px">${m.task?`<button class="btn" onclick="showTab(${id},'uygulama')">🎯 Uygulama</button>`:''}<button class="btn blue" onclick="showTab(${id},'quiz')">📝 Quiz çöz</button><button class="btn ghost" onclick="showTab(${id},'ozet')">💊 Özete dön</button></div>
+    </div>`;
+  }
+  else if(tab==='foy') showTab(id,'ozet');
+  else if(tab==='not') c.innerHTML=noteHTML(id);
+  else if(tab==='quiz') startModuleQuiz(id);
+  else if(tab==='uygulama'){ if(m.task && window[m.task]) window[m.task](m); else c.innerHTML='<div class="muted">Bu modülde interaktif uygulama yok.</div>'; }
+}
+function openModule(id){
+  const m=modById(id);
+  const idx=MODS.findIndex(x=>x.id===id);
+  const nx=(idx>=0&&idx<MODS.length-1)?MODS[idx+1]:null;
+  let tabs=[['ozet','💊 Özet'],['teori','📖 Teori']];
+  if(m.task) tabs.push(['uygulama','🎯 Uygulama']);
+  tabs.push(['quiz','📝 Quiz'],['not','✏️ Notlar']);
+  const sc=DB.scores[id]!=null?` · En iyi: %${DB.scores[id]}`:'';
+  const nextBtn = nx?`<button class="btn sm" onclick="previewNext(${nx.id})">Sıradaki: ${nx.ic} ${nx.t} →</button>`:`<button class="btn ghost sm" disabled>🎉 Son modül</button>`;
+  app().innerHTML=`<div class="row" style="justify-content:space-between;align-items:center">
+     <span class="breadcrumb" onclick="go('modules')">← Modüller</span>${nextBtn}</div>
+   <div class="panel">
+     <h2 style="margin:0">${m.ic} Modül ${m.id}: ${m.t}</h2>
+     <div class="muted" style="font-size:12.5px;margin-top:3px">${CATS[m.cat].n}${sc}</div>
+     <div class="tabbar" id="tabbar">${tabs.map(t=>`<button data-t="${t[0]}" onclick="showTab(${id},'${t[0]}')">${t[1]}</button>`).join('')}</div>
+     <div id="mtab"></div>
+     <div class="row" style="margin-top:18px;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding-top:14px">
+       <button class="btn ghost sm" onclick="go('modules')">← Modül listesi</button>${nextBtn}</div>
+   </div>`;
+  showTab(id,'ozet');
+}
 
 refreshHeader();
 go('kapak');
