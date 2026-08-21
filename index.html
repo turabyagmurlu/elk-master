@@ -873,6 +873,71 @@ input[type=number]:focus,input[type=text]:focus,select:focus,textarea:focus{
   .ab-warn{background:#fff5e6;border-left:4px solid var(--warn);color:#7a4a06}
   .ab-warn b{color:#5a3604}
 
+
+  /* ═══════════ v10 · DÜZ METİN İÇERİK CİLASI ═══════════ */
+
+  /* tanım satırı: sol sütun terim, sağ sütun açıklama */
+  .defrow{display:grid;grid-template-columns:168px 1fr;gap:14px;align-items:start;
+    padding:11px 0 12px;border-bottom:1px dashed #e3ecf4}
+  .defrow:last-child{border-bottom:none;padding-bottom:2px}
+  .defterm{position:relative;font-size:13px;font-weight:800;line-height:1.45;
+    color:var(--accd);padding-left:11px;letter-spacing:.1px}
+  .defterm::before{content:"";position:absolute;left:0;top:3px;bottom:3px;width:3px;border-radius:3px;
+    background:linear-gradient(180deg,#14b8a6,#2563eb)}
+  .defbody{font-size:13.9px;line-height:1.78;color:var(--txt)}
+  /* anahtar terim/değerleri fosforlu kalem etkisi */
+  .defbody b,.para b,.bulcard b{font-weight:700;color:#0f3147;
+    background:linear-gradient(180deg,transparent 63%,#bdf0e6 63%,#bdf0e6 93%,transparent 93%);
+    padding:0 1px;border-radius:2px}
+  .defrow:hover .defterm{color:var(--acc)}
+  @media(max-width:700px){
+    .defrow{grid-template-columns:1fr;gap:5px;padding:10px 0 11px}
+    .defterm{font-size:12.5px}
+    .defbody{font-size:13.4px}
+  }
+
+  /* düz paragraf */
+  .para{margin:0 0 10px;font-size:13.9px;line-height:1.8;color:var(--txt)}
+  .para:last-child{margin-bottom:0}
+
+  /* madde kartı */
+  ul.bulcard{list-style:none;margin:11px 0;padding:12px 15px 12px 14px;
+    background:linear-gradient(180deg,#f6fbfd,#f9fcfe);border:1px solid var(--line);
+    border-radius:12px}
+  ul.bulcard li{position:relative;padding-left:22px;margin:0 0 8px;
+    font-size:13.7px;line-height:1.75;color:var(--txt)}
+  ul.bulcard li:last-child{margin-bottom:0}
+  ul.bulcard li::before{content:"▸";position:absolute;left:4px;top:-1px;
+    font-size:14px;font-weight:800;color:var(--acc)}
+
+  /* örnek / hesap kutusu */
+  .exline{display:flex;gap:9px;align-items:flex-start;margin:9px 0 4px;
+    background:#fff8ec;border:1px solid #f2dfba;border-left:3px solid var(--warn);
+    border-radius:0 10px 10px 0;padding:9px 12px;font-size:13.2px;line-height:1.7;color:#6f4708}
+  .exline .ex-ic{flex:none;font-size:9.5px;font-weight:800;letter-spacing:.9px;
+    color:#8a5406;background:#fbe6bf;border:1px solid #edd0a0;border-radius:999px;
+    padding:2px 8px;margin-top:2px;line-height:1.4;white-space:nowrap}
+  .exline b{color:#7a3f04;background:none;font-weight:800}
+
+  /* formül rozeti */
+  .fml{display:inline-block;font-family:ui-monospace,SFMono-Regular,Consolas,'Liberation Mono',monospace;
+    font-size:12.7px;font-weight:700;color:#0b3b52;background:#e3f4fa;border:1px solid #bfe3ef;
+    padding:1px 8px;border-radius:7px;letter-spacing:.2px;white-space:nowrap;
+    box-shadow:0 1px 0 #ffffff inset}
+  /* sayı + birim rozeti */
+  .unit{display:inline-block;font-weight:800;font-size:12.9px;color:#08655a;background:#d5f5ec;
+    border:1px solid #a6e5d5;padding:0 8px;border-radius:999px;white-space:nowrap}
+  .exline .fml,.exline .unit{background:#fff1d9;border-color:#eccf9f;color:#78450a}
+
+  /* özet sekmesi içindeki cila biraz daha sıkı dursun */
+  .ozetbody .defrow{padding:9px 0 10px}
+  .ozetbody .para{margin-bottom:8px}
+  .ozetbody ul.bulcard{margin:9px 0}
+
+  /* başlıksız modüllerde de kart nefes alsın */
+  .secbox{padding:18px 20px}
+  @media(max-width:700px){.secbox{padding:14px 15px}}
+
 </style>
 </head>
 <body>
@@ -3833,6 +3898,142 @@ function openModule(id){
    </div>`;
   showTab(id,'ozet');
 }
+
+/* ===== v10: DÜZ METİN MODÜLLERİ İÇİN İÇERİK CİLASI ===== */
+/* Modül 1-36 "<b>Terim:</b> açıklama<br>" kalıbıyla yazılmış; v9 kart sistemi
+   sadece "<b style=font-size:15px>" başlıklı yeni modüllerde çalışıyordu.
+   v10 bu düz metni tanım satırı / madde kartı / örnek kutusu'na çevirir. */
+
+function _v10Denge(x){
+  return (x.match(/<b/g)||[]).length === (x.match(/<\/b>/g)||[]).length;
+}
+/* "… Örn. 24 V ve 8 Ω → 3 A" kuyruğunu ayrı hesap kutusuna al */
+function _v10Orn(s){
+  var m = s.match(/^([\s\S]*?)(Örn\.\s|Örnek\s*:|Örneğin\s*[:,])\s*([\s\S]+)$/);
+  if(!m) return s;
+  var pre = m[1], post = m[3];
+  if(!_v10Denge(pre) || !_v10Denge(post)) return s;
+  var box = '<div class="exline"><span class="ex-ic">ÖRNEK</span><div>'+post+'</div></div>';
+  return pre.trim().length < 6 ? box : pre + box;
+}
+/* Tek bir metin parçasını sınıflandır */
+function _v10Parca(t){
+  if(!t) return '';
+  if(/^<\/?(div|img|svg|figure|table|ul|ol|p|h[1-6])\b/i.test(t)) return t;
+  if(/^<div class="alertbox/.test(t)) return t;
+  var d = t.match(/^<b>([^<]{2,80}?)\s*([:.])<\/b>\s*([\s\S]+)$/);
+  if(d && d[3].trim() && _v10Denge(d[3])){
+    return '<div class="defrow"><div class="defterm">'+d[1]+'</div><div class="defbody">'+_v10Orn(d[3].trim())+'</div></div>';
+  }
+  if(/^(Örn\.|Örnek\s*:|Örneğin\s*[:,])/.test(t)){
+    return '<div class="exline"><span class="ex-ic">ÖRNEK</span><div>'+t.replace(/^(Örn\.|Örnek\s*:|Örneğin\s*[:,])\s*/,'')+'</div></div>';
+  }
+  return '<p class="para">'+_v10Orn(t)+'</p>';
+}
+/* Satır satır dolaş, ardışık maddeleri tek karta topla */
+function _v10Satirlar(h){
+  if(!h) return h;
+  var parts = h.split(/<br\s*\/?>/);
+  var out = [], buf = [];
+  function flush(){
+    if(buf.length){
+      out.push('<ul class="bulcard">'+buf.map(function(x){return '<li>'+x+'</li>';}).join('')+'</ul>');
+      buf = [];
+    }
+  }
+  for(var i=0;i<parts.length;i++){
+    var raw = parts[i].replace(/^[\s ]+/,'').replace(/[\s ]+$/,'');
+    if(!raw) continue;
+    /* başlık/tablo yer tutucularını olduğu gibi bırak, çevresini işle */
+    var segs = raw.split(/(@@[HT]\d+@@)/);
+    for(var k=0;k<segs.length;k++){
+      var t = segs[k].replace(/^[\s ]+/,'').replace(/[\s ]+$/,'');
+      if(!t) continue;
+      if(/^@@[HT]\d+@@$/.test(t)){ flush(); out.push(t); continue; }
+      var b = t.match(/^[•·▪◦*]\s*([\s\S]+)$/) || t.match(/^[–—]\s+([\s\S]+)$/);
+      if(b){ buf.push(_v10Orn(b[1])); continue; }
+      flush();
+      out.push(_v10Parca(t));
+    }
+  }
+  flush();
+  return out.join('');
+}
+
+/* Formül ve birim rozetleri — sadece zaten <b> içinde olan metni dönüştürür */
+function _v10Vurgu(h){
+  if(!h) return h;
+  h = h.replace(/<b>(\s*[A-Za-z0-9ΩΔΦηθλμ√][^<>=]{0,26}=[^<>]{1,36})<\/b>/g,'<span class="fml">$1</span>');
+  h = h.replace(/<b>(\s*[\d.,]+\s?(?:mm²|kWh|kVA|kV|kW|mA|lx|Hz|°C|bar|V|A|W|Ω|%)\s*)<\/b>/g,'<span class="unit">$1</span>');
+  return h;
+}
+
+/* ---- icerikSusle: v9'un yerine geçen tam sürüm ---- */
+function icerikSusle(html,id){
+  if(!html) return '';
+  var h = html;
+
+  /* 1) tabloları koru */
+  var tbl = [];
+  h = h.replace(/<table[\s\S]*?<\/table>/g, function(m){ tbl.push(m); return '@@T'+(tbl.length-1)+'@@'; });
+
+  /* 2) büyük başlıkları yer tutucuya al */
+  var heads = [];
+  h = h.replace(/<b style="font-size:15px">([\s\S]*?)<\/b>/g, function(_,ic){
+    heads.push(ic); return '@@H'+(heads.length-1)+'@@';
+  });
+
+  /* 3) emoji uyarı kutuları (satır bazlı, <br> hâlâ yerinde) */
+  h = alertify(h);
+
+  /* 4) satır dönüşümü: tanım / madde / örnek / paragraf */
+  h = _v10Satirlar(h);
+
+  /* 5) başlıkları numaralı bölüm kartına çevir */
+  h = h.replace(/@@H(\d+)@@/g, function(_,n){
+    var i = (+n)+1;
+    return '</div><div class="secbox" id="sec'+id+'_'+i+'"><div class="sechead"><span class="secno">'+i+
+           '</span><span class="sectitle">'+heads[+n]+'</span></div>';
+  });
+  h = '<div class="secbox">'+h+'</div>';
+  h = h.replace(/<div class="secbox">(?:\s|<br>|&nbsp;)*<\/div>/g,'');
+
+  /* 6) tabloları geri koy, sar */
+  h = h.replace(/@@T(\d+)@@/g, function(_,n){
+    return '<div class="tblwrap">'+tbl[+n]+'</div>';
+  });
+
+  /* 7) içindekiler şeridi */
+  var toc = '';
+  if(heads.length > 1){
+    var items = heads.map(function(x,i){
+      return '<a class="tocchip" href="#sec'+id+'_'+(i+1)+'">'+(i+1)+'. '+
+             x.replace(/<[^>]*>/g,'').replace(/^[^\wçğıöşüÇĞİÖŞÜ]+/,'').trim()+'</a>';
+    }).join('');
+    toc = '<div class="tocbar"><div class="tocbar-h">Bu bölümde</div><div class="tocchips">'+items+'</div></div>';
+  }
+  return toc + _v10Vurgu(h);
+}
+
+/* ---- Özet (FÖY) metnine de aynı cilayı uygula (kart sarmadan) ---- */
+function foySusle(h){
+  if(!h) return h;
+  var tbl = [];
+  h = h.replace(/<table[\s\S]*?<\/table>/g, function(m){ tbl.push(m); return '@@T'+(tbl.length-1)+'@@'; });
+  h = alertify(h);
+  h = _v10Satirlar(h);
+  h = h.replace(/@@T(\d+)@@/g, function(_,n){ return '<div class="tblwrap">'+tbl[+n]+'</div>'; });
+  return _v10Vurgu(h);
+}
+try{
+  if(typeof FOY==='object' && FOY && !FOY.__v10){
+    Object.keys(FOY).forEach(function(k){
+      if(typeof FOY[k]==='string') FOY[k]=foySusle(FOY[k]);
+    });
+    Object.defineProperty(FOY,'__v10',{value:true,enumerable:false});
+  }
+}catch(e){}
+
 
 refreshHeader();
 go('kapak');
