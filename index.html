@@ -3775,6 +3775,8 @@ function icerikSusle(html,id){
     while((mm=re.exec(h))!==null){ i++; items+='<a class="tocchip" href="#sec'+id+'_'+i+'">'+i+'. '+mm[1].replace(/<[^>]*>/g,'').replace(/^[^\wçğıöşüÇĞİÖŞÜ]+/,'')+'</a>'; }
     if(items) toc='<div class="tocbar"><div class="tocbar-h">Bu bölümde</div><div class="tocchips">'+items+'</div></div>';
   }
+  /* boş bölüm kartlarını temizle */
+  h=h.replace(/<div class="secbox">(?:\s|<br>|&nbsp;)*<\/div>/g,'');
   /* renkli uyarı kutuları */
   h=alertify(h);
   /* tabloları saracak */
