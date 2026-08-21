@@ -3260,7 +3260,7 @@ const PROGRAM=[
  {ic:"🛡️", t:"Aşama 2 · Güvenlik & Ölçüm", hedef:"Önce hayatta kal: 5 altın kural, gerilim yokluğu doğrulama, ölçü aletlerini doğru kullanma.", mods:[42,4,17,29]},
  {ic:"🔌", t:"Aşama 3 · Kablo & Saha Uygulama", hedef:"Kesit seç, ek yap, bağlantı standartlarına uy; sayaçtan panoya gerçek bağlantı kur.", mods:[3,2,16,15,35,22]},
  {ic:"🎛️", t:"Aşama 4 · Pano & Otomasyon", hedef:"Pano içindeki her cihazı tanı; kontaktör-röle-PLC ile kumanda devresi kur; panoyu doğru tasarla.", mods:[38,5,18,28,40]},
- {ic:"🏗️", t:"Aşama 5 · Güç Dağıtımı: AG/OG & Koruma", hedef:"OG hücreden ADP'ye enerji zincirini oku; trafo, bara, kompanzasyon, kaçak akım ve selektiviteyi yönet.", mods:[39,24,26,27,7,10,21]},
+ {ic:"🏗️", t:"Aşama 5 · Güç Dağıtımı: AG/OG & Koruma", hedef:"OG hücreden ADP'ye enerji zincirini oku; trafo, bara, kompanzasyon, kaçak akım ve selektiviteyi yönet.", mods:[39,43,24,26,27,7,10,21]},
  {ic:"🏢", t:"Aşama 6 · İleri Sistemler", hedef:"KNX bina otomasyonu, motorlar, elektronik ve sinyal — modern tesisin beyni.", mods:[37,25,11,30,31]},
  {ic:"🔧", t:"Aşama 7 · Saha Provası", hedef:"Gerçek arıza senaryolarını çöz, havacılık sistemlerini ve prosedürleri bağla; deneme + MYK sınavıyla taçlandır.", mods:[41,9,23,8]}
 ];
@@ -3320,6 +3320,287 @@ function go(view,arg){
   else if(view==='settings')renderSettings();
   else if(view==='myk')renderMYK();
 }
+
+/* ===== EK v9: Sigorta Ailesi (43) ===== */
+MODS.push({id:43, t:"Sigorta Ailesi: Kofta'dan NH'ye", cat:"oto", ic:"🔥", d:"Buşon/kofta, NH bıçaklı, gG-aM, B-C-D eğrileri, kesme kapasitesi."});
+
+Object.assign(TEORI,{ 43:`
+<b style="font-size:15px">🔹 1) Sigortanın Görevi: Kabloyu Korur, Cihazı Değil</b><br>
+Sigorta, devreden geçen akım güvenli sınırın üstüne çıktığında iletkeni <b>kasten koparan</b> zayıf halkadır. Tesisatın en ucuz parçasıdır ve bilerek en önce ölmesi için oraya konur. Sahada en çok yapılan zihinsel hata şudur: "Sigorta cihazımı korur." <b>Hayır.</b> Sigortanın birinci görevi <b>kabloyu ve tesisatı yangından korumaktır</b>. Cihazı koruyan şey termik röle, motor koruma şalteri, dahili termistör veya sürücünün kendi korumasıdır. Sigorta seçilirken sorulacak ilk soru "cihazım kaç amper çeker" değil, <b>"bu kablo kaç amper taşır"</b> sorusudur.<br><br>
+Sigortanın açması gereken iki farklı olay vardır ve bunların karakteri birbirine hiç benzemez:<br>
+<b>• Aşırı yük (overload):</b> Akım anma değerinin biraz üstündedir (örneğin 16 A'lik hatta 22 A). Kablo hemen yanmaz, yavaş yavaş ısınır. Yalıtım kanserli gibi zamanla bozulur. Bu yüzden koruma da <b>yavaş</b> olmalıdır: dakikalar mertebesinde açar. Buna <b>termik bölge</b> denir. Motorun kalkış akımı da teknik olarak bir aşırı yüktür ama geçicidir; korumanın buna dayanması, gerçek aşırı yükte ise açması istenir.<br>
+<b>• Kısa devre (short circuit):</b> Faz-nötr veya faz-faz doğrudan temas eder. Akım anma değerinin 20-100 katına, kilo-amperler seviyesine fırlar. Burada milisaniye önemlidir; koruma <b>ani (manyetik)</b> davranmalıdır.<br><br>
+<b>I²t kavramı — sigortanın geçirdiği enerji:</b> Bir sigortanın kalitesini belirleyen şey sadece "kaç amperde açtığı" değil, <b>açarken devreye ne kadar enerji sızdırdığıdır</b>. Akımın karesi çarpı süre (I²t) devreye giren ısı enerjisiyle orantılıdır ve birimi A²s'dir. Bir sigortanın <b>geçirme I²t</b> değeri, korunan kablonun ve cihazın dayanabileceği I²t değerinden küçük olmalıdır. Halk diliyle: sigorta patlarken arkasındaki kabloya "az yakıt" bırakmalıdır. Bıçaklı NH ve buşonlu sigortalar bu konuda otomatik sigortalardan (MCB) genelde daha iyidir; çünkü eriyen tel ark oluşmadan kum içinde çok hızlı buharlaşır ve akımı tepe noktasına ulaşmadan keser. Buna <b>akım sınırlama</b> denir.<br><br>
+<b>Eriyen tel prensibi:</b> Buşonun ve NH'nin içinde kalibre edilmiş gümüş/bakır şeritler vardır. Bu şeritlerin daraltılmış boyun bölgeleri, belirli bir I²t enerjisinde erir. Etrafındaki <b>kuvars kumu</b> eriyen metal buharını soğurur, arkı söndürür ve basıncı emer. Bu yüzden bir NH sigortası patlarken dışarıdan hiçbir şey görünmez — sadece gösterge pimi fırlar.<br><br>
+
+<b style="font-size:15px">🔹 2) Buşonlu / Vidalı Sigorta — Halk Dilinde KOFTA</b><br>
+<img src="https://d8j0ntlcm91z4.cloudfront.net/user_3GsQa4HBJ49oduhafl3gjVBJXbb/hf_20260821_080635_b4858064-1a5e-4e7c-8db4-07ab9645d6f7.png" alt="Buşonlu (kofta) ve NH bıçaklı sigorta" style="width:100%;max-height:360px;object-fit:cover;border-radius:10px;margin:8px 0;border:1px solid #dbe4ee" loading="lazy"><br>
+Sahada "kofta" denilen eleman, teknik adıyla <b>vidalı buşonlu sigortadır</b>. İki ailesi vardır: <b>Diazed</b> (klasik, büyük, E27/E33 dişli) ve <b>Neozed</b> (yeni nesil, daha kompakt). Parçaları:<br>
+<b>• Altlık (kaide):</b> Porselen veya termoplastik gövde; içinde alt kontak ve üst (kapak) kontağı bulunur. Ray tipi veya pano sacına vidalanan tipleri vardır.<br>
+<b>• Kontak vidası / ayar vidası (pas vidası):</b> Altlığın dibine vidalanan, akım değerine göre <b>farklı iç çapta</b> olan kalibrasyon parçası. Görevi kritiktir, aşağıda ayrıca anlatılıyor.<br>
+<b>• Buşon (patron, sigorta fişi):</b> İçinde kum ve eriyen tel bulunan asıl tüketilebilir eleman. Ucundaki <b>gösterge pastili</b> renk koduna göre boyanmıştır.<br>
+<b>• Kapak (başlık, şapka):</b> Buşonu altlığa bastıran, camlı vidalı kapak. Cam sayesinde pastile bakarak sigortanın atıp atmadığı anlaşılır.<br><br>
+<b>Nasıl çalışır:</b> Akım kapaktan buşonun tepe kontağına, oradan eriyen telden geçip alt kontağa ve ayar vidasına iner. Tel eridiğinde arkasındaki küçük yay <b>renkli gösterge pastilini</b> fırlatır; pastil camın altına düşer veya yere düşer. <b>Pastil düşmüşse buşon ölmüştür</b>, bakarak anlarsınız; sökmeye gerek yok.<br><br>
+<b>DIAZED RENK - AKIM KODU (ezberlenmesi zorunlu)</b><br>
+<table style="width:100%;border-collapse:collapse;font-size:13px">
+<tr><th style="padding:7px;border:1px solid #dbe4ee">Akım</th><th style="padding:7px;border:1px solid #dbe4ee">Renk</th><th style="padding:7px;border:1px solid #dbe4ee">Tipik kullanım</th></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b>2 A</b></td><td style="padding:7px;border:1px solid #dbe4ee"><span style="display:inline-block;width:12px;height:12px;background:#f9a8d4;border-radius:2px;vertical-align:middle;border:1px solid #999"></span> Pembe</td><td style="padding:7px;border:1px solid #dbe4ee">Kumanda, sinyal devresi</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b>4 A</b></td><td style="padding:7px;border:1px solid #dbe4ee"><span style="display:inline-block;width:12px;height:12px;background:#7b3f00;border-radius:2px;vertical-align:middle"></span> Kahverengi</td><td style="padding:7px;border:1px solid #dbe4ee">Küçük kumanda trafosu</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b>6 A</b></td><td style="padding:7px;border:1px solid #dbe4ee"><span style="display:inline-block;width:12px;height:12px;background:#16a34a;border-radius:2px;vertical-align:middle"></span> Yeşil</td><td style="padding:7px;border:1px solid #dbe4ee">Aydınlatma hattı</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b>10 A</b></td><td style="padding:7px;border:1px solid #dbe4ee"><span style="display:inline-block;width:12px;height:12px;background:#e11d48;border-radius:2px;vertical-align:middle"></span> Kırmızı</td><td style="padding:7px;border:1px solid #dbe4ee">Aydınlatma / küçük priz</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b>16 A</b></td><td style="padding:7px;border:1px solid #dbe4ee"><span style="display:inline-block;width:12px;height:12px;background:#9ca3af;border-radius:2px;vertical-align:middle"></span> Gri</td><td style="padding:7px;border:1px solid #dbe4ee">Priz linyesi (klasik)</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b>20 A</b></td><td style="padding:7px;border:1px solid #dbe4ee"><span style="display:inline-block;width:12px;height:12px;background:#2563eb;border-radius:2px;vertical-align:middle"></span> Mavi</td><td style="padding:7px;border:1px solid #dbe4ee">Kuvvet prizi, küçük motor</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b>25 A</b></td><td style="padding:7px;border:1px solid #dbe4ee"><span style="display:inline-block;width:12px;height:12px;background:#eab308;border-radius:2px;vertical-align:middle"></span> Sarı</td><td style="padding:7px;border:1px solid #dbe4ee">Kolon, ısıtıcı</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b>35 A</b></td><td style="padding:7px;border:1px solid #dbe4ee"><span style="display:inline-block;width:12px;height:12px;background:#111827;border-radius:2px;vertical-align:middle"></span> Siyah</td><td style="padding:7px;border:1px solid #dbe4ee">Daire kolonu / pano girişi</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b>50 A</b></td><td style="padding:7px;border:1px solid #dbe4ee"><span style="display:inline-block;width:12px;height:12px;background:#ffffff;border-radius:2px;vertical-align:middle;border:1px solid #999"></span> Beyaz</td><td style="padding:7px;border:1px solid #dbe4ee">Ana hat (DIII)</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b>63 A</b></td><td style="padding:7px;border:1px solid #dbe4ee"><span style="display:inline-block;width:12px;height:12px;background:#b87333;border-radius:2px;vertical-align:middle"></span> Bakır / altın rengi</td><td style="padding:7px;border:1px solid #dbe4ee">Ana kolon, sayaç öncesi</td></tr>
+</table><br>
+<b>Diazed vs Neozed:</b> Diazed'in dişi <b>E27 (DII, 25 A'e kadar)</b> ve <b>E33 (DIII, 35-63 A)</b> ampul dişi mantığındadır; büyük ve derindir. <b>Neozed</b> ise aynı işi çok daha küçük hacimde yapar: <b>D01 (≤16 A), D02 (≤63 A), D03 (≤100 A)</b>. Neozed altlıkları raya oturur, kapakları geçmeli-çevirmelidir; modern panolarda yer kazandırır. Renk kodu mantığı Neozed'de de aynı akım-renk eşleşmesini kullanır.<br><br>
+<b>Ayar vidasının (pas vidası) amacı:</b> Her akım değerinin buşon ucundaki <b>alt pim çapı farklıdır</b>. Ayar vidasının deliği de o çapa göredir. 16 A'lik ayar vidası takılı bir altlığa 25 A'lik buşon <b>fiziksel olarak oturmaz</b> — pimi deliğe girmez, kapak sıkılamaz. Bu, "sigorta atıyor, bir üstünü takayım" refleksine karşı konulmuş <b>mekanik bir güvenlik kilididir</b>. Ayar vidasını sökmek veya çıkarıp atmak, tesisatın kablo korumasını devre dışı bırakmak demektir; yasaktır.<br><br>
+<b>Neden hâlâ karşınıza çıkar:</b> Eski konut tesisatlarında, tarımsal sulama panolarında, trafo binalarında, un/yem fabrikalarında yaygındır. <b>Avantajı:</b> çok yüksek kesme kapasitesi (genelde 50-100 kA), düşük geçirme I²t, ucuz, ark üretmeden keser, elektromanyetik gürültüye dayanıklı. <b>Dezavantajı:</b> tek kullanımlıktır (atınca atılır), elle değiştirilir (stok gerektirir), karanlıkta yanlış buşon takma riski vardır, kapağı açık unutulursa canlı kontak açıkta kalır ve üç fazlı devrede tek buşon atarsa motor <b>iki fazda kalır</b> (yanar).<br><br>
+
+<b style="font-size:15px">🔹 3) NH Bıçaklı Sigorta (Bıçaklı Buşon)</b><br>
+NH, sanayi ve dağıtım panolarının belkemiğidir. Yüksek akımlarda buşonlu sigorta yetmez; NH devreye girer.<br>
+<b>Yapısı:</b> Dikdörtgen <b>porselen (seramik) gövde</b>, iki uçta <b>bıçak (bakır palet) kontaklar</b>, içinde paralel eriyen gümüş şeritler ve tamamını dolduran <b>kuvars kum</b>. Üst yüzeyde, tel eridiğinde yay ile fırlayan <b>gösterge pimi</b> vardır — panoya bakınca hangi fazın attığı anlaşılır. Bıçaklar, altlıktaki yaylı <b>pabuçlara (kontak maşalarına)</b> girer.<br>
+<b>Altlık ve pabuç:</b> Altlık, bara veya kablo bağlantısını taşıyan seramik/termoset kaidedir. Pabuç yayı gevşerse temas direnci artar, ısınma ve renk değişimi (kararma) başlar; bu <b>arıza habercisidir</b>, pabuç değişmelidir.<br>
+<b>NH boyları ve akım aralıkları:</b><br>
+<table style="width:100%;border-collapse:collapse;font-size:13px">
+<tr><th style="padding:7px;border:1px solid #dbe4ee">Boy</th><th style="padding:7px;border:1px solid #dbe4ee">Üst akım sınırı</th><th style="padding:7px;border:1px solid #dbe4ee">Tipik yer</th></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b>NH000 / NH00</b></td><td style="padding:7px;border:1px solid #dbe4ee">≤ 160 A</td><td style="padding:7px;border:1px solid #dbe4ee">Dağıtım panosu çıkışı, motor hattı</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b>NH1</b></td><td style="padding:7px;border:1px solid #dbe4ee">≤ 250 A</td><td style="padding:7px;border:1px solid #dbe4ee">Tali pano besleme</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b>NH2</b></td><td style="padding:7px;border:1px solid #dbe4ee">≤ 400 A</td><td style="padding:7px;border:1px solid #dbe4ee">Ana dağıtım kolonu</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b>NH3</b></td><td style="padding:7px;border:1px solid #dbe4ee">≤ 630 A</td><td style="padding:7px;border:1px solid #dbe4ee">Trafo çıkışı, ana pano</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b>NH4</b></td><td style="padding:7px;border:1px solid #dbe4ee">≤ 1250 A</td><td style="padding:7px;border:1px solid #dbe4ee">Büyük trafo / bara sistemi</td></tr>
+</table><br>
+<b>NH takma-sökme kolu (sigorta çekme sapı) ile GÜVENLİ değiştirme:</b><br>
+1) <b>Önce yükü kes.</b> Mümkünse üst kademe şalteri veya ana şalteri aç; motor hattıysa kontaktörü durdur. NH bir <b>yük ayırıcısı değildir</b>.<br>
+2) Gerilim yokluğunu <b>iki kutuplu test cihazıyla</b> doğrula (kalemtuz/faz kalemi tek başına yeterli değildir).<br>
+3) NH boyuna uygun, yalıtımlı <b>çekme sapını</b> tak; sapın kilidi bıçak omuzlarını tam kavramalıdır. Pense/kargaburun ile çekmek kesinlikle yasaktır.<br>
+4) <b>KKD zorunlu:</b> ark dayanımlı yüz siperi, yalıtkan eldiven (üstüne deri koruyucu), uzun kollu alev geciktirmeli iş elbisesi, yanıcı olmayan giysi. Kolyeyi/saati çıkar.<br>
+5) Sigortayı <b>düz ve tek hamlede</b> çek; yana yatırma (ark köprüsü kurar). Fazları teker teker, aynı sırayla.<br>
+6) Yenisini takarken <b>aynı boy, aynı akım, aynı karakteristik</b>. Yerine tam oturana kadar bastır; yarım oturmuş bıçak ısınıp yangın çıkarır.<br>
+7) Sapı çıkar, kapağı kapat, ardından yükü kademeli devreye al.<br>
+<b>Yük altında çekmenin tehlikesi:</b> Bıçak pabuçtan ayrılırken devre akımı kopmaz, <b>ark olarak havada devam eder</b>. 400 V'ta birkaç yüz amperlik bir ark, 10.000 °C'ye varan plazma ve metal buharı üretir; el, yüz ve göz için kalıcı yanık, kör olma ve basınç dalgası riski vardır. Bu, sahada en sık ölümcül kaza sebeplerinden biridir.<br><br>
+
+<b style="font-size:15px">🔹 4) Karakteristikler: gG mi aM mi?</b><br>
+Sigortanın üstündeki iki harf hangi işi yaptığını söyler. Birinci harf <b>koruma aralığını</b>, ikinci harf <b>kullanım nesnesini</b> gösterir.<br>
+<b>• gG (g = tam aralık, G = genel amaçlı):</b> Hem <b>aşırı yükü</b> hem <b>kısa devreyi</b> korur. Anma akımının biraz üstündeki küçük aşırı yükleri bile (yavaşça) açar. <b>Kablo, hat, kolon, priz, aydınlatma, genel dağıtım</b> için doğru seçimdir. Eski adı <b>gL</b>'dir; standart güncellemesiyle <b>gL/gG</b> aynı ürünü ifade eder — piyasada iki etiketi de görebilirsiniz.<br>
+<b>• aM (a = kısmi aralık, M = motor/şalt cihazı):</b> <b>Yalnızca kısa devreyi</b> korur. Anma akımının yaklaşık 4 katına kadar hiç açmaz; motorun kalkış akımına bilerek göz yumar. Aşırı yükü <b>termik röle</b> veya motor koruma şalteri yapar. Bu yüzden aM <b>daima bir termik röle ile birlikte</b> kullanılır.<br>
+<table style="width:100%;border-collapse:collapse;font-size:13px">
+<tr><th style="padding:7px;border:1px solid #dbe4ee">Kriter</th><th style="padding:7px;border:1px solid #dbe4ee">gG (gL/gG)</th><th style="padding:7px;border:1px solid #dbe4ee">aM</th><th style="padding:7px;border:1px solid #dbe4ee">MCB B</th><th style="padding:7px;border:1px solid #dbe4ee">MCB C</th><th style="padding:7px;border:1px solid #dbe4ee">MCB D</th></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Aşırı yük koruması</td><td style="padding:7px;border:1px solid #dbe4ee">VAR</td><td style="padding:7px;border:1px solid #dbe4ee">YOK</td><td style="padding:7px;border:1px solid #dbe4ee">VAR</td><td style="padding:7px;border:1px solid #dbe4ee">VAR</td><td style="padding:7px;border:1px solid #dbe4ee">VAR</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Kısa devre koruması</td><td style="padding:7px;border:1px solid #dbe4ee">VAR</td><td style="padding:7px;border:1px solid #dbe4ee">VAR</td><td style="padding:7px;border:1px solid #dbe4ee">VAR</td><td style="padding:7px;border:1px solid #dbe4ee">VAR</td><td style="padding:7px;border:1px solid #dbe4ee">VAR</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Ani açma bölgesi</td><td style="padding:7px;border:1px solid #dbe4ee">Tam aralık</td><td style="padding:7px;border:1px solid #dbe4ee">Yaklaşık 4×In üstü</td><td style="padding:7px;border:1px solid #dbe4ee"><b>3-5 × In</b></td><td style="padding:7px;border:1px solid #dbe4ee"><b>5-10 × In</b></td><td style="padding:7px;border:1px solid #dbe4ee"><b>10-20 × In</b></td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Nerede kullanılır</td><td style="padding:7px;border:1px solid #dbe4ee">Kablo/hat, kolon, genel dağıtım</td><td style="padding:7px;border:1px solid #dbe4ee">Motor hattı (termik röle ile)</td><td style="padding:7px;border:1px solid #dbe4ee">Aydınlatma, priz, rezistif yük</td><td style="padding:7px;border:1px solid #dbe4ee">Motor, trafo, LED sürücü, genel</td><td style="padding:7px;border:1px solid #dbe4ee">Yüksek kalkışlı motor, kaynak, trafo</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Tek başına yeterli mi</td><td style="padding:7px;border:1px solid #dbe4ee">Evet (hat için)</td><td style="padding:7px;border:1px solid #dbe4ee"><b>Hayır</b></td><td style="padding:7px;border:1px solid #dbe4ee">Evet</td><td style="padding:7px;border:1px solid #dbe4ee">Evet</td><td style="padding:7px;border:1px solid #dbe4ee">Evet</td></tr>
+</table><br>
+
+<b style="font-size:15px">🔹 5) Otomatik Sigorta (MCB) Eğrileri: B / C / D</b><br>
+MCB'nin içinde iki koruma vardır: <b>bimetal</b> (yavaş, aşırı yük) ve <b>manyetik bobin</b> (ani, kısa devre). Eğri harfi <b>sadece manyetik eşiği</b> belirtir; termik davranış üçünde de benzerdir.<br>
+<b>• B eğrisi (3-5 × In):</b> En hassas. Kalkış akımı olmayan yükler için: aydınlatma, priz, rezistans, ısıtıcı, uzun kablolu TN hatlar (düşük kısa devre akımı olan uçlarda bile açabilmesi için).<br>
+<b>• C eğrisi (5-10 × In):</b> Genel amaçlı standart. Küçük motorlar, pompa, klima, trafo, LED sürücü ve anahtarlamalı güç kaynakları (bunların <b>inrush</b> akımı yüksektir), karışık konut/ticari panolar.<br>
+<b>• D eğrisi (10-20 × In):</b> Çok yüksek darbe akımlı yükler: doğrudan yol verilen büyük motorlar, kaynak makineleri, transformatörler, kondansatör grupları, X-ray cihazları.<br>
+<b>Yanlış eğri seçilirse:</b> C yerine <b>B</b> takarsanız motor veya trafo <b>her kalkışta sigortayı attırır</b>; ortada arıza yoktur ama tesis çalışmaz — sonra usta "bir üst amper takalım" der ve asıl tehlike başlar. B yerine <b>D</b> takarsanız kablo ucundaki zayıf bir kısa devrede (uzun hat, yüksek empedans) manyetik eşik hiç aşılmaz; MCB manyetik değil sadece <b>termik</b> açar, yani saniyeler-dakikalar sürer. Bu sürede kablo yalıtımı erir, dokunma gerilimi tehlikeli süre boyunca ayakta kalır. Bu yüzden eğri seçimi sadece konfor değil, <b>can güvenliği</b> meselesidir.<br><br>
+
+<b style="font-size:15px">🔹 6) Kesme Kapasitesi (Icn / Icu — kA)</b><br>
+Sigortanın üstündeki kutu içinde yazan <b>3000, 6000, 10000</b> veya <b>3 kA, 6 kA, 10 kA</b>, o cihazın <b>güvenle kesebileceği en büyük kısa devre akımıdır</b>. Anma akımıyla (In) hiç ilgisi yoktur; 16 A'lik bir MCB 6 kA kesebilir demek, o noktada 6000 A'e kadar bir kısa devre olursa cihaz kendini imha etmeden devreyi keser demektir.<br>
+<b>Kısa devre akımı neye göre değişir?</b> Esas olarak <b>kaynağa (trafoya) yakınlığa</b>. Trafo çıkışında kısa devre akımı 20-50 kA olabilir; kablo uzadıkça empedans artar, akım düşer; dairenin en uzak prizinde belki 500 A kalır. Bu yüzden <b>ana panoda yüksek kA</b>, uçlarda daha düşük kA'lı ürün kullanılır. Şehir şebekesinde konutta genelde <b>6 kA</b>, sanayide <b>10 kA ve üstü</b>, trafo yakınında <b>NH (50-120 kA)</b> tercih edilir.<br>
+<b>Yetersiz kesme kapasitesi ne yapar?</b> Kısa devrede kontaklar <b>kaynaşır</b>, ark söndürme odacığı yetmez, gövde patlar, plazma ve erimiş metal panoya yayılır. Sigorta açtığını sanırsınız ama devre hâlâ kapalıdır. Sonuç: pano yangını ve ark patlaması. Bu, ucuz sigortanın en pahalı hatası olduğu yerdir.<br><br>
+
+<b style="font-size:15px">🔹 7) Selektivite (Seçicilik)</b><br>
+İdeal tesiste bir arıza olduğunda <b>sadece arızalı kolun sigortası açar</b>, ana sigorta ayakta kalır. Buna selektivite denir. Kurallar:<br>
+• Üst kademedeki koruma, alttakinden hem <b>daha büyük akımlı</b> hem de <b>daha yavaş</b> olmalıdır.<br>
+• Eriyen telli sigortalarda pratik kural: kademeler arası oran yaklaşık <b>1:1,6</b> olsun (ör. 20 A → 32 A → 50 A → 80 A → 125 A). Bir kademe atlamak yerine bu diziyi kullanmak, tam selektivite şansını yükseltir.<br>
+• <b>NH (üst) — otomat (alt):</b> Klasik ve sağlıklı bir kademelendirmedir; NH'nin yavaş termik bölgesi, MCB'nin altında kalır.<br>
+• <b>Buşon (üst) — otomat (alt):</b> Örneğin apartman kolonunda 63 A Diazed, daire içinde 16 A C otomat. Genellikle sorunsuz çalışır.<br>
+• <b>Otomat — otomat:</b> Kısa devrede seçicilik zayıftır; iki MCB'nin manyetik açması aynı milisaniyeye düşer ve ikisi birden açabilir. Kritik yerlerde üst kademeye <b>kısa gecikmeli şalter (MCCB, S tipi)</b> koyulur.<br>
+• <b>Kaçak akım rölesiyle bağlantı:</b> Ana kademede <b>S tipi (selektif, gecikmeli) RCD</b>, alt kademede <b>anlık 30 mA RCD</b> kullanılır. Böylece bir dairedeki kaçak, tüm binayı karartmaz. S tipi ana RCD tipik olarak 100-300 mA ve zaman gecikmelidir.<br><br>
+
+<b style="font-size:15px">🔹 8) YANLIŞ SEÇERSEN NE OLUR?</b><br>
+<table style="width:100%;border-collapse:collapse;font-size:13px">
+<tr><th style="padding:7px;border:1px solid #dbe4ee">Yapılan hata</th><th style="padding:7px;border:1px solid #dbe4ee">Ne olur</th><th style="padding:7px;border:1px solid #dbe4ee">Doğrusu</th></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Buşonu <b>telle köprülemek</b> (çivi/tel sarmak)</td><td style="padding:7px;border:1px solid #dbe4ee">Koruma tamamen yok olur; kablo eriyene kadar akım akar → <b>yangın</b>, sigorta gövdesi patlar</td><td style="padding:7px;border:1px solid #dbe4ee">Asla. Doğru amperde orijinal buşon</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">"Atıyor" diye <b>bir üst değere çıkmak</b> (16→25 A)</td><td style="padding:7px;border:1px solid #dbe4ee">Kablo taşıma kapasitesi aşılır, yalıtım kızarır, buat/priz erir → gizli yangın</td><td style="padding:7px;border:1px solid #dbe4ee">Önce sebebi bul; gerekiyorsa kablo kesitini büyüt</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b>aM</b> sigortayı kablo/priz hattında kullanmak</td><td style="padding:7px;border:1px solid #dbe4ee">Aşırı yük hiç görülmez; 4×In'e kadar akım serbest → kablo yavaşça kavrulur</td><td style="padding:7px;border:1px solid #dbe4ee">Hat koruması için <b>gG</b></td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b>B eğrisi</b>ni motor hattında kullanmak</td><td style="padding:7px;border:1px solid #dbe4ee">Her kalkışta gereksiz açma; üretim durur, sonra hatalı büyütme yapılır</td><td style="padding:7px;border:1px solid #dbe4ee">Motor için <b>C</b>, ağır kalkışta <b>D</b></td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b>Kesme kapasitesi düşük</b> ürün (3 kA'yı sanayide)</td><td style="padding:7px;border:1px solid #dbe4ee">Kısa devrede kontaklar kaynar, gövde patlar, <b>ark patlaması</b>; devre kesilmez</td><td style="padding:7px;border:1px solid #dbe4ee">Sahanın Ik değerine göre 10 kA+ veya NH</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b>Ayar (pas) vidasını sökmek</b></td><td style="padding:7px;border:1px solid #dbe4ee">Her amperde buşon takılabilir hale gelir; mekanik güvenlik kilidi ölür</td><td style="padding:7px;border:1px solid #dbe4ee">Hat akımına uygun ayar vidası mutlaka takılı olsun</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b>NH'yi yük altında</b> çekmek</td><td style="padding:7px;border:1px solid #dbe4ee">Ark plazması, yüz/göz yanığı, körlük, pano patlaması</td><td style="padding:7px;border:1px solid #dbe4ee">Yükü kes, çekme sapı + siper + eldiven</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b>Yanlış NH boyu</b> / yarım oturan bıçak</td><td style="padding:7px;border:1px solid #dbe4ee">Temas direnci artar, pabuç kızarır, kararma ve yangın; koordinasyon bozulur</td><td style="padding:7px;border:1px solid #dbe4ee">Altlığın boyuna uygun NH, tam oturt</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b>Sebebi araştırmadan</b> yeni buşon takmak</td><td style="padding:7px;border:1px solid #dbe4ee">Kısa devre hâlâ yerinde; yeni buşon da patlar, ark tekrarlar, ekipman zarar görür</td><td style="padding:7px;border:1px solid #dbe4ee">Önce ölç: yük mü, kısa devre mi, kaçak mı</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Üç fazlıda <b>tek fazın buşonunu</b> yenilemeyip bırakmak</td><td style="padding:7px;border:1px solid #dbe4ee">Motor iki fazda kalır, akım fırlar, sargı yanar</td><td style="padding:7px;border:1px solid #dbe4ee">Üç fazı birlikte kontrol et, faz koruma rölesi kullan</td></tr>
+</table><br>
+
+<b style="font-size:15px">🔹 9) Sahada Arıza Akışı: Sigorta Attı, Şimdi Ne Yapacağım?</b><br>
+<b>1) Yenisini takmadan önce SEBEBİ sor.</b> İki ihtimal var: aşırı yük mü, kısa devre mi? Ayırt etme ipucu: sigorta <b>bir süre çalıştıktan sonra</b> attıysa aşırı yük; <b>şalteri kaldırır kaldırmaz</b> attıysa kısa devre veya toprak kaçağıdır.<br>
+<b>2) Yükü ölç.</b> <b>Pens ampermetreyle</b> hattın gerçek akımını, mümkünse en yoğun anda ölç. Anma akımının %80'ini sürekli aşıyorsa sorun yükte veya kesitte. Üç fazda faz dengesizliğine de bak.<br>
+<b>3) Kısa devre / kaçak ara.</b> Hattı besleme tarafından ayır, uçları serbest bırak, <b>megger (izolasyon ölçer)</b> ile 500 V DC uygulayarak faz-nötr, faz-toprak, nötr-toprak izolasyonuna bak. Sağlıklı bir tesisatta genellikle <b>1 MΩ üzeri</b> beklenir; sıfıra yakın değer temas noktasını gösterir. Hattı ortadan bölerek (buattan) arızayı yarıya indirerek daralt.<br>
+<b>4) Termal kontrol.</b> Termal kamera veya elin tersiyle (gerilimsizken) klemens, pabuç, buşon kapağı sıcaklığına bak; gevşek klemens de sigorta attırır.<br>
+<b>5) Onar, sonra AYNI değerde ve AYNI karakteristikte</b> yenisini tak. Değeri asla büyütme. Değiştirme tarihini ve sebebini pano etiketine yaz.<br>
+<b>6) Test et.</b> Kademeli devreye al, akımı tekrar ölç, RCD test butonuna bas.<br><br>
+
+<b style="font-size:15px">🔹 10) Hangi Sigorta Nerede? (Özet)</b><br>
+<table style="width:100%;border-collapse:collapse;font-size:13px">
+<tr><th style="padding:7px;border:1px solid #dbe4ee">Yer</th><th style="padding:7px;border:1px solid #dbe4ee">Uygun koruma</th><th style="padding:7px;border:1px solid #dbe4ee">Not</th></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Konut aydınlatma</td><td style="padding:7px;border:1px solid #dbe4ee">6-10 A <b>B</b> MCB (6 kA)</td><td style="padding:7px;border:1px solid #dbe4ee">LED sürücü çoksa C tercih edilir</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Konut priz linyesi</td><td style="padding:7px;border:1px solid #dbe4ee">16 A <b>B/C</b> MCB + 30 mA RCD</td><td style="padding:7px;border:1px solid #dbe4ee">2,5 mm² kablo ile</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Klima / pompa / küçük motor</td><td style="padding:7px;border:1px solid #dbe4ee"><b>C</b> MCB veya motor koruma şalteri</td><td style="padding:7px;border:1px solid #dbe4ee">Inrush akımına dayanmalı</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Sanayi motoru (DOL)</td><td style="padding:7px;border:1px solid #dbe4ee"><b>aM</b> NH + termik röle, ya da <b>D</b> MCB</td><td style="padding:7px;border:1px solid #dbe4ee">aM tek başına aşırı yükü korumaz</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Kaynak makinesi / trafo</td><td style="padding:7px;border:1px solid #dbe4ee"><b>D</b> MCB veya gG NH</td><td style="padding:7px;border:1px solid #dbe4ee">Mıknatıslanma darbesi yüksektir</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Ana kolon / tali pano besleme</td><td style="padding:7px;border:1px solid #dbe4ee"><b>gG NH</b> (NH00-NH2) veya MCCB</td><td style="padding:7px;border:1px solid #dbe4ee">Selektivite için alt kademeden 1,6 kat büyük</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Trafo çıkışı / ana pano</td><td style="padding:7px;border:1px solid #dbe4ee"><b>gG NH3-NH4</b> veya açık tip kesici</td><td style="padding:7px;border:1px solid #dbe4ee">Yüksek kA gerekir</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Sayaç öncesi / dağıtım girişi</td><td style="padding:7px;border:1px solid #dbe4ee"><b>Diazed 63 A</b> veya NH00 gG</td><td style="padding:7px;border:1px solid #dbe4ee">Genelde mühürlü, dağıtım şirketi yetkisi</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee">Kumanda devresi (trafo sekonderi)</td><td style="padding:7px;border:1px solid #dbe4ee">2-6 A Diazed/Neozed veya C MCB</td><td style="padding:7px;border:1px solid #dbe4ee">Pembe 2 A, yeşil 6 A</td></tr>
+</table><br>
+<b>Kapanış:</b> Sigorta seçimi üç sorunun cevabıdır: <b>Hangi kabloyu koruyorum? (amper)</b>, <b>Yükün karakteri ne? (eğri / gG-aM)</b>, <b>Bu noktada kısa devre akımı ne kadar? (kA)</b>. Üçü doğruysa tesisat yıllarca sessizce çalışır; biri yanlışsa ya sürekli sigorta atar ya da bir gün hiç atmaz — ve ikincisi çok daha tehlikelidir.
+` });
+
+Object.assign(FOY,{ 43:`
+<b style="font-size:15px">💊 Hap Bilgiler</b><br>
+• Sigorta <b>kabloyu</b> korur, cihazı değil. Cihazı termik röle korur.<br>
+• Aşırı yük = yavaş açma (termik). Kısa devre = ani açma (manyetik).<br>
+• <b>I²t</b> = sigortanın geçirdiği enerji. Küçük olması iyidir (akım sınırlama).<br>
+• Buşonun pastili düşmüşse buşon ölmüştür — sökmeden anlarsın.<br>
+• <b>Ayar (pas) vidası</b> = büyük buşonun küçük yuvaya girmesini engelleyen mekanik kilit. Sökmek yasak.<br>
+• <b>gG</b> = aşırı yük + kısa devre (hat/kablo). Eski adı <b>gL</b>.<br>
+• <b>aM</b> = sadece kısa devre (motor). <b>Termik röle ile birlikte kullanılır.</b><br>
+• <b>B = 3-5×In</b> (aydınlatma/priz) · <b>C = 5-10×In</b> (motor/trafo/genel) · <b>D = 10-20×In</b> (kaynak, ağır kalkış).<br>
+• <b>kA</b> = kesme kapasitesi, anma akımıyla ilgisi yok. Trafoya yaklaştıkça büyüğü gerekir.<br>
+• Selektivite pratik kuralı: kademeler arası <b>1 : 1,6</b> oran (20-32-50-80-125 A).<br>
+• Ana kademede <b>S tipi (gecikmeli) RCD</b>, uçta <b>30 mA anlık RCD</b>.<br>
+• NH'yi <b>asla</b> yük altında çekme. Sap + eldiven + yüz siperi.<br><br>
+
+<b style="font-size:15px">🎨 Cepte Taşı: Diazed Renk Kodu</b><br>
+<table style="width:100%;border-collapse:collapse;font-size:13px">
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b>2 A</b> Pembe</td><td style="padding:7px;border:1px solid #dbe4ee"><b>4 A</b> Kahverengi</td><td style="padding:7px;border:1px solid #dbe4ee"><b>6 A</b> Yeşil</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b>10 A</b> Kırmızı</td><td style="padding:7px;border:1px solid #dbe4ee"><b>16 A</b> Gri</td><td style="padding:7px;border:1px solid #dbe4ee"><b>20 A</b> Mavi</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b>25 A</b> Sarı</td><td style="padding:7px;border:1px solid #dbe4ee"><b>35 A</b> Siyah</td><td style="padding:7px;border:1px solid #dbe4ee"><b>50 A</b> Beyaz</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee" colspan="3"><b>63 A</b> Bakır / altın rengi</td></tr>
+</table>
+<i>Hatırlatma:</i> DII = E27 diş (≤25 A), DIII = E33 diş (35-63 A). Neozed: D01 ≤16 A, D02 ≤63 A, D03 ≤100 A.<br><br>
+
+<b style="font-size:15px">🔪 Cepte Taşı: NH Boyları</b><br>
+<table style="width:100%;border-collapse:collapse;font-size:13px">
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b>NH000 / NH00</b></td><td style="padding:7px;border:1px solid #dbe4ee">≤ 160 A</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b>NH1</b></td><td style="padding:7px;border:1px solid #dbe4ee">≤ 250 A</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b>NH2</b></td><td style="padding:7px;border:1px solid #dbe4ee">≤ 400 A</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b>NH3</b></td><td style="padding:7px;border:1px solid #dbe4ee">≤ 630 A</td></tr>
+<tr><td style="padding:7px;border:1px solid #dbe4ee"><b>NH4</b></td><td style="padding:7px;border:1px solid #dbe4ee">≤ 1250 A</td></tr>
+</table><br>
+
+<b style="font-size:15px">📐 İşlenmiş Örnek: 7,5 kW Trifaze Motor İçin Seçim</b><br>
+<b>Veriler:</b> P = 7,5 kW, U = 400 V, cos φ ≈ 0,85, verim ≈ 0,88, doğrudan yol verme (DOL).<br>
+<b>1) Anma akımı:</b> In = P / (1,73 × U × cos φ × verim) = 7500 / (1,73 × 400 × 0,85 × 0,88) ≈ <b>14,5 A</b>. Sahada pratik kural olarak 400 V'ta yaklaşık <b>2 A/kW</b> alınır → 15 A civarı, tutarlı.<br>
+<b>2) Kalkış akımı:</b> DOL'de yaklaşık 6-7 × In → <b>90-100 A</b>, birkaç saniye sürer.<br>
+<b>3) Kablo:</b> 4 mm² NYY (yaklaşık 25-30 A taşır) rahat yeter; uzun mesafede gerilim düşümüne göre kontrol et.<br>
+<b>4a) Klasik sanayi çözümü:</b> <b>25 A aM</b> NH00 veya Neozed buşon + <b>kontaktör</b> + <b>termik röle 13-18 A</b> (14,5 A'e ayarla). aM kalkışı görmezden gelir, aşırı yükü termik röle yapar, kısa devreyi aM keser.<br>
+<b>4b) Modern pano çözümü:</b> <b>Motor koruma şalteri (MPCB) 13-18 A</b> ayarlı, ya da <b>25 A C eğrisi</b> MCB. C eğrisi 25 A için manyetik eşik 125-250 A → 100 A'lik kalkışı sorunsuz geçirir.<br>
+<b>4c) Ağır kalkış varsa</b> (büyük volanlı fan, kırıcı, kompresör): <b>D eğrisi 20-25 A</b>.<br>
+<b>5) Kesme kapasitesi:</b> Pano trafoya yakınsa <b>10 kA</b>, uzaksa 6 kA yeterli.<br>
+<b>6) Selektivite:</b> Bu motor kolunu besleyen tali pano girişine 25 × 1,6 ≈ <b>40 A</b>, ana kolona 40 × 1,6 ≈ <b>63 A gG NH00</b>. Böylece motorda arıza olursa fabrika kararmaz.<br>
+<b>❌ Yapılmayacak:</b> 25 A <b>B</b> eğrisi takmak (eşik 75-125 A → kalkışta atar) veya "atmasın" diye 40 A gG takıp termik rölesiz bırakmak (4 mm² kablo korumasız kalır).
+` });
+
+Object.assign(QBANK,{ 43:[
+ {q:"Diazed buşonlu sigortada GRİ renk hangi akım değerini gösterir?",
+  opts:["16 A","10 A","20 A","25 A"], ans:0,
+  ex:"Diazed renk kodunda gri = 16 A'dir. Sıra: 2 A pembe, 4 A kahverengi, 6 A yeşil, 10 A kırmızı, 16 A gri, 20 A mavi, 25 A sarı, 35 A siyah, 50 A beyaz, 63 A bakır rengi. Pastilin rengine bakarak buşonu sökmeden değerini anlarsın."},
+
+ {q:"Aşağıdaki eşleştirmelerden hangisi YANLIŞTIR?",
+  opts:["6 A - yeşil","10 A - kırmızı","25 A - mavi","63 A - bakır/altın rengi"], ans:2,
+  ex:"25 A SARI, 20 A ise MAVİ'dir. Karıştırılması sık görülen bir çifttir; mavi buşonu 25 A sanıp takmak hattı gereğinden dar korur ya da tam tersi kabloyu aşırı yükte bırakır."},
+
+ {q:"Buşonlu sigorta altlığındaki AYAR VİDASININ (pas vidası) asıl görevi nedir?",
+  opts:["Kontak direncini azaltmak","Buşonu topraklamak","Daha büyük akımlı buşonun yuvaya takılmasını mekanik olarak engellemek","Buşonun daha hızlı soğumasını sağlamak"], ans:2,
+  ex:"Her akım değerinin buşon alt pim çapı farklıdır; ayar vidasının deliği de o çapa göredir. 16 A ayar vidalı altlığa 25 A buşon fiziksel olarak oturmaz. Bu, 'atıyor, bir üstünü takayım' hatasına karşı mekanik güvenlik kilididir. Sökmek yasaktır."},
+
+ {q:"Bir motor hattında gG yerine aM sigorta kullanılmasının sebebi nedir?",
+  opts:["aM daha ucuzdur","aM hem aşırı yükü hem kısa devreyi daha hassas korur","aM kaçak akımı da algılar","aM sadece kısa devreyi korur, kalkış akımında gereksiz açmaz; aşırı yükü termik röle yapar"], ans:3,
+  ex:"aM (kısmi aralık, motor) yaklaşık 4×In'e kadar açmaz; motorun kalkış akımına bilerek göz yumar. Bu yüzden aM DAİMA bir termik röle veya motor koruma şalteri ile birlikte kullanılmalıdır. Tek başına aşırı yük koruması sağlamaz."},
+
+ {q:"C eğrisi bir otomatik sigortanın ani (manyetik) açma bölgesi nedir?",
+  opts:["3-5 × In","5-10 × In","10-20 × In","20-40 × In"], ans:1,
+  ex:"B = 3-5×In (aydınlatma, priz, rezistif), C = 5-10×In (motor, trafo, LED sürücü, genel kullanım), D = 10-20×In (kaynak makinesi, ağır kalkışlı motor, trafo). Eğri harfi sadece manyetik eşiği belirtir; termik davranış benzerdir."},
+
+ {q:"Bir MCB'nin üzerinde yazan '6000' veya '6 kA' ifadesi neyi belirtir?",
+  opts:["Anma akımını","Açma süresini","Kesme kapasitesini (güvenle kesebileceği en büyük kısa devre akımı)","Test gerilimini"], ans:2,
+  ex:"kA değeri kesme kapasitesidir ve anma akımıyla (In) ilgisi yoktur. Kısa devre akımı trafoya yakınlıkla artar: trafo çıkışında 20-50 kA olabilirken en uzak prizde birkaç yüz amperdir. Yetersiz kA'lı ürün kısa devrede kontakları kaynatır, gövdesi patlar ve devreyi kesemez."},
+
+ {q:"NH2 boyu bıçaklı sigorta hangi akıma kadar kullanılır?",
+  opts:["160 A","250 A","630 A","400 A"], ans:3,
+  ex:"NH boyları: NH000/NH00 ≤160 A, NH1 ≤250 A, NH2 ≤400 A, NH3 ≤630 A, NH4 ≤1250 A. Altlığın boyuna uygun NH seçilmelidir; yarım oturan bıçak temas direncini artırır, pabucu kızdırır ve yangın çıkarır."},
+
+ {q:"NH sigortayı yük altında (akım akarken) çekmenin başlıca tehlikesi nedir?",
+  opts:["Bıçak pabuçtan ayrılırken akım ark olarak devam eder; plazma ve metal buharı ciddi yanık/körlük yapar","Sigorta erken yaşlanır","Gösterge pimi kırılır","Ölçüm hatası oluşur"], ans:0,
+  ex:"NH bir yük ayırıcısı değildir. Kontak açılırken 400 V'ta birkaç yüz amperlik ark 10.000 °C'ye varan plazma üretir. Doğru sıra: yükü kes, gerilim yokluğunu iki kutuplu test cihazıyla doğrula, uygun NH çekme sapı + ark siperi + yalıtkan eldivenle düz hamlede çek."},
+
+ {q:"Eriyen telli sigortalarda selektivite (seçicilik) için önerilen pratik kademe oranı nedir?",
+  opts:["1 : 1,1","1 : 1,6","1 : 3","1 : 5"], ans:1,
+  ex:"Üst kademe alt kademeden hem daha büyük hem daha yavaş olmalıdır; pratik kural yaklaşık 1:1,6 oranıdır (20-32-50-80-125 A dizisi). Ayrıca ana kademede S tipi (gecikmeli) kaçak akım rölesi, uçta 30 mA anlık RCD kullanılarak selektivite kaçak akım tarafında da sağlanır."},
+
+ {q:"Sigorta attı. En doğru ilk adım hangisidir?",
+  opts:["Önce sebebi bulmak: pens ampermetreyle yükü ölç, megger ile izolasyonu kontrol et","Hemen bir üst amperdekini takmak","Buşonu telle köprüleyip devreyi çalıştırmak","Kesme kapasitesi daha düşük ürünle denemek"], ans:0,
+  ex:"Sigorta bir haberci, arıza değildir. Bir süre çalıştıktan sonra attıysa aşırı yük, şalter kalkar kalkmaz attıysa kısa devre/kaçak şüphesi vardır. Pens ampermetreyle gerçek akımı, megger (500 V DC) ile faz-nötr, faz-toprak, nötr-toprak izolasyonunu ölç. Onardıktan sonra AYNI değer ve AYNI karakteristikte yenisini tak."},
+
+ {q:"gG karakteristiğinin eski (önceki standarttaki) adı nedir ve neyi korur?",
+  opts:["aM - sadece aşırı yük","gL - hem aşırı yük hem kısa devre","gR - sadece yarı iletken","aR - sadece aşırı yük"], ans:1,
+  ex:"gG'nin eski adı gL'dir; piyasada 'gL/gG' etiketiyle de görülür. Tam aralık koruma sağlar: hem aşırı yükü hem kısa devreyi keser. Kablo, kolon, priz ve aydınlatma hatlarının koruması için doğru seçimdir."},
+
+ {q:"Diazed ve Neozed karşılaştırmasında hangisi doğrudur?",
+  opts:["Neozed E27/E33 dişli ve daha büyüktür","Neozed sadece doğru akımda kullanılır","Diazed'in kesme kapasitesi otomatik sigortadan düşüktür","Diazed DII (E27) ve DIII (E33) dişlidir; Neozed D01/D02/D03 olarak daha kompakttır"], ans:3,
+  ex:"Diazed klasik ampul dişi mantığındadır: DII = E27 (≤25 A), DIII = E33 (35-63 A). Neozed aynı işi daha küçük hacimde yapar: D01 ≤16 A, D02 ≤63 A, D03 ≤100 A. Her iki buşonlu ailenin kesme kapasitesi de tipik MCB'lerden yüksektir (genelde 50-100 kA)."},
+
+ {q:"Uzun bir aydınlatma hattında B eğrisi yerine D eğrisi otomat kullanılırsa ne olur?",
+  opts:["Hiçbir şey değişmez","Kalkışta gereksiz açma yapar","Kaçak akım koruması bozulur","Hat ucundaki zayıf kısa devrede manyetik eşik aşılmaz, sadece termik açar ve açma çok gecikir"], ans:3,
+  ex:"D eğrisinin manyetik eşiği 10-20×In'dir. Uzun/yüksek empedanslı hatta oluşan kısa devre akımı bu eşiğin altında kalabilir; o zaman MCB manyetik değil sadece termik (saniyeler-dakikalar) açar. Bu sürede kablo yalıtımı erir ve tehlikeli dokunma gerilimi ayakta kalır. Eğri seçimi bir can güvenliği meselesidir."}
+] });
+
+Object.assign(DIAG,{ 43:`<svg viewBox="0 0 440 210" xmlns="http://www.w3.org/2000/svg" width="100%">
+<rect x="0" y="0" width="440" height="210" fill="#0d1117"/>
+<text x="10" y="14" fill="#33b1ff" font-size="11" font-weight="bold">BUSONLU (KOFTA)</text>
+<text x="240" y="14" fill="#33b1ff" font-size="11" font-weight="bold">NH BICAKLI</text>
+
+<rect x="14" y="24" width="86" height="86" rx="4" fill="#20303f" stroke="#8a98ab"/>
+<text x="18" y="36" fill="#8a98ab" font-size="9">altlik (kaide)</text>
+<rect x="34" y="42" width="46" height="34" rx="3" fill="#20303f" stroke="#ffb000"/>
+<text x="37" y="63" fill="#ffb000" font-size="9">buson</text>
+<circle cx="57" cy="82" r="5" fill="#f85149"/>
+<rect x="30" y="88" width="54" height="8" rx="2" fill="#20303f" stroke="#3fb950"/>
+<line x1="57" y1="76" x2="57" y2="88" stroke="#8a98ab" stroke-width="1"/>
+<rect x="34" y="26" width="46" height="12" rx="2" fill="#20303f" stroke="#33b1ff"/>
+<text x="104" y="34" fill="#33b1ff" font-size="9">kapak (baslik)</text>
+<text x="104" y="60" fill="#ffb000" font-size="9">eriyen tel + kum</text>
+<text x="104" y="84" fill="#f85149" font-size="9">gosterge pastili</text>
+<text x="104" y="97" fill="#3fb950" font-size="9">ayar vidasi (pas)</text>
+<text x="14" y="122" fill="#8a98ab" font-size="9">2A pembe 6A yesil 10A kirmizi 16A gri 25A sari</text>
+
+<rect x="244" y="26" width="70" height="80" rx="4" fill="#20303f" stroke="#8a98ab"/>
+<rect x="236" y="34" width="14" height="16" rx="2" fill="#20303f" stroke="#33b1ff"/>
+<rect x="308" y="34" width="14" height="16" rx="2" fill="#20303f" stroke="#33b1ff"/>
+<rect x="236" y="82" width="14" height="16" rx="2" fill="#20303f" stroke="#33b1ff"/>
+<rect x="308" y="82" width="14" height="16" rx="2" fill="#20303f" stroke="#33b1ff"/>
+<circle cx="279" cy="42" r="5" fill="#f85149"/>
+<text x="256" y="70" fill="#8a98ab" font-size="9">porselen</text>
+<text x="256" y="82" fill="#ffb000" font-size="9">kum dolgu</text>
+<rect x="240" y="110" width="78" height="9" rx="2" fill="#20303f" stroke="#3fb950"/>
+<text x="326" y="44" fill="#f85149" font-size="9">gosterge pimi</text>
+<text x="326" y="60" fill="#33b1ff" font-size="9">bicak kontak</text>
+<text x="326" y="118" fill="#3fb950" font-size="9">altlik+pabuc</text>
+<text x="236" y="134" fill="#8a98ab" font-size="9">NH00 160A / NH1 250A / NH2 400A / NH3 630A</text>
+
+<text x="14" y="156" fill="#33b1ff" font-size="11" font-weight="bold">MCB ANI ACMA BANDI (x In)</text>
+<rect x="14" y="164" width="410" height="16" rx="3" fill="#20303f" stroke="#8a98ab"/>
+<rect x="16" y="166" width="96" height="12" rx="2" fill="#3fb950" opacity="0.55"/>
+<rect x="118" y="166" width="140" height="12" rx="2" fill="#ffb000" opacity="0.55"/>
+<rect x="264" y="166" width="158" height="12" rx="2" fill="#f85149" opacity="0.55"/>
+<text x="26" y="175" fill="#0d1117" font-size="9" font-weight="bold">B 3-5x</text>
+<text x="150" y="175" fill="#0d1117" font-size="9" font-weight="bold">C 5-10x</text>
+<text x="300" y="175" fill="#0d1117" font-size="9" font-weight="bold">D 10-20x</text>
+<text x="14" y="194" fill="#3fb950" font-size="9">B: aydinlatma/priz</text>
+<text x="146" y="194" fill="#ffb000" font-size="9">C: motor/trafo/LED</text>
+<text x="290" y="194" fill="#f85149" font-size="9">D: kaynak/agir kalkis</text>
+<text x="14" y="205" fill="#8a98ab" font-size="9">gG = asiri yuk + kisa devre (kablo) | aM = sadece kisa devre (motor, termik role ile)</text>
+</svg>` });
 
 refreshHeader();
 go('kapak');
