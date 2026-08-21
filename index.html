@@ -3921,9 +3921,9 @@ function _v10Parca(t){
   if(!t) return '';
   if(/^<\/?(div|img|svg|figure|table|ul|ol|p|h[1-6])\b/i.test(t)) return t;
   if(/^<div class="alertbox/.test(t)) return t;
-  var d = t.match(/^<b>([^<]{2,80}?)\s*([:.])<\/b>\s*([\s\S]+)$/);
+  var d = t.match(/^<b>([^<]{2,80}?)\s*([:.?])<\/b>\s*([\s\S]+)$/);
   if(d && d[3].trim() && _v10Denge(d[3])){
-    return '<div class="defrow"><div class="defterm">'+d[1]+'</div><div class="defbody">'+_v10Orn(d[3].trim())+'</div></div>';
+    return '<div class="defrow"><div class="defterm">'+d[1]+(d[2]==='?'?'?':'')+'</div><div class="defbody">'+_v10Orn(d[3].trim())+'</div></div>';
   }
   if(/^(Örn\.|Örnek\s*:|Örneğin\s*[:,])/.test(t)){
     return '<div class="exline"><span class="ex-ic">ÖRNEK</span><div>'+t.replace(/^(Örn\.|Örnek\s*:|Örneğin\s*[:,])\s*/,'')+'</div></div>';
