@@ -4035,6 +4035,167 @@ try{
 }catch(e){}
 
 
+/* ===== MODÜL 44: PROJE & ŞEMA OKUMA — tek hat, kumanda, pano kitapçığı ===== */
+MODS.push({id:44, t:"Proje & Şema Okuma", cat:"oto", ic:"📐", d:"Tek hat, kumanda şeması, antet, sembol lejantı, klemens numaraları, yıldız-üçgen okunuşu, pano kitapçığı."});
+
+Object.assign(DIAG,{
+44:`<svg viewBox="0 0 420 230"><rect width="420" height="230" fill="#141d26"/>
+<text x="210" y="16" fill="#8a98ab" font-size="10" text-anchor="middle" font-family="monospace">KUMANDA ŞEMASI OKUMA: L1 → STOP(NC) → START(NO) → BOBİN → N</text>
+<line x1="40" y1="30" x2="380" y2="30" stroke="#ffb000" stroke-width="2"/><text x="20" y="34" fill="#ffb000" font-size="11">L1</text>
+<line x1="40" y1="210" x2="380" y2="210" stroke="#33b1ff" stroke-width="2"/><text x="20" y="214" fill="#33b1ff" font-size="11">N</text>
+<line x1="120" y1="30" x2="120" y2="55" stroke="#e8eef6" stroke-width="2"/>
+<rect x="112" y="55" width="16" height="22" fill="none" stroke="#f85149" stroke-width="2"/><line x1="120" y1="55" x2="120" y2="77" stroke="#f85149" stroke-width="2"/>
+<text x="140" y="70" fill="#f85149" font-size="10">F4 sigorta</text>
+<line x1="120" y1="77" x2="120" y2="95" stroke="#e8eef6" stroke-width="2"/>
+<line x1="120" y1="95" x2="110" y2="115" stroke="#f85149" stroke-width="2"/><line x1="106" y1="98" x2="126" y2="98" stroke="#f85149" stroke-width="2"/>
+<text x="140" y="108" fill="#f85149" font-size="10">S0 STOP (NC) — basınca AÇAR</text>
+<line x1="120" y1="115" x2="120" y2="132" stroke="#e8eef6" stroke-width="2"/>
+<line x1="120" y1="132" x2="108" y2="152" stroke="#3fb950" stroke-width="2"/>
+<text x="140" y="145" fill="#3fb950" font-size="10">S1 START (NO) — basınca KAPAR</text>
+<path d="M 120 132 h 55 v 20" stroke="#8a98ab" stroke-width="1.6" fill="none"/>
+<line x1="175" y1="152" x2="163" y2="170" stroke="#8a98ab" stroke-width="2"/>
+<path d="M 175 172 v 8 h -55" stroke="#8a98ab" stroke-width="1.6" fill="none"/>
+<text x="185" y="165" fill="#8a98ab" font-size="10">KM1 13-14 mühürleme</text>
+<line x1="120" y1="152" x2="120" y2="180" stroke="#e8eef6" stroke-width="2"/>
+<rect x="104" y="180" width="32" height="20" rx="3" fill="none" stroke="#33b1ff" stroke-width="2"/>
+<text x="120" y="194" fill="#33b1ff" font-size="10" text-anchor="middle">KM1</text>
+<text x="145" y="186" fill="#8a98ab" font-size="9">A1</text><text x="145" y="204" fill="#8a98ab" font-size="9">A2</text>
+<line x1="120" y1="200" x2="120" y2="210" stroke="#e8eef6" stroke-width="2"/>
+<text x="270" y="60" fill="#e8eef6" font-size="10">OKUMA SIRASI:</text>
+<text x="270" y="78" fill="#8a98ab" font-size="9">1) Yukarıdan aşağı, soldan sağa</text>
+<text x="270" y="93" fill="#8a98ab" font-size="9">2) Önce durduran (NC), sonra</text>
+<text x="270" y="105" fill="#8a98ab" font-size="9">    çalıştıran (NO) gelir</text>
+<text x="270" y="123" fill="#8a98ab" font-size="9">3) Şema HER ZAMAN enerjisiz</text>
+<text x="270" y="135" fill="#8a98ab" font-size="9">    ve basılmamış hâli gösterir</text>
+<text x="270" y="153" fill="#8a98ab" font-size="9">4) Mühürleme = START'a paralel</text>
+<text x="270" y="165" fill="#8a98ab" font-size="9">    NO kontak (elini çekince</text>
+<text x="270" y="177" fill="#8a98ab" font-size="9">    devrede tutar)</text>
+</svg>`
+});
+
+Object.assign(TEORI,{
+44:`<b style="font-size:15px">🔹 1) Pano Kitapçığı Nedir, İçinde Ne Var?</b><br>
+Sahaya giden her panonun yanında bir <b>pano kitapçığı</b> (proje dosyası) bulunur. Panoya dokunmadan önce bu kitapçığı okumak, sahadaki en temel profesyonellik göstergesidir. İçindekiler tipik olarak şu sırayla gider:<br>
+• <b>Kapak + içindekiler:</b> proje adı, pano kodu, sayfa listesi.<br>
+• <b>Tek hat şeması:</b> enerjinin kaynaktan yüklere dağılımı — panonun "haritası".<br>
+• <b>Güç devresi şemaları:</b> üç fazlı ana akım yolları (kontaktör ana kontakları, termik, motor).<br>
+• <b>Kumanda devresi şemaları:</b> butonlar, bobinler, yardımcı kontaklar, zaman röleleri.<br>
+• <b>Yerleşim (montaj) planı:</b> hangi cihaz panonun neresinde duruyor.<br>
+• <b>Klemens ve kablo listesi:</b> hangi kablo hangi klemense gidiyor (X1:5 gibi).<br>
+• <b>Malzeme listesi (BOM):</b> cihazların marka/model/değerleri.<br>
+💡 Arıza aramada altın sıra: önce <b>tek hat</b> ile enerji yolunu kavra → sonra <b>kumanda şeması</b> ile mantığı çöz → en son <b>yerleşim planı</b> ile cihazı panoda bul.<br><br>
+
+<b style="font-size:15px">🔹 2) Antet (Başlık Bloğu) Okuma — Sağ Alt Köşe</b><br>
+Her teknik çizimin sağ alt köşesindeki kutu antettir. Küçük görünür ama hayati bilgiler taşır:<br>
+<table style="border-collapse:collapse;width:100%"><tr style="background:#eef4fa"><th style="padding:6px;border:1px solid #dbe4ee">Alan</th><th style="padding:6px;border:1px solid #dbe4ee">Örnek</th><th style="padding:6px;border:1px solid #dbe4ee">Neden önemli?</th></tr>
+<tr><td style="padding:6px;border:1px solid #dbe4ee"><b>Çizim no (DWG NO)</b></td><td style="padding:6px;border:1px solid #dbe4ee">SD-001</td><td style="padding:6px;border:1px solid #dbe4ee">Telefonda/raporda şemayı bununla anarsın.</td></tr>
+<tr><td style="padding:6px;border:1px solid #dbe4ee"><b>Sayfa (SHEET)</b></td><td style="padding:6px;border:1px solid #dbe4ee">1 OF 1</td><td style="padding:6px;border:1px solid #dbe4ee">Devrenin devamı başka sayfada olabilir — eksik sayfayla karar verme.</td></tr>
+<tr><td style="padding:6px;border:1px solid #dbe4ee"><b>Revizyon</b></td><td style="padding:6px;border:1px solid #dbe4ee">Rev B</td><td style="padding:6px;border:1px solid #dbe4ee">⚠️ Eski revizyonla çalışmak sahada en sinsi hatalardan biridir; pano değişmiş, elindeki çizim eski olabilir.</td></tr>
+<tr><td style="padding:6px;border:1px solid #dbe4ee"><b>Gerilim bilgileri</b></td><td style="padding:6px;border:1px solid #dbe4ee">3~ 400V 50Hz / kumanda 230V AC</td><td style="padding:6px;border:1px solid #dbe4ee">Güç ve kumanda devresinin gerilimleri farklı olabilir — ölçüme başlamadan bunu bil.</td></tr>
+<tr><td style="padding:6px;border:1px solid #dbe4ee"><b>Çizen / onaylayan / tarih</b></td><td style="padding:6px;border:1px solid #dbe4ee">ENG. DEPT. · 05/2024</td><td style="padding:6px;border:1px solid #dbe4ee">Sorumluluk ve güncellik izi.</td></tr></table><br>
+
+<b style="font-size:15px">🔹 3) Cihaz Harf Kodları — Şemadaki "İsim Soyisim"</b><br>
+Şemadaki her cihazın bir harf kodu ve sıra numarası vardır. Aşağıdaki kodlar sahada yerleşik <b>klasik kullanımdır</b> (eski DIN 40719 kökenli); güncel IEC 81346-2 sınıflandırması kısmen farklıdır ama sahada ve mevcut projelerde bu tabloyu görürsün:<br>
+<table style="border-collapse:collapse;width:100%"><tr style="background:#eef4fa"><th style="padding:6px;border:1px solid #dbe4ee">Kod</th><th style="padding:6px;border:1px solid #dbe4ee">Cihaz</th><th style="padding:6px;border:1px solid #dbe4ee">Örnek</th></tr>
+<tr><td style="padding:6px;border:1px solid #dbe4ee"><b>Q</b></td><td style="padding:6px;border:1px solid #dbe4ee">Güç devresi anahtarlama (şalter, kesici, motor koruma şalteri)</td><td style="padding:6px;border:1px solid #dbe4ee">Q1 ana şalter</td></tr>
+<tr><td style="padding:6px;border:1px solid #dbe4ee"><b>F</b></td><td style="padding:6px;border:1px solid #dbe4ee">Koruma elemanı (sigorta, termik, kaçak akım)</td><td style="padding:6px;border:1px solid #dbe4ee">F1-F3 güç sigortaları, F4 kumanda sigortası</td></tr>
+<tr><td style="padding:6px;border:1px solid #dbe4ee"><b>K</b></td><td style="padding:6px;border:1px solid #dbe4ee">Kontaktör / röle ailesi. Saha geleneği: <b>KM</b> kontaktör, <b>KA</b> yardımcı röle, <b>KT</b> zaman rölesi</td><td style="padding:6px;border:1px solid #dbe4ee">KM1 ana, KT gecikme</td></tr>
+<tr><td style="padding:6px;border:1px solid #dbe4ee"><b>S</b></td><td style="padding:6px;border:1px solid #dbe4ee">Buton, anahtar, seçici şalter</td><td style="padding:6px;border:1px solid #dbe4ee">S0 stop, S1 start</td></tr>
+<tr><td style="padding:6px;border:1px solid #dbe4ee"><b>M</b></td><td style="padding:6px;border:1px solid #dbe4ee">Motor</td><td style="padding:6px;border:1px solid #dbe4ee">M1 3~ motor</td></tr>
+<tr><td style="padding:6px;border:1px solid #dbe4ee"><b>T</b></td><td style="padding:6px;border:1px solid #dbe4ee">Transformatör</td><td style="padding:6px;border:1px solid #dbe4ee">T1 kumanda trafosu</td></tr>
+<tr><td style="padding:6px;border:1px solid #dbe4ee"><b>H</b></td><td style="padding:6px;border:1px solid #dbe4ee">Sinyal elemanı (lamba, korna)</td><td style="padding:6px;border:1px solid #dbe4ee">H1 çalışıyor lambası</td></tr>
+<tr><td style="padding:6px;border:1px solid #dbe4ee"><b>P</b></td><td style="padding:6px;border:1px solid #dbe4ee">Ölçü aleti (A-metre, V-metre, sayaç)</td><td style="padding:6px;border:1px solid #dbe4ee">P1 ampermetre</td></tr>
+<tr><td style="padding:6px;border:1px solid #dbe4ee"><b>X</b></td><td style="padding:6px;border:1px solid #dbe4ee">Klemens grubu</td><td style="padding:6px;border:1px solid #dbe4ee">X1:5 = X1 grubunun 5. klemensi</td></tr></table>
+🔧 Aynı koddan birden fazla varsa numara ayırt eder: KM1, KM2, KM3 üç ayrı kontaktördür; hepsi "kontaktör" ama görevleri şemada yazar.<br><br>
+
+<b style="font-size:15px">🔹 4) Klemens Numaraları — Kontakların Kimliği</b><br>
+Şema okumayı asıl hızlandıran şey klemens numaralarının sistemini bilmektir; ezber değil sistem:<br>
+<table style="border-collapse:collapse;width:100%"><tr style="background:#eef4fa"><th style="padding:6px;border:1px solid #dbe4ee">Numara</th><th style="padding:6px;border:1px solid #dbe4ee">Anlamı</th></tr>
+<tr><td style="padding:6px;border:1px solid #dbe4ee"><b>1-2, 3-4, 5-6</b></td><td style="padding:6px;border:1px solid #dbe4ee">Kontaktör/termik <b>ana (güç) kontakları</b>. Giriş tek sayı (1,3,5 → L1,L2,L3), çıkış çift sayı (2,4,6 → T1,T2,T3).</td></tr>
+<tr><td style="padding:6px;border:1px solid #dbe4ee"><b>13-14, 23-24…</b></td><td style="padding:6px;border:1px solid #dbe4ee">Yardımcı <b>NO</b> kontak. İlk rakam kontağın sıra no'su, son iki rakamın <b>3-4</b> olması NO demektir.</td></tr>
+<tr><td style="padding:6px;border:1px solid #dbe4ee"><b>11-12, 21-22…</b></td><td style="padding:6px;border:1px solid #dbe4ee">Yardımcı <b>NC</b> kontak. Sonu <b>1-2</b> = NC.</td></tr>
+<tr><td style="padding:6px;border:1px solid #dbe4ee"><b>95-96</b></td><td style="padding:6px;border:1px solid #dbe4ee">Termik röle <b>NC</b> kontağı — kumanda beslemesine seri girer; termik atınca bobini düşürür.</td></tr>
+<tr><td style="padding:6px;border:1px solid #dbe4ee"><b>97-98</b></td><td style="padding:6px;border:1px solid #dbe4ee">Termik röle <b>NO</b> kontağı — arıza lambası/alarm için.</td></tr>
+<tr><td style="padding:6px;border:1px solid #dbe4ee"><b>A1-A2</b></td><td style="padding:6px;border:1px solid #dbe4ee">Bobin uçları. A1 faz, A2 nötr tarafı (yaygın pratik; AC bobin kutupsuzdur, <b>DC bobinde</b> ise A1(+)/A2(−) kutbuna uyulmalıdır). Bobini görünce "bu cihazı ne enerjilendiriyor?" diye A1'e gelen yolu geriye doğru izle.</td></tr>
+<tr><td style="padding:6px;border:1px solid #dbe4ee"><b>15-16 / 15-18</b></td><td style="padding:6px;border:1px solid #dbe4ee">Zaman rölesinin gecikmeli enversör kontağı: <b>15 ortak</b>, süre dolunca <b>15-16 açılır</b> (gecikmeli NC), <b>15-18 kapanır</b> (gecikmeli NO).</td></tr></table>
+⚠️ <b>En kritik okuma kuralı:</b> şema her zaman devrenin <b>enerjisiz ve butonlara basılmamış</b> hâlini gösterir. "Normalde açık/kapalı" ifadesindeki "normal" budur. Çizimde açık görünen NO kontak, sahada cihaz çekiliyken kapalıdır.<br><br>
+
+<b style="font-size:15px">🔹 5) Kumanda Şeması Okuma Yöntemi: Akımı Parmağınla Takip Et</b><br>
+Kumanda şeması iki ray arasında okunur: üstte faz (L1), altta nötr (N). Her dikey kol bir "cümledir": <i>şu şartlar sağlanırsa şu bobin enerjilenir.</i><br>
+• <b>1. Kural:</b> Sol üstten başla; yukarıdan aşağı, soldan sağa oku.<br>
+• <b>2. Kural:</b> Bobine giden yol üzerindeki her kontak bir <b>şarttır</b>: NC'ler "engel yoksa", NO'lar "komut verilirse" demektir.<br>
+• <b>3. Kural:</b> Durdurucular (stop, termik 95-96, acil stop) hep <b>seri ve NC</b>; çalıştırıcılar (start) <b>NO</b> bağlanır. Bu sayede kablo kopması motoru <b>durdurur</b>, asla başlatmaz (fail-safe).<br>
+• <b>4. Kural:</b> START'a paralel bağlı NO kontak <b>mühürlemedir</b> (KM1 13-14): butondan elini çekince devreyi o tutar. Mühürleme yoksa buton bırakılınca cihaz durur — buna "yoklamalı (jog) çalışma" denir.<br>
+• <b>5. Kural:</b> Bir bobin gördüğünde iki soru sor: <b>"Bunu ne çektiriyor?"</b> (A1'e gelen yol) ve <b>"Bu çekince nereleri değiştiriyor?"</b> (aynı adı taşıyan tüm kontakları şemada ara — KM1 bobini çekince şemadaki BÜTÜN KM1 kontakları konum değiştirir, sayfa farketmez).<br><br>
+
+<b style="font-size:15px">🔹 6) Uygulamalı Okuma: Yıldız-Üçgen Yol Verici Şeması</b><br>
+Klasik sınav ve saha örneği. Güç devresinde üç kontaktör: <b>KM1 (ana)</b>, <b>KM2 (yıldız)</b>, <b>KM3 (üçgen)</b>; motor 6 uçlu (U1-V1-W1 / U2-V2-W2). Amaç: motoru önce yıldızda (düşük akım) kaldırıp sonra üçgene geçirmek. Doğrudan yol vermeye göre kalkış akımı ve momenti yaklaşık <b>1/3</b>'tür. Kumanda şemasını satır satır okuyalım:<br>
+• <b>Başlangıç:</b> Her şey enerjisiz. F4 sağlam, S0 (NC) kapalı, S1 (NO) açık, termik 95-96 kapalı.<br>
+• <b>S1'e basınca:</b> Akım L1 → F4 → S0 → S1 yolundan geçer; <b>KT (zaman rölesi)</b> ve yıldız hattı üzerinden <b>KM2</b> çeker; KM2'nin NO kontağı üzerinden (veya doğrudan) <b>KM1</b> çeker. KM1'in <b>13-14</b> kontağı S1'i mühürler. Motor <b>yıldız</b> bağlı olarak dönmeye başlar; KT süre saymaktadır.<br>
+• <b>Süre dolunca (örn. 5 s):</b> KT'nin gecikmeli kontağı konum değiştirir: <b>15-16 açılır</b> → KM2 (yıldız) düşer; <b>15-18 kapanır</b> → <b>KM3 (üçgen)</b> çeker. Motor artık üçgen bağlıdır, normal çalışmaya geçmiştir. Kaliteli yıldız-üçgen zaman röleleri, KM2 fiilen açılmadan KM3'ü çektirmemek için araya <b>kısa bir ölü zaman</b> (≈30-50 ms) koyar.<br>
+• <b>Kilitleme:</b> KM2 ile KM3 <b>asla aynı anda çekmemelidir</b> — ikisi birden çekerse motor uçları üzerinden <b>fazlar arası kısa devre</b> oluşur. Bu yüzden KM2'nin NC kontağı KM3'ün bobin yoluna, KM3'ün NC kontağı KM2'nin bobin yoluna seri bağlanır (<b>elektriksel kilitleme</b>); iyi panolarda ayrıca <b>mekanik kilit</b> bulunur.<br>
+• <b>S0'a basınca / termik atınca:</b> seri yol kesilir, tüm bobinler düşer, motor durur. Mühürleme de düştüğü için motor kendiliğinden tekrar kalkmaz.<br>
+💡 Bu motorun etiketinde <b>Δ 400 V</b> yazmalıdır (tipik etiket: 400/690 V Δ/Y). Üçgen gerilimi şebeke gerilimine eşit olmayan motora yıldız-üçgen uygulanmaz.<br><br>
+
+<b style="font-size:15px">🔹 7) Tek Hat Şeması Okuma: Enerjinin Haritası</b><br>
+Tek hat şemasında üç fazlı sistem <b>tek çizgiyle</b> gösterilir; çizgi üzerindeki küçük eğik çizgiler iletken sayısını belirtir (⫽⫽ 3 = üç faz). Okuma yönü daima <b>kaynaktan yüke</b>:<br>
+• <b>Ev/ofis panosu zinciri:</b> şebeke → sayaç → ana kesici → <b>kaçak akım rölesi (30 mA)</b> → linye otomatları (B10/B16 aydınlatma, B16 priz — 2,5 mm² tipik; C tipi motorlu yükler…). Her otomat satırında akımı, eğrisi ve beslediği linye yazar.<br>
+• <b>DHMİ tarzı tesis zinciri:</b> OG hücreleri (giriş-çıkış-ölçü-koruma) → güç trafosu (34,5/0,4 kV) → AG ana dağıtım panosu (ADP) → kompanzasyon + kolon hatları → tali panolar → yükler. Jeneratör ve UPS, <b>ATS/enversör</b> üzerinden aynı şemada ayrı kaynak olarak görünür.<br>
+• Hat üzerinde yazan bilgiler ciddiye alınır: kablo tipi/kesiti (örn. NYY 4×16), sigorta/kesici değeri, hat adı. Bunlar keyfî değil, <b>seçicilik ve kesit hesabının</b> sonucudur.<br>
+⚠️ Arıza aramada veya enerji kesme (LOTO) öncesi tek hattan <b>TÜM kaynakları</b> listele: şebeke + jeneratör + UPS + kompanzasyon kondansatörleri. "Şalteri kapattım, enerji yok" cümlesi tek hat okunmadan kurulmaz.<br><br>
+
+<b style="font-size:15px">🔹 8) Şemada Görürsen → Sahada Anlamı</b><br>
+<table style="border-collapse:collapse;width:100%"><tr style="background:#eef4fa"><th style="padding:6px;border:1px solid #dbe4ee">Şemada gördüğün</th><th style="padding:6px;border:1px solid #dbe4ee">Sahada anlamı</th></tr>
+<tr><td style="padding:6px;border:1px solid #dbe4ee">Kesikli (dashed) çizgiyle birbirine bağlı kontaklar</td><td style="padding:6px;border:1px solid #dbe4ee">Mekanik bağlantı: aynı cihazın kontakları birlikte hareket eder (örn. Q1'in üç kutbu).</td></tr>
+<tr><td style="padding:6px;border:1px solid #dbe4ee">S0 sembolünde basınca <b>açılan</b> kontak</td><td style="padding:6px;border:1px solid #dbe4ee">Durdurma butonu (NC). Kırmızı ve mantar tip acil stop da bu ailedendir.</td></tr>
+<tr><td style="padding:6px;border:1px solid #dbe4ee">Bobin kutusunun yanında KM1 yazan başka sayfadaki kontaklar</td><td style="padding:6px;border:1px solid #dbe4ee">Aynı kontaktörün uzaktaki kontakları — bobin çekince hepsi birlikte değişir.</td></tr>
+<tr><td style="padding:6px;border:1px solid #dbe4ee">Zaman diyagramı (0 → 5s basamağı)</td><td style="padding:6px;border:1px solid #dbe4ee">Kontağın süre dolunca konum değiştireceğini gösterir; süre ayarı rölenin üzerindeki potansiyometrede.</td></tr>
+<tr><td style="padding:6px;border:1px solid #dbe4ee">X1:7 etiketi</td><td style="padding:6px;border:1px solid #dbe4ee">Kablonun panoda X1 klemens grubunun 7. klemensine bağlandığı — arıza ölçümünde probu koyacağın yer.</td></tr>
+<tr><td style="padding:6px;border:1px solid #dbe4ee">PE/topraklama sembolü</td><td style="padding:6px;border:1px solid #dbe4ee">Koruma iletkeni — asla anahtarlanmaz, asla sigortalanmaz.</td></tr></table><br>
+
+<b style="font-size:15px">🔹 9) Sık Yapılan Okuma Hataları</b><br>
+⚠️ Şemayı <b>enerjili durumun fotoğrafı sanmak</b> — en yaygın hata; şema enerjisiz hâli gösterir.<br>
+⚠️ NO/NC ayrımını buton renginden tahmin etmek — renk değil <b>sembol ve numara</b> esas alınır.<br>
+⚠️ Tek sayfada karar vermek — "SHEET 2 OF 4" yazıyorsa bobinin kontakları başka sayfada olabilir.<br>
+⚠️ Revizyonu kontrol etmemek — pano tadilat görmüş, elindeki çizim eski olabilir; panodaki cep dosyasındaki son revizyonla karşılaştır.<br>
+⚠️ Kumanda gerilimini varsaymak — 230 V AC yaygındır ama 24 V DC kumandalı panolar da çoktur; antetten oku.<br>
+🔧 <b>Saha alışkanlığı:</b> arıza bulduğunda şemanın üzerine değil fotokopisine not al; kalıcı değişiklik yapıldıysa çizime işlenip revizyon yükseltilmeli (as-built).`
+});
+
+Object.assign(FOY,{
+44:`<b>Pano kitapçığı sırası:</b> tek hat → güç → kumanda → yerleşim → klemens/kablo listesi → malzeme.<br>
+<b>Antet (sağ alt):</b> çizim no · sayfa · <b>revizyon</b> · gerilimler · tarih. Eski revizyonla çalışma!<br>
+<b>Harf kodları:</b> Q şalter · F koruma · KM kontaktör · KT zaman rölesi · S buton · M motor · H lamba · X klemens.<br>
+<b>Numaralar:</b> 1-6 güç · sonu 3-4 = NO · sonu 1-2 = NC · 95-96 termik NC · A1-A2 bobin · 15-16/15-18 gecikmeli.<br>
+<b>Altın kural:</b> şema daima <b>enerjisiz + basılmamış</b> hâli gösterir. Durduranlar seri NC, çalıştıranlar NO, mühürleme START'a paralel NO.<br>
+<b>Yıldız-üçgen okunuşu:</b> S1 → KM2(Y)+KM1 çeker, KT sayar → süre dolunca 15-16 açılır KM2 düşer, 15-18 kapanır KM3(Δ) çeker. KM2↔KM3 kilitli; kalkış akımı ≈ 1/3.<br>
+<b>Tek hat:</b> kaynaktan yüke oku; kesit/sigorta değerleri hattın üzerinde; LOTO öncesi TÜM kaynakları (şebeke, jeneratör, UPS, kondansatör) tek hattan say.`
+});
+
+QBANK[44]=[
+{q:"Teknik çizimde antet (başlık bloğu) genellikle nerededir ve en kritik alanı hangisidir?",opts:["Sol üst; ölçek","Sağ alt; revizyon","Orta; proje adı","Sol alt; tarih"],ans:1,ex:"Antet sağ alttadır; eski revizyonla çalışmak sahada ciddi hatalara yol açar."},
+{q:"Şemada 'KM3' etiketi neyi ifade eder?",opts:["3. klemens grubu","3 numaralı kontaktör","3 kutuplu şalter","3. sayfa"],ans:1,ex:"K/KM kontaktör ailesidir; sıra numarası aynı tip cihazları ayırt eder."},
+{q:"Kontaktörün ana (güç) kontakları hangi numaraları taşır?",opts:["13-14, 23-24","A1-A2","1-2, 3-4, 5-6","95-96"],ans:2,ex:"Tek sayılar giriş (1,3,5), çift sayılar çıkış (2,4,6)."},
+{q:"Yardımcı kontak numarasının sonu '3-4' ise kontak tipi nedir?",opts:["NC","NO","Gecikmeli NC","Enversör"],ans:1,ex:"Sonu 3-4 = NO, sonu 1-2 = NC. İlk rakam sıra numarasıdır (13-14, 23-24…)."},
+{q:"95-96 numaralı kontak neye aittir ve nasıl bağlanır?",opts:["Zaman rölesi NO; paralel","Termik röle NC; kumanda beslemesine seri","Bobin uçları","Ana kontak"],ans:1,ex:"Termik atınca 95-96 açılır ve kumanda devresini keserek bobini düşürür."},
+{q:"A1-A2 uçları neyi gösterir?",opts:["Ana kontakları","Bobin uçlarını","Mühürleme kontağını","Klemens grubunu"],ans:1,ex:"A1-A2 bobindir. Bobini görünce A1'e gelen yolu geriye izle: 'bunu ne çektiriyor?'"},
+{q:"Şemalar devrenin hangi hâlini gösterir?",opts:["Enerjili, çalışır hâlini","Enerjisiz ve butonlara basılmamış hâlini","Arızalı hâlini","Tam yük hâlini"],ans:1,ex:"'Normalde açık/kapalı'daki normal budur. NO kontak sahada cihaz çekiliyken kapalıdır."},
+{q:"Stop butonları ve termik kontağı neden seri + NC bağlanır?",opts:["Daha az kablo için","Kablo kopunca devre dursun diye (fail-safe)","Estetik için","Akımı artırmak için"],ans:1,ex:"NC seri durdurucularda kopukluk = durdurma. Kopan kablo asla motoru başlatamaz."},
+{q:"START butonuna paralel bağlanan KM1 13-14 kontağının görevi nedir?",opts:["Kilitleme","Mühürleme — butondan el çekilince devreyi tutmak","Sinyal verme","Termik koruma"],ans:1,ex:"Mühürleme yoksa buton bırakılınca bobin düşer (yoklamalı/jog çalışma)."},
+{q:"Yıldız-üçgen yol vermede kalkış akımı doğrudan yol vermeye göre yaklaşık kaçtır?",opts:["Yarısı","1/3'ü","2 katı","Aynı"],ans:1,ex:"Yıldızda sargılara faz gerilimi (400/√3=230 V) uygulanır; şebekeden çekilen akım ve moment ≈ 1/3'tür."},
+{q:"Yıldız-üçgen şemasında süre dolunca zaman rölesinde ne olur?",opts:["15-18 açılır, 15-16 kapanır","15-16 açılır (KM2 düşer), 15-18 kapanır (KM3 çeker)","A1-A2 kısa devre olur","95-96 açılır"],ans:1,ex:"15 ortaktır: gecikmeli NC (15-16) açılır, gecikmeli NO (15-18) kapanır; yıldızdan üçgene geçilir."},
+{q:"KM2 (yıldız) ile KM3 (üçgen) aynı anda çekerse ne olur?",opts:["Motor hızlanır","Fazlar arası kısa devre oluşur","Sadece termik atar","Hiçbir şey olmaz"],ans:1,ex:"Bu yüzden karşılıklı NC kontaklarla elektriksel kilitleme + mümkünse mekanik kilit şarttır."},
+{q:"Tek hat şeması nasıl okunur?",opts:["Yükten kaynağa","Kaynaktan yüke doğru","Sağdan sola","Alfabetik"],ans:1,ex:"Enerji akış yönünde: şebeke → sayaç/trafo → ana pano → tali panolar → yükler."},
+{q:"LOTO (etiketle-kilitle) öncesi tek hat şemasından ne çıkarılır?",opts:["Kablo renkleri","Devreyi besleyebilecek TÜM kaynaklar","Pano ölçüleri","Marka listesi"],ans:1,ex:"Şebeke + jeneratör + UPS + kondansatörler… Tek kaynağı kesip 'enerji yok' demek en tehlikeli varsayımdır."},
+{q:"Şemada kontaklar arasındaki kesikli (dashed) çizgi neyi gösterir?",opts:["Arızalı hattı","Mekanik bağlantıyı — kontakların birlikte hareket ettiğini","Toprak hattını","İptal edilmiş devreyi"],ans:1,ex:"Örn. Q1 şalterinin üç kutbu tek kolla birlikte açılıp kapanır."}
+];
+
+/* Saha Programı Aşama 4'e ekle (Pano & Otomasyon'un başına) */
+try{ if(typeof PROGRAM!=='undefined' && PROGRAM[3] && PROGRAM[3].mods.indexOf(44)===-1) PROGRAM[3].mods.unshift(44); }catch(e){}
+/* v10 özet cilası bu modülden önce çalıştıysa, 44'ün özetini de işle */
+try{ if(typeof foySusle==='function') FOY[44]=foySusle(FOY[44]); }catch(e){}
+
+
 refreshHeader();
 go('kapak');
 
