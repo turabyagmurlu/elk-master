@@ -938,6 +938,55 @@ input[type=number]:focus,input[type=text]:focus,select:focus,textarea:focus{
   .secbox{padding:18px 20px}
   @media(max-width:700px){.secbox{padding:14px 15px}}
 
+
+  /* ═══════════ v11 · KİTAP KAPAĞI (SPLIT) ═══════════ */
+  .bk{position:relative;display:grid;grid-template-columns:11fr 9fr;min-height:calc(100vh - 150px);
+    border-radius:22px;overflow:hidden;border:1px solid #e2d9c8;
+    box-shadow:0 34px 90px -30px #21160a55,0 2px 0 #ffffffcc inset;background:#f8f3e9}
+  /* sol: basılı kitap */
+  .bk-left{position:relative;padding:46px 44px 40px;display:flex;flex-direction:column;justify-content:center;
+    background:
+      linear-gradient(90deg,#00000010 0%,#00000000 2.2%),
+      repeating-linear-gradient(0deg,#f8f3e9 0 3px,#f6f0e4 3px 6px),
+      #f8f3e9}
+  .bk-left::after{content:"";position:absolute;top:0;bottom:0;right:0;width:14px;
+    background:linear-gradient(90deg,#00000000,#00000014)}
+  .bk-kick{font-size:11px;letter-spacing:3.2px;text-transform:uppercase;color:#a07c3f;margin-bottom:14px}
+  .bk-rule{width:54px;height:3px;background:linear-gradient(90deg,#14b8a6,#2563eb);border-radius:3px;margin:0 0 18px}
+  .bk-title{font-family:'Fraunces',Georgia,serif;font-weight:700;font-size:58px;line-height:1.02;
+    color:#1b2a38;margin:0 0 10px;letter-spacing:.5px}
+  .bk-title em{font-style:normal;background:linear-gradient(135deg,#0ea5b7,#2563eb);
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+  .bk-sub{font-size:14.5px;color:#5c6b78;line-height:1.65;max-width:380px;margin:0 0 22px}
+  .bk-stats{display:flex;gap:0;margin:0 0 26px;border:1px solid #e4dbc9;border-radius:12px;overflow:hidden;
+    background:#fffdf8;max-width:420px}
+  .bk-stat{flex:1;text-align:center;padding:12px 6px;border-right:1px solid #eee5d3}
+  .bk-stat:last-child{border-right:none}
+  .bk-stat b{display:block;font-family:'Fraunces',Georgia,serif;font-size:21px;color:#14405c}
+  .bk-stat span{font-size:10.5px;letter-spacing:1px;text-transform:uppercase;color:#98a4ae}
+  .bk-stat.done b{color:#0d8a6a}
+  .bk-cta{display:flex;gap:12px;flex-wrap:wrap}
+  .bk-btn{font-size:15px;padding:13px 28px}
+  .bk-btn2{background:transparent;color:#33526d;border:1.5px solid #c9d4dd}
+  .bk-btn2:hover{border-color:#14b8a6;color:#0d6b60;background:#effaf8}
+  .bk-edition{margin-top:26px;font-size:11px;color:#a9a08d;letter-spacing:.6px}
+  /* sağ: görsel */
+  .bk-right{position:relative;background:#10202e;min-height:320px}
+  .bk-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
+  .bk-right::before{content:"";position:absolute;inset:0;z-index:1;
+    background:linear-gradient(90deg,#2a2013cc 0%,#00000000 14%),linear-gradient(0deg,#0a162280 0%,#00000000 40%)}
+  .bk-tag{position:absolute;z-index:2;bottom:18px;right:18px;font-size:10.5px;letter-spacing:1.6px;
+    text-transform:uppercase;color:#dcebf3;background:#0a162299;border:1px solid #ffffff2e;
+    padding:6px 13px;border-radius:999px;backdrop-filter:blur(6px)}
+  @media(max-width:760px){
+    .bk{grid-template-columns:1fr;min-height:calc(100vh - 130px)}
+    .bk-right{order:-1;min-height:200px;max-height:260px}
+    .bk-left{padding:26px 22px 30px}
+    .bk-left::after{display:none}
+    .bk-title{font-size:38px}
+    .bk-stats{max-width:none}
+  }
+
 </style>
 </head>
 <body>
@@ -4194,6 +4243,39 @@ QBANK[44]=[
 try{ if(typeof PROGRAM!=='undefined' && PROGRAM[3] && PROGRAM[3].mods.indexOf(44)===-1) PROGRAM[3].mods.unshift(44); }catch(e){}
 /* v10 özet cilası bu modülden önce çalıştıysa, 44'ün özetini de işle */
 try{ if(typeof foySusle==='function') FOY[44]=foySusle(FOY[44]); }catch(e){}
+
+
+/* ===== v11: KİTAP KAPAĞI (SPLIT) — renderKapak yeniden tanım ===== */
+var KAPAK_IMG = "https://d8j0ntlcm91z4.cloudfront.net/user_3GAM4t5LIrVnoytOwhQqVixxnvj/hf_20260712_131403_d8ee47d8-260d-4f6e-9bf1-9858c3e24981.png";
+function renderKapak(){
+  document.querySelectorAll('#nav button').forEach(b=>b.classList.remove('active'));
+  var b=document.querySelector('#nav button[data-v="kapak"]'); if(b) b.classList.add('active');
+  var toplamSoru=Object.values(QBANK).reduce(function(a,x){return a+x.length;},0);
+  var bitti=MODS.filter(function(m){return (DB.scores[m.id]||0)>=70;}).length;
+  app().innerHTML='<div class="bk">'+
+    '<div class="bk-left">'+
+      '<div class="bk-kick">DHMİ · Elektrik Uzmanlık Akademisi</div>'+
+      '<div class="bk-rule"></div>'+
+      '<h1 class="bk-title">ELK<br><em>MASTER</em></h1>'+
+      '<p class="bk-sub">Sıfırdan saha ustalığına: teori, uygulama, şema okuma ve MYK provası — hepsi tek kitapta.</p>'+
+      '<div class="bk-stats">'+
+        '<div class="bk-stat"><b>'+MODS.length+'</b><span>modül</span></div>'+
+        '<div class="bk-stat"><b>'+toplamSoru+'</b><span>soru</span></div>'+
+        '<div class="bk-stat"><b>'+Object.keys(CATS).length+'</b><span>bölüm</span></div>'+
+        (bitti?'<div class="bk-stat done"><b>'+bitti+'</b><span>bitti</span></div>':'<div class="bk-stat"><b>7</b><span>aşama</span></div>')+
+      '</div>'+
+      '<div class="bk-cta">'+
+        '<button class="btn bk-btn" onclick="go(\'onsoz\')">📖 Kitabı aç</button>'+
+        '<button class="btn bk-btn bk-btn2" onclick="go(\'program\')">🎓 Saha programı</button>'+
+      '</div>'+
+      '<div class="bk-edition">3. baskı · güncel: 44 modül · tek hat & kumanda şeması okuma dahil</div>'+
+    '</div>'+
+    '<div class="bk-right">'+
+      '<img class="bk-img" src="'+KAPAK_IMG+'" alt="Saha görseli" loading="eager">'+
+      '<div class="bk-tag">Saha · Pano · MYK</div>'+
+    '</div>'+
+  '</div>';
+}
 
 
 refreshHeader();
