@@ -4656,6 +4656,25 @@ TEORI[44] = t;
 try{ window.__sema44fig = n; }catch(e){}
 })();
 
+
+/* ===== v13: Modül 44 şemalarında metin çakışması düzeltmesi ===== */
+(function(){
+ if(typeof DIAG==='undefined'||!DIAG[44]) return;
+ var d=DIAG[44];
+ d=d.replace('viewBox="0 0 420 230"','viewBox="0 0 560 230"');
+ d=d.replace('<rect width="420" height="230"','<rect width="560" height="230"');
+ d=d.replace('<text x="210" y="16"','<text x="280" y="16"');
+ d=d.split('x2="380" y2="30"').join('x2="520" y2="30"');
+ d=d.split('x2="380" y2="210"').join('x2="520" y2="210"');
+ d=d.split('<text x="270"').join('<text x="336"');
+ DIAG[44]=d;
+ var t=TEORI[44];
+ t=t.replace('<text x="268" y="126" fill="#3fb950" font-size="8.5">KAPANDI','<text x="246" y="126" fill="#3fb950" font-size="8.5">KAPANDI');
+ t=t.replace('<text x="360" y="126" fill="#f85149" font-size="8.5">AÇILDI','<text x="368" y="126" fill="#f85149" font-size="8.5">AÇILDI');
+ t=t.replace('<text x="470" y="422" fill="#c9a0ff" font-size="8">5 s</text>','<text x="458" y="409" fill="#c9a0ff" font-size="8">5 s</text>');
+ TEORI[44]=t;
+})();
+
 refreshHeader();
 go('kapak');
 
