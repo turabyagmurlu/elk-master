@@ -36,8 +36,8 @@ sorular: [ {q:"...",opts:["..","..","..",".."],ans:0,ex:"..."}, ... ]
 <div class="figwrap"><div class="fighead">🔎 Şema 1 — Kısa başlık</div><figure class="fig" style="margin:0;border:none;border-radius:0"><svg viewBox="0 0 460 220">...</svg></figure></div><br>
 ```
 - Bloktan önce `<br>` olmalı (yeni satırda başlasın).
-- Arka plan: ilk eleman `<rect width="460" height="H" fill="#141d26"/>`. Genişlik 460 sabit, yükseklik 160–300.
-- Renkler: metin #e8eef6, ikincil #8a98ab, çizgi #3a4b5c, faz/uyarı turuncu #ffb000, mavi (nötr/bilgi) #33b1ff, yeşil (doğru/topraklama PE) #3fb950, kırmızı (hata/tehlike) #f85149, mor #a371ff. Renk kodu kuralı: L=kahverengi/siyah/gri yerine şemada turuncu kullanılabilir, N=mavi, PE=yeşil — lejantta belirt.
+- Arka plan: ilk eleman `<rect width="460" height="H" fill="#ffffff"/>`. Genişlik 460 sabit, yükseklik 160–300.
+- Renkler (açık zemin, baskı dostu): metin #1c232d, ikincil #4b5563, çizgi #94a3b8, kutu dolgu #f1f5f9 / kenar #cbd5e1, faz/uyarı turuncu #b45309, mavi (nötr/bilgi) #0369a1, yeşil (doğru/PE) #15803d, kırmızı (hata/tehlike) #b91c1c, mor #6d28d9. L=turuncu, N=mavi, PE=yeşil — lejantta belirt. Koyu palette yazılmış eski şemalar `python3 tools/palet_acik.py icerik/m*.js` ile çevrilir.
 - font-size en az 9 (tercihen 10-11), font-family belirtme. text-anchor kullanabilirsin.
 - Metinler ASLA birbirinin üstüne binmesin ve viewBox dışına taşmasın. Uzun etiketi iki satıra böl. Türkçe metin genişliği ≈ font-size×0.55×karakter sayısı — hesapla.
 - İçerik: prensip şeması, devre şeması, kesit/katman çizimi, akış (adım adım), karşılaştırma tablosu-diyagramı, grafik (eğri). Süsleme değil, ÖĞRETEN çizim olsun: etiketli, oklu, değerli.

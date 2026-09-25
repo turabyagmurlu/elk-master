@@ -3,32 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ELK MASTER — Elektrik Uzmanlık Akademisi</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<title>ELK MASTER — Elektrik Teorisi</title>
+<meta name="theme-color" content="#ffffff">
 <link rel="stylesheet" href="css/elk.css">
 </head>
 <body>
 <header class="top">
-  <div class="brand" onclick="go('home')">
-    <div class="logo">⚡</div>
-    <div><h1>ELK MASTER</h1><div class="sub">Elektrik Uzmanlık Akademisi · DHMİ</div></div>
-  </div>
-  <nav class="main" id="nav">
-    <button data-v="kapak" onclick="go('kapak')">📖 Kitap</button>
-    <button data-v="program" onclick="go('program')">🎓 Saha Programı</button>
-    <button data-v="home" onclick="go('home')">Pano</button>
-    <button data-v="modules" onclick="go('modules')">Modüller</button>
-    <button data-v="exam" onclick="go('exam')">Deneme Sınavı</button>
-    <button data-v="myk" onclick="go('myk')">🎖️ MYK Sınavı</button>
-    <button data-v="review" onclick="go('review')">Tekrar</button>
-    <button data-v="glossary" onclick="go('glossary')">Sözlük</button>
-    <button data-v="settings" onclick="go('settings')">⚙️ Veri</button>
-    <a class="foynav" href="foy.html" target="_blank" rel="noopener">📄 Eğitim Föyü</a>
+  <a class="brand" onclick="go('program')"><b>ELK MASTER</b><span>Elektrik teorisi · saha için</span></a>
+  <nav id="nav">
+    <a data-v="program" onclick="go('program')">Program</a>
+    <a data-v="modules" onclick="go('modules')">Modüller</a>
+    <a data-v="exam" onclick="go('exam')">Sınav</a>
+    <a data-v="review" onclick="go('review')">Tekrar</a>
+    <a data-v="glossary" onclick="go('glossary')">Sözlük</a>
+    <a href="foy.html" target="_blank" rel="noopener">Föy</a>
   </nav>
 </header>
-<div class="wrap" id="app"></div>
-<footer><a href="foy.html" target="_blank" style="color:var(--acc);font-weight:700;text-decoration:none">📄 Detaylı Eğitim Föyü (yeni sekme)</a> &nbsp;·&nbsp; ELK MASTER v14 · Teori + Şema + Sınav + Tekrar · İlerlemen bu cihazda saklanır.</footer>
+<main class="wrap" id="app"></main>
+<footer>ELK MASTER v15 · İlerlemen bu cihazda saklanır · <a onclick="go('settings')">Veri / yedek</a> · <a href="foy.html" target="_blank" rel="noopener">Baskı föyü</a></footer>
+
 <script>var ELK_ICERIK={};</script>
+<script src="js/veri.js"></script>
 <script src="js/elk.js"></script>
 <script src="icerik/m01.js"></script>
 <script src="icerik/m02.js"></script>
@@ -66,6 +61,15 @@
 <script src="icerik/m34.js"></script>
 <script src="icerik/m35.js"></script>
 <script src="icerik/m36.js"></script>
+<script src="icerik/m37.js"></script>
+<script src="icerik/m38.js"></script>
+<script src="icerik/m39.js"></script>
+<script src="icerik/m40.js"></script>
+<script src="icerik/m41.js"></script>
+<script src="icerik/m42.js"></script>
+<script src="icerik/m43.js"></script>
+<script src="icerik/m44.js"></script>
+<script src="icerik/m45.js"></script>
 <script src="js/icerik-yukle.js"></script>
 </body>
 </html>
