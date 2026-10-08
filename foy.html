@@ -55,6 +55,7 @@
   .figwrap svg{width:100%;height:auto;display:block;max-width:150mm;margin:0 auto}
   .fml{font-family:Consolas,monospace;background:#eef2f6;padding:0 4px;border-radius:3px}
   .toparla{border:1.5px solid var(--ink);border-radius:8px;padding:10px 14px;margin:14px 0 0;break-inside:avoid}
+  .cevap{font-size:12.5px;color:#4b5563;border-top:1px dashed #cbd5e1;margin-top:12px;padding-top:6px}
   .toparla-h{font-weight:800;font-size:11px;letter-spacing:.8px;text-transform:uppercase;margin-bottom:4px}
   @media (max-width:640px){.semalar{grid-template-columns:1fr}.kapak ol{columns:1}}
   @media print{
@@ -81,6 +82,7 @@
   <b>Baskı Föyü</b>
   <select id="modSec" onchange="ciz()"></select>
   <select id="tur" onchange="ciz()">
+    <option value="dersler">30 dk dersler (yokla cevaplı)</option>
     <option value="ozet">Özet + şemalar (kısa)</option>
     <option value="tam">Tam teori (uzun)</option>
     <option value="yalnizozet">Sadece özet</option>
@@ -90,7 +92,7 @@
 </div>
 <div class="page" id="out"></div>
 
-<script>var ELK_ICERIK={};</script>
+<script>var ELK_ICERIK={}, ELK_DERS={};</script>
 <script src="js/veri.js"></script>
 <script src="js/elk.js"></script>
 <script src="icerik/m01.js"></script>
@@ -138,6 +140,46 @@
 <script src="icerik/m43.js"></script>
 <script src="icerik/m44.js"></script>
 <script src="icerik/m45.js"></script>
+<script src="dersler/d01.js"></script>
+<script src="dersler/d02.js"></script>
+<script src="dersler/d03.js"></script>
+<script src="dersler/d04.js"></script>
+<script src="dersler/d05.js"></script>
+<script src="dersler/d06.js"></script>
+<script src="dersler/d07.js"></script>
+<script src="dersler/d08.js"></script>
+<script src="dersler/d09.js"></script>
+<script src="dersler/d10.js"></script>
+<script src="dersler/d11.js"></script>
+<script src="dersler/d12.js"></script>
+<script src="dersler/d13.js"></script>
+<script src="dersler/d14.js"></script>
+<script src="dersler/d15.js"></script>
+<script src="dersler/d16.js"></script>
+<script src="dersler/d17.js"></script>
+<script src="dersler/d18.js"></script>
+<script src="dersler/d19.js"></script>
+<script src="dersler/d20.js"></script>
+<script src="dersler/d21.js"></script>
+<script src="dersler/d22.js"></script>
+<script src="dersler/d23.js"></script>
+<script src="dersler/d24.js"></script>
+<script src="dersler/d25.js"></script>
+<script src="dersler/d26.js"></script>
+<script src="dersler/d27.js"></script>
+<script src="dersler/d28.js"></script>
+<script src="dersler/d29.js"></script>
+<script src="dersler/d30.js"></script>
+<script src="dersler/d31.js"></script>
+<script src="dersler/d32.js"></script>
+<script src="dersler/d33.js"></script>
+<script src="dersler/d34.js"></script>
+<script src="dersler/d35.js"></script>
+<script src="dersler/d36.js"></script>
+<script src="dersler/d37.js"></script>
+<script src="dersler/d38.js"></script>
+<script src="dersler/d39.js"></script>
+<script src="dersler/d40.js"></script>
 <script>
 (function(){ for(var k in ELK_ICERIK){ var c=ELK_ICERIK[k]; if(c.teori) TEORI[+k]=c.teori.replace(/🔎\s*/g,''); if(c.ozet) FOY[+k]=c.ozet; } })();
 
@@ -170,6 +212,22 @@ function modHTML(m,tur){
 function ciz(){
   var sec=document.getElementById('modSec').value, tur=document.getElementById('tur').value, liste=sirali();
   var h='';
+  if(tur==='dersler'){
+    var nos=Object.keys(ELK_DERS).map(Number).sort(function(a,b){return a-b;});
+    h+='<div class="kapak"><h1>ELK MASTER — 30 dakikalık dersler</h1><div class="s">'+nos.length+' ders · 8 hafta · v16 · '+new Date().toLocaleDateString('tr-TR')+'</div><ol>'+nos.map(function(n){return '<li>'+ELK_DERS[n].baslik+'</li>';}).join('')+'</ol></div>';
+    nos.forEach(function(n){ var d=ELK_DERS[n];
+      h+='<section class="mod" id="d'+n+'"><h2>Ders '+n+' — '+d.baslik+'</h2><div class="kat">'+d.hafta+'. hafta · ≈30 dk</div>';
+      h+='<div class="ozet"><b>Bu dersten sonra:</b><ul>'+d.hedef.map(function(x){return '<li>'+x+'</li>';}).join('')+'</ul></div>';
+      h+='<div class="alertbox"><b>Sahadan:</b> '+d.saha+'</div>';
+      d.parcalar.forEach(function(p,k){ h+='<h3>'+(k+1)+'. '+p.baslik+'</h3><p>'+p.metin+'</p>'+(p.sema?'<div class="sema">'+p.sema+'</div>':'')+'<div class="toparla"><b>Akılda kalsın:</b> '+p.akilda+'</div>'; });
+      h+='<h3>İşlenmiş örnek: '+d.ornek.baslik+'</h3><ol>'+d.ornek.adimlar.map(function(a){return '<li>'+a+'</li>';}).join('')+'</ol><div class="exline"><b>Sonuç:</b> '+d.ornek.sonuc+'</div>';
+      h+='<h3>Kendini yokla</h3><ol>'+d.yokla.map(function(q){return '<li><b>'+q.s+'</b></li>';}).join('')+'</ol>';
+      h+='<h3>Yarın sahada</h3><ul>'+d.sahada.map(function(x){return '<li>'+x+'</li>';}).join('')+'</ul>';
+      h+='<div class="toparla"><div class="toparla-h">Özet</div><ul>'+d.ozet.map(function(x){return '<li>'+x+'</li>';}).join('')+'</ul></div>';
+      h+='<div class="cevap"><b>Yokla cevapları:</b><ol>'+d.yokla.map(function(q){return '<li>'+q.c+'</li>';}).join('')+'</ol></div></section>';
+    });
+    document.getElementById('out').innerHTML=h; document.body.classList.add('tam'); try{ history.replaceState(null,'','#hepsi-dersler'); }catch(e){} return;
+  }
   if(sec==='hepsi'){
     h+='<div class="kapak"><h1>ELK MASTER — Elektrik Eğitim Föyü</h1><div class="s">'+
       (tur==='tam'?'Tam teori':tur==='ozet'?'Özet + şemalar':'Özetler')+' · '+liste.length+' modül · program sırasıyla · v15 · '+new Date().toLocaleDateString('tr-TR')+'</div><ol>'+

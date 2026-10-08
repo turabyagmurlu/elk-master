@@ -172,3 +172,34 @@ textarea{min-height:170px;resize:vertical}
 .mykinfo{margin:10px 0}
 @media print{ .toparla,.defrow,.exline,.alertbox{break-inside:avoid} @page{@bottom-center{content:"ELK MASTER · " counter(page);font-size:8pt;color:#666}} }
 @media (max-width:720px){ .zoom-body{display:flex;align-items:center} }
+
+/* ===== v16: ders sayfası ===== */
+.btn.big{font-size:16.5px;padding:12px 20px}
+.bigbar{font-family:ui-monospace,Consolas,monospace;font-size:17px;margin:12px 0 2px;letter-spacing:1px}
+.dersbody{max-width:72ch;margin:0 auto;font-size:17px;line-height:1.7}
+.kutu-h{font-size:12.5px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--soft);margin-bottom:4px}
+.hedef{border:1px solid var(--line);background:var(--panel2);border-radius:var(--radius);padding:12px 16px;margin:6px 0 14px}
+.hedef ul,.toparla ul{margin:4px 0 0;padding-left:20px}
+.saha{border-left:4px solid var(--warn);background:#fff7ea;border-radius:0 var(--radius) var(--radius) 0;padding:12px 16px;margin:0 0 10px;font-size:16.5px}
+.parca{margin:8px 0 6px}
+.ptext{margin:0 0 6px}
+.akilda{display:flex;gap:10px;align-items:baseline;border:2px solid var(--acc);border-radius:8px;padding:9px 14px;margin:12px 0 18px;font-weight:600}
+.akilda span{flex:none;font-size:11px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--acc)}
+.adimlar{padding-left:22px;margin:6px 0}
+.adimlar li{margin:6px 0}
+.sonuc{background:var(--ex);border:1px solid var(--ex-line);border-radius:8px;padding:10px 14px;margin:10px 0}
+.kart{border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px;margin:10px 0;background:#fff}
+.kart .ks{font-weight:600;margin-bottom:8px}
+.kart .kc{display:none;border-top:1px dashed var(--line);margin-top:10px;padding-top:10px}
+.kart.acik .kc{display:block}
+.kart.acik > .btn{display:none}
+.kart.bildi{border-color:var(--ok)} .kart.bilmedi{border-color:var(--warn)}
+.derin{margin-top:16px}
+.dersbody .tbl,.panel2 .tbl{border-collapse:collapse;width:100%;font-size:15px;margin:8px 0}
+.dersbody .tbl td,.dersbody .tbl th,.panel2 .tbl td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left}
+@media print{
+  .ders .row,.ders .modnav,.kart > .btn,.kc .row{display:none!important}
+  .kart .kc{display:block!important}
+  .dersbody{max-width:none;font-size:10.5pt}
+  .parca,.akilda,.kart,.figwrap{break-inside:avoid}
+}

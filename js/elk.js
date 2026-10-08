@@ -60,10 +60,11 @@ function dueReviews(){ const t=todayStr(); return Object.keys(DB.srs).filter(q =
 
 /* ===================== YÖNLENDİRME ===================== */
 function go(view, arg){
-  const v = ({kapak:'program', onsoz:'program', home:'program'})[view] || view;
-  document.querySelectorAll('#nav [data-v]').forEach(b => b.classList.toggle('active', b.dataset.v===v || (v==='module' && b.dataset.v==='modules') || (v==='myk' && b.dataset.v==='exam')));
+  const v = ({kapak:'dersler', onsoz:'dersler', home:'dersler', program:'dersler'})[view] || view;
+  document.querySelectorAll('#nav [data-v]').forEach(b => b.classList.toggle('active', b.dataset.v===v || (v==='module' && b.dataset.v==='modules') || (v==='ders' && b.dataset.v==='dersler') || (v==='myk' && b.dataset.v==='exam')));
   window.scrollTo(0,0);
-  if(v==='program') renderProgram();
+  if(v==='dersler') renderDersler();
+  else if(v==='ders') openDers(+arg);
   else if(v==='modules') renderModules();
   else if(v==='module') openModule(+arg);
   else if(v==='exam') renderExam();
@@ -71,14 +72,15 @@ function go(view, arg){
   else if(v==='review') renderReview();
   else if(v==='glossary') renderGlossary();
   else if(v==='settings') renderSettings();
-  else renderProgram();
-  try{ history.replaceState(null,'', v==='module' ? '#m'+arg : '#'+v); }catch(e){}
+  else renderDersler();
+  try{ history.replaceState(null,'', v==='module' ? '#m'+arg : v==='ders' ? '#d'+arg : '#'+v); }catch(e){}
 }
 function routeFromHash(){
   const h=(location.hash||'').slice(1);
   if(/^m\d+$/.test(h) && modById(+h.slice(1))) return go('module', +h.slice(1));
-  if(['program','modules','exam','myk','review','glossary','settings'].indexOf(h)>=0) return go(h);
-  go('program');
+  if(/^d\d+$/.test(h) && ELK_DERS[+h.slice(1)]) return go('ders', +h.slice(1));
+  if(['dersler','modules','exam','myk','review','glossary','settings'].indexOf(h)>=0) return go(h);
+  go('dersler');
 }
 
 /* ===================== PROGRAM (ana sayfa) ===================== */
@@ -118,7 +120,7 @@ function renderProgram(){
 
 /* ===================== MODÜL LİSTESİ ===================== */
 function renderModules(){
-  let h=`<div class="panel"><h2 class="h2">Modüller</h2><p class="muted">${moduleDone()}/${MODS.length} tamamlandı · program sırasıyla</p>
+  let h=`<div class="panel"><h2 class="h2">Kütüphane</h2><p class="muted">45 başvuru modülü · derslerin ayrıntısı burada · ${moduleDone()}/${MODS.length} modülün sorularında %70+</p>
     <input type="text" id="msearch" placeholder="Modül veya konu ara (örn. vavien, topraklama, kompanzasyon)" oninput="filterModules()"></div><div id="mlist"></div>`;
   app().innerHTML=h; filterModules();
 }
@@ -143,7 +145,7 @@ function openModule(id){
   const as=asamaOf(id), nx=sonraki(id), pv=onceki(id);
   const tabs=[['teori','Teori'],['ozet','Özet'],['quiz','Sorular ('+(QBANK[id]||[]).length+')'],['not','Notlar']];
   const nav=`<div class="modnav">${pv?`<button class="btn ghost sm" onclick="go('module',${pv})">← M${pv} ${esc(modById(pv).t)}</button>`:'<span></span>'}${nx?`<button class="btn sm" onclick="go('module',${nx})">M${nx} ${esc(modById(nx).t)} →</button>`:''}</div>`;
-  app().innerHTML=`<div class="crumb"><a onclick="go('program')">Program</a> › ${as?esc(as.a.t)+' › ':''}M${m.id}</div>
+  app().innerHTML=`<div class="crumb"><a onclick="go('modules')">Kütüphane</a> › ${as?esc(as.a.t)+' › ':''}M${m.id}</div>
    <div class="panel">
      <div class="modhead"><div class="mno big">M${m.id}</div><div><h2 class="h2">${esc(m.t)}</h2>
        <div class="muted small">${esc((CATS[m.cat]||{}).n||'')} · ≈${okumaSuresi(id)} dk okuma${DB.scores[id]!=null?` · en iyi %${DB.scores[id]}`:''}${as?` · ${as.j+1}/${as.a.mods.length}. modül`:''}</div></div></div>
@@ -287,9 +289,10 @@ function yanlislariCoz(){
   window.scrollTo(0,0);
   startQuiz('revBody', items, true, 'Kontrol et', (c,t,pct,ym)=>{ el('qresult').insertAdjacentHTML('beforeend', yanlisListesi(ym)); });
 }
-function renderReview(){
+function renderReview(){ if(kartDue().length) return renderKartTekrar(); renderReviewMCQ(); }
+function renderReviewMCQ(){
   const due=dueReviews();
-  if(!due.length){ app().innerHTML=`<div class="panel"><h2 class="h2">Tekrar</h2><p class="muted">Bugün tekrar edilecek soru yok. Soru çözdükçe yanlışların aralıklı tekrar sistemiyle (1-2-4-7-15-30 gün) burada belirir.</p><button class="btn" onclick="go('program')">Programa dön</button></div>`; return; }
+  if(!due.length){ app().innerHTML=`<div class="panel"><h2 class="h2">Tekrar</h2><p class="muted">Bugün tekrar edilecek soru yok. Soru çözdükçe yanlışların aralıklı tekrar sistemiyle (1-2-4-7-15-30 gün) burada belirir.</p><button class="btn" onclick="go('dersler')">Derslere dön</button></div>`; return; }
   const items=shuffleItems(due.slice(0,20).map(qid=>Object.assign({qid},qByQid(qid))));
   app().innerHTML=`<div class="panel"><h2 class="h2">Tekrar · ${items.length} soru</h2><p class="muted small">Doğru bildiklerinin aralığı uzar, yanlışlar ertesi gün tekrar gelir.</p><div id="revBody"></div></div>`;
   startQuiz('revBody', items, true, 'Tekrarı bitir', (c,t,pct,ym)=>{ el('qresult').insertAdjacentHTML('beforeend', yanlisListesi(ym)+`<div class="row"><button class="btn" onclick="go('review')">Kalan tekrarlar</button></div>`); });
@@ -311,8 +314,8 @@ function filterGlossary(){
 
 /* ===================== VERİ / AYARLAR ===================== */
 function exportData(){ try{ const blob=new Blob([JSON.stringify(DB,null,2)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='elkmaster-yedek-'+todayStr()+'.json'; document.body.appendChild(a); a.click(); a.remove(); toast('Yedek indirildi'); }catch(e){ toast('Yedek alınamadı'); } }
-function importData(input){ const f=input.files&&input.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const o=JSON.parse(r.result); DB=Object.assign({scores:{},notes:{},srs:{},exams:[],myk:[]},o); persist(); toast('Yedek geri yüklendi'); go('program'); }catch(e){ toast('Geçersiz dosya'); } }; r.readAsText(f); }
-function resetData(){ if(!confirm('Tüm ilerleme kalıcı olarak silinecek. Emin misin?')) return; DB={scores:{},notes:{},srs:{},exams:[],myk:[]}; persist(); toast('İlerleme sıfırlandı'); go('program'); }
+function importData(input){ const f=input.files&&input.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const o=JSON.parse(r.result); DB=Object.assign({scores:{},notes:{},srs:{},exams:[],myk:[],ders:{},seviye:null},o); persist(); toast('Yedek geri yüklendi'); go('dersler'); }catch(e){ toast('Geçersiz dosya'); } }; r.readAsText(f); }
+function resetData(){ if(!confirm('Tüm ilerleme kalıcı olarak silinecek. Emin misin?')) return; DB={scores:{},notes:{},srs:{},exams:[],myk:[],ders:{},seviye:null}; persist(); toast('İlerleme sıfırlandı'); go('dersler'); }
 function renderSettings(){
   app().innerHTML=`<div class="panel"><h2 class="h2">Veri</h2>
     <p class="muted">İlerleme bu cihazın tarayıcısında saklanır. Başka cihaza taşımak için yedek al.</p>

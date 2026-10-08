@@ -1,6 +1,6 @@
 # ELK MASTER — Elektrik Teorisi
 
-Saha elektrikçisi için teori ağırlıklı, şemalı elektrik kursu. 7 aşama, 45 modül, soru bankası, genel deneme, MYK (15UY0241) provası, aralıklı tekrar ve baskı föyü. Tarayıcıda `index.html` açılır; internet gerekmez, dış kaynak yok.
+Saha elektrikçisi için 8 haftalık, günde 30 dakikalık elektrik kursu (40 ders) + 45 modüllük başvuru kütüphanesi, soru bankası, genel deneme, MYK (15UY0241) provası, aralıklı tekrar ve baskı föyü. Tarayıcıda `index.html` açılır; internet gerekmez, dış kaynak yok.
 
 ## Yapı
 - `index.html` — iskelet
@@ -9,6 +9,8 @@ Saha elektrikçisi için teori ağırlıklı, şemalı elektrik kursu. 7 aşama,
 - `js/elk.js` — uygulama mantığı ve içerik biçimlendirme motoru
 - `icerik/mXX.js` — modül teorisi, özet, ek sorular (`ELK_ICERIK[id] = {teori, ozet, sorular}`)
 - `js/icerik-yukle.js` — içerikleri bağlar, açılış rotası
+- `dersler/dXX.js` — 30 dakikalık dersler (`ELK_DERS[n]`), kurallar `ref/DERS_KILAVUZU.md`, müfredat `ref/MUFREDAT.md`, doğrulama `node tools/ders_kontrol.js dersler/d*.js`
+- `js/ders.js` — ders motoru: ders sayfası, kendini yokla kartları (aralıklı tekrar), seviye testi
 - `foy.html` — baskı föyü (tek modül / tümü · sadece özet / özet+şema / tam teori)
 
 ## İçerik ekleme / düzeltme
