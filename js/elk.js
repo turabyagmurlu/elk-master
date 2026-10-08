@@ -306,7 +306,7 @@ function filterGlossary(){
   const say=(m)=>{ const t=(m.t+' '+m.t+' '+(TEORI[m.id]||'').replace(/<[^>]*>/g,' ')).toLocaleLowerCase('tr'); let n=0,i=0; while(q&&(i=t.indexOf(q,i))>=0){ n++; i+=q.length; } return n; };
   const mods=q&&q.length>2?MODS.map(m=>[m,say(m)]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]).slice(0,6).map(x=>x[0]):[];
   el('gres').innerHTML=(mods.length?`<div class="muted small">Geçtiği modüller: ${mods.map(m=>`<a class="lnk" onclick="go('module',${m.id})">M${m.id} ${esc(m.t)}</a>`).join(' · ')}</div>`:'')+
-    `<dl class="gloss">${terms.map(t=>`<dt>${t[0]}</dt><dd>${t[1]}</dd>`).join('')||'<dd class="muted">Sonuç yok.</dd>'}</dl>`;
+    `<dl class="gloss">${terms.map(t=>`<dt>${t[0]}</dt><dd>${t[1]}${t[2]&&modById(t[2])?` <a class="lnk small" onclick="go('module',${t[2]})">→ M${t[2]}</a>`:''}</dd>`).join('')||'<dd class="muted">Sonuç yok.</dd>'}</dl>`;
 }
 
 /* ===================== VERİ / AYARLAR ===================== */
