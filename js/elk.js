@@ -72,6 +72,7 @@ function go(view, arg){
   else if(v==='review') renderReview();
   else if(v==='glossary') renderGlossary();
   else if(v==='settings') renderSettings();
+  else if(v==='notlar') renderNotDefteri();
   else renderDersler();
   try{ history.replaceState(null,'', v==='module' ? '#m'+arg : v==='ders' ? '#d'+arg : '#'+v); }catch(e){}
 }
@@ -79,7 +80,7 @@ function routeFromHash(){
   const h=(location.hash||'').slice(1);
   if(/^m\d+$/.test(h) && modById(+h.slice(1))) return go('module', +h.slice(1));
   if(/^d\d+$/.test(h) && ELK_DERS[+h.slice(1)]) return go('ders', +h.slice(1));
-  if(['dersler','modules','exam','myk','review','glossary','settings'].indexOf(h)>=0) return go(h);
+  if(['dersler','modules','exam','myk','review','glossary','settings','notlar'].indexOf(h)>=0) return go(h);
   go('dersler');
 }
 
@@ -159,9 +160,11 @@ function showTab(id,tab){
   document.querySelectorAll('#tabbar button').forEach(b=>b.classList.toggle('active',b.dataset.t===tab));
   const c=el('mtab'); if(!c) return;
   if(tab==='teori'){
+    KALEM.sayfa=null;
     c.innerHTML=`<div class="lessonbody">${icerikSusle(TEORI[id]||'',id)}</div>
       ${FOY[id]?`<div class="toparla"><div class="toparla-h">Toparlama</div>${FOY[id]}</div>`:''}
       <div class="row"><button class="btn" onclick="showTab(${id},'quiz')">Soruları çöz</button><a class="btn ghost" href="foy.html#${id}-tam" target="_blank" rel="noopener">Yazdır</a></div>`;
+    kalemBagla('m'+id, '#mtab .lessonbody');
   }
   else if(tab==='ozet') c.innerHTML=`<div class="lessonbody ozet">${FOY[id]||'<span class="muted">Bu modülde özet yok.</span>'}</div><div class="row"><button class="btn ghost" onclick="showTab(${id},'teori')">Teoriye dön</button><button class="btn" onclick="showTab(${id},'quiz')">Soruları çöz</button></div>`;
   else if(tab==='quiz') startModuleQuiz(id);
@@ -314,11 +317,12 @@ function filterGlossary(){
 
 /* ===================== VERİ / AYARLAR ===================== */
 function exportData(){ try{ const blob=new Blob([JSON.stringify(DB,null,2)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='elkmaster-yedek-'+todayStr()+'.json'; document.body.appendChild(a); a.click(); a.remove(); toast('Yedek indirildi'); }catch(e){ toast('Yedek alınamadı'); } }
-function importData(input){ const f=input.files&&input.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const o=JSON.parse(r.result); DB=Object.assign({scores:{},notes:{},srs:{},exams:[],myk:[],ders:{},seviye:null},o); persist(); toast('Yedek geri yüklendi'); go('dersler'); }catch(e){ toast('Geçersiz dosya'); } }; r.readAsText(f); }
-function resetData(){ if(!confirm('Tüm ilerleme kalıcı olarak silinecek. Emin misin?')) return; DB={scores:{},notes:{},srs:{},exams:[],myk:[],ders:{},seviye:null}; persist(); toast('İlerleme sıfırlandı'); go('dersler'); }
+function importData(input){ const f=input.files&&input.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const o=JSON.parse(r.result); DB=Object.assign({scores:{},notes:{},srs:{},exams:[],myk:[],ders:{},seviye:null,vurgu:{},cizim:{}},o); persist(); toast('Yedek geri yüklendi'); go('dersler'); }catch(e){ toast('Geçersiz dosya'); } }; r.readAsText(f); }
+function resetData(){ if(!confirm('Tüm ilerleme kalıcı olarak silinecek. Emin misin?')) return; DB={scores:{},notes:{},srs:{},exams:[],myk:[],ders:{},seviye:null,vurgu:{},cizim:{}}; persist(); toast('İlerleme sıfırlandı'); go('dersler'); }
 function renderSettings(){
   app().innerHTML=`<div class="panel"><h2 class="h2">Veri</h2>
-    <p class="muted">İlerleme bu cihazın tarayıcısında saklanır. Başka cihaza taşımak için yedek al.</p>
+    <p class="muted">İlerleme, vurgular ve çizimler bu cihazda saklanır. Başka cihaza taşımak için yedek al.</p>
+    <p class="muted small">Sürüm: ${typeof ELK_SURUM!=='undefined'?ELK_SURUM:'-'} · <a class="lnk" onclick="pwaGuncelle()">Güncelleme ara</a> · ${window.matchMedia('(display-mode: standalone)').matches?'Uygulama olarak kurulu':'<a class="lnk" onclick="pwaKurTarif()">Telefona kur</a>'}</p>
     <div class="stats"><div><b>${moduleDone()}/${MODS.length}</b><span>tamamlanan modül</span></div><div><b>%${avgScore()}</b><span>ortalama puan</span></div><div><b>${dueReviews().length}</b><span>tekrar bekleyen</span></div><div><b>${DB.exams.length+DB.myk.length}</b><span>sınav denemesi</span></div></div>
     <div class="row"><button class="btn" onclick="exportData()">Yedek al (JSON)</button>
     <label class="btn ghost">Geri yükle<input type="file" accept="application/json,.json" style="display:none" onchange="importData(this)"></label>
@@ -327,7 +331,8 @@ function renderSettings(){
 
 /* ===================== ŞEMA BÜYÜTME ===================== */
 document.addEventListener('click', function(e){
-  const f=e.target.closest && e.target.closest('.lessonbody .figwrap'); if(!f) return;
+  if(e.target.closest && e.target.closest('.kc-btn,#kalemBar,#kalemMenu')) return;
+  const f=e.target.closest && e.target.closest('.lessonbody .figwrap, .dersbody .figwrap'); if(!f) return;
   const svg=f.querySelector('svg'); if(!svg) return;
   const head=f.querySelector('.fighead');
   const d=document.createElement('div'); d.className='zoom';

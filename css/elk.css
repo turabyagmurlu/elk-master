@@ -203,3 +203,32 @@ textarea{min-height:170px;resize:vertical}
   .dersbody{max-width:none;font-size:10.5pt}
   .parca,.akilda,.kart,.figwrap{break-inside:avoid}
 }
+
+/* ===== v17: kalem ===== */
+mark.kv{padding:0 1px;border-radius:2px;cursor:pointer;color:inherit}
+mark.kv-s{background:#fff176} mark.kv-y{background:#a5d6a7} mark.kv-p{background:#f8bbd0}
+mark.kv-notlu{border-bottom:2px solid var(--acc)}
+#kalemBar{position:absolute;z-index:70;display:flex;gap:6px;background:#1c232d;padding:6px 8px;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+#kalemBar button{width:30px;height:30px;border:2px solid #fff;border-radius:50%;cursor:pointer}
+#kalemBar .kb-not{width:auto;border-radius:8px;background:#fff;color:var(--ink);font:inherit;font-size:13px;font-weight:700;padding:0 10px}
+#kalemMenu{position:absolute;z-index:70;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px;box-shadow:0 8px 24px rgba(0,0,0,.18);max-width:320px}
+#kalemMenu .km-t{font-size:13px;color:var(--soft);margin-bottom:4px}
+#kalemMenu .row{margin-top:6px;gap:6px}
+.km-r{width:26px;height:26px;border:2px solid #fff;outline:1px solid var(--line);border-radius:50%;cursor:pointer}
+.kv-notkutu{border-left:3px solid var(--acc);background:var(--acc-soft);padding:6px 10px;margin:4px 0 10px;font-size:15px;border-radius:0 8px 8px 0;cursor:pointer}
+.kv-notik{color:var(--acc);font-weight:800;margin-right:6px}
+.kc-btn{float:right;font:inherit;font-size:12.5px;font-weight:700;color:var(--acc);background:#fff;border:1px solid var(--line);border-radius:6px;padding:2px 8px;cursor:pointer}
+.figwrap figure{position:relative}
+.kc-onizleme{position:absolute;inset:10px;width:calc(100% - 20px);height:calc(100% - 20px);max-width:880px;margin:0 auto;left:0;right:0;pointer-events:none;object-fit:contain}
+.kc-body{display:flex;flex-direction:column;align-items:flex-start;overflow:auto;padding:10px}
+.zoom-bar{flex-wrap:wrap}
+.kc-sahne{position:relative;touch-action:none;border:1px solid var(--line);overflow:hidden;background:#fff}
+.kc-svgimg{position:absolute;left:0;top:0;width:100%;height:100%;display:block;pointer-events:none}
+.kc-sahne canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:crosshair}
+.kc-araclar{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.kc-renk{width:24px;height:24px;border:2px solid #fff;outline:1px solid var(--line);border-radius:50%;cursor:pointer}
+.kc-defter{display:block;max-width:420px;width:100%;border:1px solid var(--line);border-radius:8px;margin:8px 0}
+.notlist{list-style:none;padding:0;margin:8px 0 0}
+.notlist li{margin:6px 0}
+#pwaBar,.pwaKur{position:fixed;left:12px;right:12px;bottom:12px;z-index:65;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;box-shadow:0 8px 24px rgba(0,0,0,.18);font-size:14.5px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+@media print{ #kalemBar,#kalemMenu,.kc-btn,#pwaBar,.pwaKur{display:none!important} mark.kv{-webkit-print-color-adjust:exact;print-color-adjust:exact} }

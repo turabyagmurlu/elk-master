@@ -70,6 +70,7 @@ function openDers(n){
     <div class="modnav">${pv?`<button class="btn ghost sm" onclick="go('ders',${pv})">← D${pv}</button>`:'<span></span>'}${nx?`<button class="btn sm" onclick="go('ders',${nx})">D${nx} ${esc(ELK_DERS[nx].baslik)} →</button>`:''}</div>
   </article>`;
   app().innerHTML=h;
+  kalemBagla('d'+n, '.dersbody');
 }
 function kartAc(n,j){ const k=el('k'+j); if(k) k.classList.add('acik'); }
 function kartNot(n,j,ok){ srsAnswer('d'+n+'.'+j, ok); const k=el('k'+j); if(k){ k.classList.add(ok?'bildi':'bilmedi'); k.querySelector('.kc .row').innerHTML='<span class="'+(ok?'ok':'warn')+'">'+(ok?'Bildin — aralık uzadı.':'Tekrar listene eklendi.')+'</span>'; } }
