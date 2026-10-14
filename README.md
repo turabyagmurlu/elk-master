@@ -9,7 +9,7 @@ Saha elektrikçisi için 8 haftalık, günde 30 dakikalık elektrik kursu (40 de
 - `js/elk.js` — uygulama mantığı ve içerik biçimlendirme motoru
 - `icerik/mXX.js` — modül teorisi, özet, ek sorular (`ELK_ICERIK[id] = {teori, ozet, sorular}`)
 - `js/icerik-yukle.js` — içerikleri bağlar, açılış rotası
-- `dersler/dXX.js` — 30 dakikalık dersler (`ELK_DERS[n]`), kurallar `ref/DERS_KILAVUZU.md`, müfredat `ref/MUFREDAT.md`, doğrulama `node tools/ders_kontrol.js dersler/d*.js`
+- `dersler/dXX.js` — 30 dakikalık dersler (`ELK_DERS[n]`, v19'dan beri sade dil + `terimler` + `usta`), kurallar `ref/DERS_KILAVUZU.md` (v2 bölümü), müfredat `ref/MUFREDAT.md`, doğrulama `node tools/ders_kontrol.js dersler/d*.js`, sayfa görüntüsü `node tools/ders_goruntu.js 7`
 - `js/ders.js` — ders motoru: ders sayfası, kendini yokla kartları (aralıklı tekrar), seviye testi
 - `js/kalem.js` — kalem: metin vurgulama (3 renk), vurguya not, şema üstüne serbest çizim; Notlarım sayfası
 - `js/pwa.js`, `sw.js`, `manifest.json` — telefona kurulabilir, çevrimdışı çalışan uygulama. Her değişiklikten sonra `python3 tools/sw_uret.py` (önbellek sürümü)

@@ -54,3 +54,61 @@ modul: [7, 18]                          // derinlemesine okumak için kütüphan
 ## Doğrulama
 `cd /home/claude/elk-master && NODE_PATH=$(npm root -g) node tools/ders_kontrol.js dersler/d07.js`
 Tüm ✗ ve uyarıları gider. Şemaları PNG'ye render edip gözle bak.
+
+
+---
+
+# v2 — SADE DİL KURALLARI (Ekim 2026, öncekilerle çelişirse BU geçerli)
+
+## Neden
+Kullanıcı yeni dersleri de "fazla teknik" buldu. Elektrik mühendisi ya da teknikeri değil; sahada formen, teorisi zayıf. Formülle, Ω·mm²/m'li hesapla anlatılan örneği takip edemiyor. Amacı: "Elektrikçiyim" dediğinde ustanın, mühendisin, müşterinin karşısında **kontrpiyede kalmamak** — doğru kelimeyi, doğru sırayla, emin bir şekilde söyleyebilmek.
+
+İki uç da yasak:
+- **Fazla teknik:** formülle başlayan, birimden birime dönüşüm yapan, 6 adımlı hesap zinciri kuran anlatım.
+- **Fazla basit:** ilkokul çocuğuna anlatır gibi, "elektrik bir su gibidir, hadi bakalım" tonu, oyunlaştırma, ünlem, sevimlilik. Kullanıcı işini bilen yetişkin bir usta adayı. Havalı, ciddi, net bir öğrenim uygulaması karakteri korunacak.
+
+Ton: Kıdemli bir ustanın, zeki bir çırağa şantiyede çay molasında anlatması. Kısa, emin, saygılı, esprisiz ama kuru da değil.
+
+## Yeni alanlar
+```js
+terimler: [ { t: "Gerilim düşümü", a: "Kablo boyunca yolda kaybolan volt. Uzun ve ince kabloda artar." }, ... ],  // 4–6 terim
+usta: {
+  soz:  ["Boşta değil, yük altında ölçtüm; hatta gerilim düşümü var.", "..."],   // 2–3 cümle: sahada ağızdan çıkacak, doğru terimli, kendinden emin cümleler
+  deme: "\"Prizde elektrik az geliyor\" deme. Doğrusu: \"Yük altında prizde gerilim 205 V'a düşüyor.\""  // en sık yapılan yanlış söz + doğrusu
+}
+```
+- `terimler`: Dersin içinde geçen ve bilmeyenin takılacağı kelimeler. `a` en fazla 20 kelime, gündelik dille, formülsüz. Saha argosu varsa onu da söyle ("halk arasında 'kofta'").
+- `usta.soz`: tırnaksız yaz (tasarım tırnak koyar). Gerçek bir konuşmada kurulabilecek doğal Türkçe. Terimi doğru kullansın.
+- `usta.deme`: amatör gibi gösteren yaygın yanlış ifade + doğru ifade.
+
+## Anlatım sırası (her parçada)
+1. **Sahada ne görürsün** (1–2 cümle: ekranda ne yazar, ne ısınır, ne atar).
+2. **Neden olur** (sade dil, gerekirse tek bir yerinde benzetme: hortum, boru, yol, köprü... Benzetme kısa olsun ve hemen bırakılsın; çocukça uzatılmasın).
+3. **Kural** (tek cümle). Formül gerekiyorsa ancak bundan SONRA gelir ve **kelimeyle okunur**: "<b>Volt = Amper × Ohm</b> (U = I · R)". Önce kelimeli hali, parantezde sembol.
+4. **Tek bir rakamla gösterim** (yuvarlak, akılda kalan sayılar: 10 A, 230 V, 2 kat). Ondalıklı uzun hesap yok.
+
+## Rakam kuralı
+- Bir parçada en fazla 2 hesap. Hesap gösterirken her adımı kelimeyle söyle: "16 amper ile 0,2 ohm'u çarparsan 3 volt kaybolur."
+- Sayıları yuvarla: 8,7 A yerine "yaklaşık 9 A", 0,43 Ω yerine "yarım ohm kadar". Kesinlik gereken yerde (sigorta değeri, kesit, 30 mA) tam yaz.
+- Özgül direnç, √3, cosφ gibi kavramlar gerekiyorsa önce ne işe yaradığını söyle, sayıyı sonra ver. "√3 = 1,73: üç fazda hep çıkan sabit çarpan" gibi.
+- Bir rakam ancak bir anlam taşıyorsa yazılır. Rakamın yanına "bu ne demek" cümlesi koy ("166 W — yanan bir havyadan fazla ısı").
+
+## İşlenmiş örnek (`ornek`)
+- 4–6 adım. Her adım `<b>Kısa etiket:</b>` ile başlar (ör. <b>Ne olmalı:</b>, <b>Ne ölçtün:</b>, <b>Fark nereden:</b>, <b>Tehlike:</b>, <b>Tuzak:</b>, <b>Ne yaparsın:</b>).
+- Her adım en fazla 2 cümle, en fazla 1 hesap. Hesap zinciri yok.
+- `sonuc`: sahada yapılacak iş, emir kipinde, güvenlik adımı dahil.
+
+## Kendini yokla
+- Sorular sahne kurar: "Pensle ölçtün, X gördün. Ne düşünürsün?" Hesap sorusu ders başına en fazla 1, rakamları yuvarlak.
+- Cevap 1–3 cümle, cevabın "neden"i mutlaka içinde.
+
+## Şemalar (KALİTE ARTIRILACAK)
+- Her şema TEK bir şeyi göstersin. Etiket sayısı az (en fazla ~10 metin), yazılar büyük (font-size 11–13, başlık 13–14).
+- Şemanın tepesinde kısa bir başlık cümlesi (ne gördüğünü söyler), altında 1 satır "ne anlama gelir" notu.
+- Tercih edilen şema tipleri: (a) akış/yol şeması: pano → kablo → ek → priz, her durakta değer; (b) doğru/yanlış yan yana iki panel (yeşil ✓ / kırmızı ✗ etiketli); (c) basit çubuk/karşılaştırma; (d) sade devre çizimi (L turuncu, N mavi, PE yeşil, kalın çizgi 3–4 px).
+- Renk anlam taşır: kırmızı = tehlike/hata, yeşil = doğru/güvenli, turuncu = faz, mavi = nötr. Lejant gerekiyorsa tek satır.
+- Kutular yuvarlak köşeli (rx="8"), bol boşluklu, hizalı. Ok uçları için `<defs><marker>` kullanılabilir.
+- Okunmayan küçük not, üst üste binen etiket, köşeye sıkışmış yazı = kabul edilmez. Render edip bak.
+
+## Doğruluk
+Sadeleştirmek yanlışlamak değildir. Eski dersteki her doğru teknik bilgiyi koru (gerekirse sadeleştirerek); yanlış varsa düzelt. Uydurma değer yok.

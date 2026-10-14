@@ -1,5 +1,5 @@
 /* ELK MASTER — 30 dakikalık ders motoru
-   Dersler: dersler/dXX.js → ELK_DERS[n] = {hafta, baslik, hedef, saha, parcalar, ornek, yokla, sahada, ozet, modul}
+   Dersler: dersler/dXX.js → ELK_DERS[n] = {hafta, baslik, hedef, saha, terimler, parcalar, ornek, usta, yokla, sahada, ozet, modul}
    Kendini yokla kartları aralıklı tekrara girer (qid: "d<ders>.<soru>"). */
 
 DB.ders = DB.ders || {};          /* {n: 'YYYY-MM-DD'} bitirilen dersler */
@@ -22,7 +22,7 @@ function renderDersler(){
   const s=siradakiDers(), kd=kartDue().length, sd=dueReviews().length;
   let h=`<div class="panel">
     <h2 class="h2">30 dakikalık dersler</h2>
-    <p class="muted">${nos.length} ders · 8 hafta · günde bir ders. Her ders: sahadan bir durum, 3–4 kısa parça, şema, işlenmiş örnek, kafandan cevaplayacağın sorular, yarın sahada bakacakların.</p>
+    <p class="muted">${nos.length} ders · 8 hafta · günde bir ders. Her ders: sahadan bir durum, 3–4 kısa parça, şema, işlenmiş örnek, usta gibi söyleyeceğin cümleler, kafandan cevaplayacağın sorular.</p>
     <div class="bar"><i style="width:${pct}%"></i></div><div class="muted small">%${pct} · ${bitti}/${nos.length} ders bitti${DB.seviye?' · başlangıç: '+DB.seviye.hafta+'. hafta':''}</div>
     <div class="row">${s?`<button class="btn big" onclick="go('ders',${s})">Bugünün dersi: ${s}. ${esc(ELK_DERS[s].baslik)}</button>`:`<button class="btn big" onclick="go('exam')">Tüm dersler bitti — genel denemeye geç</button>`}
       ${(kd+sd)?`<button class="btn ghost" onclick="go('review')">Tekrar (${kd+sd})</button>`:''}
@@ -48,14 +48,16 @@ function openDers(n){
     <div class="modhead"><div class="mno big">D${n}</div><div><h2 class="h2">${esc(d.baslik)}</h2><div class="muted small">${d.hafta}. hafta · ${HAFTA_AD[d.hafta]||''} · ≈30 dk · ${i+1}/${nos.length}${dersBitti(n)?' · bitirdin ('+DB.ders[n]+')':''}</div></div></div>
     <div class="dersbody">
     <div class="hedef"><div class="kutu-h">Bu dersten sonra</div><ul>${d.hedef.map(x=>`<li>${x}</li>`).join('')}</ul></div>
-    <div class="saha"><div class="kutu-h">Sahadan</div>${d.saha}</div>`;
+    <div class="saha"><div class="kutu-h">Sahadan</div>${d.saha}</div>
+    ${(d.terimler||[]).length?`<div class="terimler"><div class="kutu-h">Bu derste geçen kelimeler</div><dl>${d.terimler.map(x=>`<div><dt>${x.t}</dt><dd>${x.a}</dd></div>`).join('')}</dl></div>`:''}`;
   d.parcalar.forEach((p,k)=>{
     h+=`<section class="parca"><h3 class="sechead"><span class="secno">${k+1}</span>${p.baslik}</h3>
       <div class="ptext">${p.metin}</div>${fig(p.sema, 'Şekil '+(k+1)+' — '+p.baslik)}
       <div class="akilda"><span>Akılda kalsın</span>${p.akilda}</div></section>`;
   });
   h+=`<section class="parca"><h3 class="sechead"><span class="secno">✓</span>İşlenmiş örnek: ${d.ornek.baslik}</h3>
-      <ol class="adimlar">${d.ornek.adimlar.map(a=>`<li>${a}</li>`).join('')}</ol><div class="sonuc"><b>Sonuç:</b> ${d.ornek.sonuc}</div></section>
+      <ol class="adimlar">${d.ornek.adimlar.map(a=>`<li>${a}</li>`).join('')}</ol>${fig(d.ornek.sema, 'Örnek şekli — '+d.ornek.baslik)}<div class="sonuc"><b>Sonuç:</b> ${d.ornek.sonuc}</div></section>
+    ${d.usta?`<section class="usta"><div class="usta-h">Usta gibi söyle</div>${(d.usta.soz||[]).map(x=>`<p class="usta-soz">${x}</p>`).join('')}${d.usta.deme?`<p class="usta-deme"><b>Şunu deme:</b> ${d.usta.deme}</p>`:''}</section>`:''}
     <section class="parca yokla"><h3 class="sechead"><span class="secno">?</span>Kendini yokla</h3>
       <p class="muted small">Cevabı önce kafanda kur (gerekirse kâğıda yaz), sonra aç. "Tekrar sor" dediklerin aralıklı tekrar listene girer.</p>
       ${d.yokla.map((q,j)=>`<div class="kart" id="k${j}"><div class="ks">${j+1}. ${q.s}</div>

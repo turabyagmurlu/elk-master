@@ -17,11 +17,13 @@ const { chromium } = require('playwright'); const fs = require('fs'); const path
         d.parcalar.forEach((x, i) => { const pw = W(x.metin); w += pw + W(x.akilda) + W(x.baslik); if (pw > 240) U('parça ' + (i + 1) + ' uzun (' + pw + ')'); if (!x.akilda) E('parça ' + (i + 1) + ' akilda yok'); });
         if (d.ornek) w += W(d.ornek.baslik) + W((d.ornek.adimlar || []).join(' ')) + W(d.ornek.sonuc);
         (d.yokla || []).forEach(q => { w += W(q.s) + W(q.c); if (!q.s || !q.c) E('yokla bozuk'); });
-        const svgs = d.parcalar.map(x => x.sema || '').filter(Boolean);
+        const svgs = d.parcalar.map(x => x.sema || '').concat([(d.ornek && d.ornek.sema) || '']).filter(Boolean);
         out.info[id] = { kelime: w, parca: d.parcalar.length, sema: svgs.length, yokla: (d.yokla || []).length };
-        if (w < 1000) U('kısa (' + w + ')'); if (w > 1700) U('uzun (' + w + ')');
+        if (w < 1000) U('kısa (' + w + ')'); if (w > 1800) U('uzun (' + w + ')');
         if (d.parcalar.length < 3 || d.parcalar.length > 4) U('parça sayısı ' + d.parcalar.length);
         if (svgs.length < 2) U('şema az'); if ((d.yokla || []).length < 6) U('yokla az'); if ((d.hedef || []).length !== 3) U('hedef 3 olmalı');
+        if ((d.terimler || []).length < 4 || (d.terimler || []).length > 7) U('terimler 4-7 olmalı'); (d.terimler||[]).forEach(t => { if (!t.t || !t.a) E('terim bozuk'); w += W(t.t) + W(t.a); });
+        if (!d.usta || !(d.usta.soz||[]).length || !d.usta.deme) U('usta kutusu eksik'); else w += W(d.usta.soz.join(' ')) + W(d.usta.deme);
         const all = JSON.stringify(d); const tip = (all.match(/tipik/gi) || []).length; if (tip > 3) U('"tipik" ' + tip + ' kez');
         svgs.forEach((s, k) => {
           const doc = new DOMParser().parseFromString(s.replace('<svg', '<svg xmlns="http://www.w3.org/2000/svg"'), 'image/svg+xml');
