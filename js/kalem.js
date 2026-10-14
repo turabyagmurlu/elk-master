@@ -6,14 +6,65 @@
 DB.vurgu = DB.vurgu || {};
 DB.cizim = DB.cizim || {};
 const KALEM_RENK = {s:'#fff176', y:'#a5d6a7', p:'#f8bbd0'};  /* sarı, yeşil, pembe */
-let KALEM = { sayfa:null, kok:null };
+let KALEM = { sayfa:null, kok:null, mod:false, arac:'vurgu', renk:'s' };
+try{ const k=JSON.parse(localStorage.getItem('elk_kalem')||'{}'); if(k.arac) KALEM.arac=k.arac; if(k.renk) KALEM.renk=k.renk; }catch(e){}
+const KALEM_IKON='<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>';
+const KALEM_ARAC = {vurgu:'Vurgula', not:'Not', ciz:'Çiz', sil:'Silgi'};
 
 /* ---------- sayfa bağlama ---------- */
 function kalemBagla(sayfa, kokSecici){
   KALEM.sayfa = sayfa; KALEM.kok = document.querySelector(kokSecici);
-  if(!KALEM.kok) return;
+  if(!KALEM.kok) return kalemGizle();
   kalemUygula();
   kalemCizimYukle();
+  kalemIkonGoster();
+}
+/* sayfa değişince: ikon gizlenir, kalem modu kapanır */
+function kalemGizle(){
+  KALEM.sayfa=null; KALEM.kok=null; kalemModKapat();
+  ['kalemFab','kalemIpucu'].forEach(id=>{ const x=el(id); if(x) x.remove(); });
+}
+function kalemIkonGoster(){
+  let f=el('kalemFab');
+  if(!f){ f=document.createElement('button'); f.id='kalemFab'; f.setAttribute('aria-label','Kalem'); f.innerHTML=KALEM_IKON; f.onclick=kalemModDegistir; document.body.appendChild(f); }
+  f.classList.toggle('acik', KALEM.mod);
+  try{ if(!el('kalemIpucu') && localStorage.getItem('elk_kalem_ipucu')!=='1'){ const t=document.createElement('div'); t.id='kalemIpucu'; t.innerHTML='Kalem: vurgula, not al, şemaya çiz. <b>Dokun, başla.</b>'; t.onclick=()=>t.remove(); document.body.appendChild(t); localStorage.setItem('elk_kalem_ipucu','1'); setTimeout(()=>{ const x=el('kalemIpucu'); if(x) x.remove(); },6000); } }catch(e){}
+}
+function kalemModDegistir(){ KALEM.mod ? kalemModKapat() : kalemModAc(); }
+function kalemModAc(){
+  if(!KALEM.kok) return;
+  KALEM.mod=true; const ip=el('kalemIpucu'); if(ip) ip.remove();
+  document.body.classList.add('kalem-acik');
+  let pnl=el('kalemPanel'); if(!pnl){ pnl=document.createElement('div'); pnl.id='kalemPanel'; document.body.appendChild(pnl); }
+  kalemPanelCiz(); kalemAracUygula();
+  const f=el('kalemFab'); if(f) f.classList.add('acik');
+  kalemFabKonum();
+}
+function kalemModKapat(){
+  KALEM.mod=false;
+  document.body.classList.remove('kalem-acik','kalem-ciz','kalem-sil','kalem-yaz');
+  ['kalemPanel','kalemBar','kalemMenu'].forEach(id=>{ const x=el(id); if(x) x.remove(); });
+  const f=el('kalemFab'); if(f){ f.classList.remove('acik'); f.style.bottom=''; }
+  try{ const s=window.getSelection(); if(s) s.removeAllRanges(); }catch(e){}
+}
+function kalemPanelCiz(){
+  const pnl=el('kalemPanel'); if(!pnl) return;
+  const yard={vurgu:'Metni seç → <b>Vurgula</b>.', not:'Metni seç → <b>Not ekle</b>. Vurguya dokunup not da eklenir.', ciz:'Bir <b>şemaya</b> dokun, üstüne çiz.', sil:'Silmek istediğin <b>vurguya</b> dokun.'};
+  pnl.innerHTML=`<div class="kp-araclar">${Object.keys(KALEM_ARAC).map(a=>`<button class="kp-arac ${KALEM.arac===a?'aktif':''}" onclick="kalemAracSec('${a}')">${KALEM_ARAC[a]}</button>`).join('')}</div>
+    <div class="kp-alt"><span class="kp-renkler" ${KALEM.arac==='vurgu'||KALEM.arac==='not'?'':'style="visibility:hidden"'}>${Object.keys(KALEM_RENK).map(k=>`<button class="kp-renk ${KALEM.renk===k?'aktif':''}" style="background:${KALEM_RENK[k]}" onclick="kalemRenkSec('${k}')" aria-label="renk"></button>`).join('')}</span>
+    <span class="kp-yard">${yard[KALEM.arac]}</span>
+    <button class="kp-link" onclick="kalemModKapat();go('notlar')">Notlarım</button><button class="kp-kapat" onclick="kalemModKapat()" aria-label="Kapat">✕</button></div>`;
+}
+function kalemAracSec(a){ KALEM.arac=a; kalemKaydetAyar(); kalemPanelCiz(); kalemAracUygula(); kalemFabKonum(); }
+/* ikon, açık panelin hemen üstünde dursun */
+function kalemFabKonum(){ const f=el('kalemFab'), p=el('kalemPanel'); if(f&&p) f.style.bottom=(p.offsetHeight+12)+'px'; }
+function kalemRenkSec(k){ KALEM.renk=k; kalemKaydetAyar(); kalemPanelCiz(); }
+function kalemKaydetAyar(){ try{ localStorage.setItem('elk_kalem', JSON.stringify({arac:KALEM.arac, renk:KALEM.renk})); }catch(e){} }
+function kalemAracUygula(){
+  document.body.classList.toggle('kalem-ciz', KALEM.mod && KALEM.arac==='ciz');
+  document.body.classList.toggle('kalem-sil', KALEM.mod && KALEM.arac==='sil');
+  document.body.classList.toggle('kalem-yaz', KALEM.mod && (KALEM.arac==='vurgu'||KALEM.arac==='not'));
+  const b=el('kalemBar'); if(b) b.remove();
 }
 function kalemSayfaKey(){ return KALEM.sayfa; }
 
@@ -21,14 +72,16 @@ function kalemSayfaKey(){ return KALEM.sayfa; }
 document.addEventListener('selectionchange', ()=>{ clearTimeout(KALEM._t); KALEM._t=setTimeout(kalemSecimKontrol, 180); });
 function kalemSecimKontrol(){
   const bar=el('kalemBar'); const sel=window.getSelection();
-  if(!KALEM.kok || !sel || sel.isCollapsed || !sel.rangeCount){ if(bar) bar.remove(); return; }
+  if(!KALEM.mod || !(KALEM.arac==='vurgu'||KALEM.arac==='not') || !KALEM.kok || !sel || sel.isCollapsed || !sel.rangeCount){ if(bar) bar.remove(); return; }
   const r=sel.getRangeAt(0); const t=sel.toString().trim();
   if(t.length<2 || t.length>600 || !KALEM.kok.contains(r.commonAncestorContainer)){ if(bar) bar.remove(); return; }
   if(r.commonAncestorContainer.nodeType===1 && r.commonAncestorContainer.closest('svg')) return;
   const rect=r.getBoundingClientRect();
   let b=bar; if(!b){ b=document.createElement('div'); b.id='kalemBar'; document.body.appendChild(b); }
-  b.innerHTML=Object.keys(KALEM_RENK).map(k=>`<button style="background:${KALEM_RENK[k]}" onclick="kalemVurgula('${k}')" title="Vurgula"></button>`).join('')+`<button class="kb-not" onclick="kalemVurgula('s',true)">+ not</button>`;
-  const y=rect.top+window.scrollY-46, x=Math.max(8, Math.min(window.innerWidth-170, rect.left+rect.width/2-80));
+  b.innerHTML = KALEM.arac==='not'
+    ? `<button class="kb-ana" style="background:${KALEM_RENK[KALEM.renk]}" onmousedown="event.preventDefault()" onclick="kalemVurgula(KALEM.renk,true)">Not ekle</button>`
+    : `<button class="kb-ana" style="background:${KALEM_RENK[KALEM.renk]}" onmousedown="event.preventDefault()" onclick="kalemVurgula(KALEM.renk)">Vurgula</button>`;
+  const y=rect.top+window.scrollY-50, x=Math.max(8, Math.min(window.innerWidth-130, rect.left+rect.width/2-55));
   b.style.top=(y<window.scrollY+60 ? rect.bottom+window.scrollY+8 : y)+'px'; b.style.left=x+'px';
 }
 function kalemVurgula(renk, notla){
@@ -92,8 +145,9 @@ function kalemMetinDugumleri(rng){
 
 /* ---------- vurguya tıkla → sil / not ---------- */
 document.addEventListener('click', e=>{
-  const m=e.target.closest && e.target.closest('mark.kv'); if(!m) return;
+  const m=e.target.closest && e.target.closest('mark.kv'); if(!m || !KALEM.mod || m.closest('.notlist')) return;
   const i=+m.dataset.i; const v=(DB.vurgu[KALEM.sayfa]||[])[i]; if(!v) return;
+  if(KALEM.arac==='sil'){ kalemSil(i); toast('Vurgu silindi'); e.stopPropagation(); return; }
   const old=el('kalemMenu'); if(old) old.remove();
   const d=document.createElement('div'); d.id='kalemMenu';
   d.innerHTML=`<div class="km-t">"${esc(v.t.slice(0,60))}${v.t.length>60?'…':''}"</div>
@@ -122,7 +176,7 @@ function kalemNotlariCiz(){
     const i=+m.dataset.i; if(gorulen.has(i)) return; gorulen.add(i);
     const v=list[i]; if(!v||!v.not) return;
     const blok=m.closest('p,li,.ptext,.defbody,.para,.akilda,.sonuc,div'); if(!blok) return;
-    const k=document.createElement('div'); k.className='kv-notkutu'; k.innerHTML=`<span class="kv-notik">✎</span>${esc(v.not)}`; k.onclick=()=>kalemNotDuzenle(i);
+    const k=document.createElement('div'); k.className='kv-notkutu'; k.innerHTML=`<span class="kv-notik">✎</span>${esc(v.not)}`; k.onclick=()=>{ if(KALEM.mod) kalemNotDuzenle(i); };
     blok.insertAdjacentElement('afterend',k);
   });
 }
@@ -136,12 +190,17 @@ function kalemCizimYukle(){
   if(!KALEM.kok) return;
   const figs=KALEM.kok.querySelectorAll('.figwrap'); const saved=DB.cizim[KALEM.sayfa]||{};
   figs.forEach((f,i)=>{
-    if(f.querySelector('.kc-btn')) return;
-    const b=document.createElement('button'); b.className='kc-btn'; b.textContent=saved[i]?'✎ çizim var':'✎ çiz'; b.onclick=ev=>{ ev.stopPropagation(); kalemCizimAc(i); };
-    f.querySelector('.fighead').appendChild(b);
+    if(f.dataset.kc) return; f.dataset.kc='1'; f.dataset.kci=i;
+    if(saved[i]){ const r=document.createElement('span'); r.className='kc-rozet'; r.textContent='çizim var'; f.querySelector('.fighead').appendChild(r); }
     if(saved[i]){ const im=document.createElement('img'); im.className='kc-onizleme'; im.src=saved[i]; f.querySelector('figure').appendChild(im); }
   });
 }
+/* çiz aracında şemaya dokunmak çizimi açar (büyütme yerine) */
+document.addEventListener('click', e=>{
+  if(!(KALEM.mod && KALEM.arac==='ciz')) return;
+  const f=e.target.closest && e.target.closest('.figwrap'); if(!f || !KALEM.kok || !KALEM.kok.contains(f)) return;
+  e.stopPropagation(); e.preventDefault(); kalemCizimAc(+f.dataset.kci);
+}, true);
 let CZ=null;
 function kalemCizimAc(i){
   const f=KALEM.kok.querySelectorAll('.figwrap')[i]; const svg=f.querySelector('svg'); if(!svg) return;
@@ -181,7 +240,7 @@ function kalemCizKaydet(i){
   DB.cizim[KALEM.sayfa]=DB.cizim[KALEM.sayfa]||{};
   if(bos) delete DB.cizim[KALEM.sayfa][i]; else DB.cizim[KALEM.sayfa][i]=cv.toDataURL('image/png');
   persist(); el('kalemCizDlg').remove();
-  KALEM.kok.querySelectorAll('.figwrap').forEach(f=>{ f.querySelectorAll('.kc-btn,.kc-onizleme').forEach(x=>x.remove()); });
+  KALEM.kok.querySelectorAll('.figwrap').forEach(f=>{ f.querySelectorAll('.kc-rozet,.kc-onizleme').forEach(x=>x.remove()); delete f.dataset.kc; });
   kalemCizimYukle(); toast(bos?'Çizim silindi':'Çizim kaydedildi');
 }
 
@@ -190,7 +249,7 @@ function renderNotDefteri(){
   const sayfalar=Object.keys(DB.vurgu).filter(k=>(DB.vurgu[k]||[]).length).concat(Object.keys(DB.cizim).filter(k=>Object.keys(DB.cizim[k]||{}).length && !DB.vurgu[k]));
   const ad=k=> k[0]==='d' ? (ELK_DERS[+k.slice(1)]?'Ders '+k.slice(1)+' — '+ELK_DERS[+k.slice(1)].baslik:k) : (modById(+k.slice(1))?'Modül '+k.slice(1)+' — '+modById(+k.slice(1)).t:k);
   const git=k=> k[0]==='d' ? `go('ders',${+k.slice(1)})` : `go('module',${+k.slice(1)})`;
-  let h=`<div class="panel"><h2 class="h2">Not defterim</h2><p class="muted">Vurguladığın satırlar, notların ve şema çizimlerin. Metni seçip renk tıklayarak vurgu yaparsın; vurguya tıklayıp not eklersin. Yazdırılabilir.</p>
+  let h=`<div class="panel"><h2 class="h2">Not defterim</h2><p class="muted">Vurguladığın satırlar, notların ve şema çizimlerin. Ders veya kütüphane sayfasında sağ alttaki kalem ikonuna bas: Vurgula, Not, Çiz, Silgi. Yazdırılabilir.</p>
     ${sayfalar.length?'':'<p class="muted">Henüz not yok.</p>'}
     ${sayfalar.sort((a,b)=>a[0]===b[0]?+a.slice(1)-+b.slice(1):a[0]<b[0]?-1:1).map(k=>`<div class="panel2"><div class="row sb"><b><a class="lnk" onclick="${git(k)}">${esc(ad(k))}</a></b><span class="muted small">${(DB.vurgu[k]||[]).length} vurgu · ${Object.keys(DB.cizim[k]||{}).length} çizim</span></div>
       <ul class="notlist">${(DB.vurgu[k]||[]).map(v=>`<li><mark class="kv kv-${v.r}">${esc(v.t)}</mark>${v.not?`<div class="kv-notkutu"><span class="kv-notik">✎</span>${esc(v.not)}</div>`:''}</li>`).join('')}</ul>

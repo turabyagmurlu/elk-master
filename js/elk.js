@@ -60,6 +60,7 @@ function dueReviews(){ const t=todayStr(); return Object.keys(DB.srs).filter(q =
 
 /* ===================== YÖNLENDİRME ===================== */
 function go(view, arg){
+  if(typeof kalemGizle==='function') kalemGizle();
   const v = ({kapak:'dersler', onsoz:'dersler', home:'dersler', program:'dersler'})[view] || view;
   document.querySelectorAll('#nav [data-v]').forEach(b => b.classList.toggle('active', b.dataset.v===v || (v==='module' && b.dataset.v==='modules') || (v==='ders' && b.dataset.v==='dersler') || (v==='myk' && b.dataset.v==='exam')));
   window.scrollTo(0,0);
@@ -157,10 +158,10 @@ function openModule(id){
   showTab(id,'teori');
 }
 function showTab(id,tab){
+  if(typeof kalemGizle==='function') kalemGizle();
   document.querySelectorAll('#tabbar button').forEach(b=>b.classList.toggle('active',b.dataset.t===tab));
   const c=el('mtab'); if(!c) return;
   if(tab==='teori'){
-    KALEM.sayfa=null;
     c.innerHTML=`<div class="lessonbody">${icerikSusle(TEORI[id]||'',id)}</div>
       ${FOY[id]?`<div class="toparla"><div class="toparla-h">Toparlama</div>${FOY[id]}</div>`:''}
       <div class="row"><button class="btn" onclick="showTab(${id},'quiz')">Soruları çöz</button><a class="btn ghost" href="foy.html#${id}-tam" target="_blank" rel="noopener">Yazdır</a></div>`;
@@ -331,7 +332,7 @@ function renderSettings(){
 
 /* ===================== ŞEMA BÜYÜTME ===================== */
 document.addEventListener('click', function(e){
-  if(e.target.closest && e.target.closest('.kc-btn,#kalemBar,#kalemMenu')) return;
+  if(e.target.closest && e.target.closest('#kalemBar,#kalemMenu,#kalemPanel,#kalemFab')) return;
   const f=e.target.closest && e.target.closest('.lessonbody .figwrap, .dersbody .figwrap'); if(!f) return;
   const svg=f.querySelector('svg'); if(!svg) return;
   const head=f.querySelector('.fighead');
