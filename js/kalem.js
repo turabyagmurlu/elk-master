@@ -49,7 +49,7 @@ function kalemModKapat(){
 }
 function kalemPanelCiz(){
   const pnl=el('kalemPanel'); if(!pnl) return;
-  const yard={vurgu:'Metnin üstünde <b>yana sürükle</b> → boyar. Dokun → cümleyi boyar.', not:'<b>Sürükle</b> veya cümleye dokun → boya + not yaz.', ciz:'Bir <b>şemaya</b> dokun, üstüne çiz.', sil:'Vurguların <b>üstünden geç</b> veya dokun → siler.'};
+  const yard={vurgu:'Kalemle metnin <b>üstünden geç</b> → boyar. Parmakla kaydır.', not:'Kalemle <b>üstünden geç</b> → boyar, not kutusu açılır.', ciz:'Bir <b>şemaya</b> dokun, üstüne çiz.', sil:'Vurguların <b>üstünden geç</b> veya dokun → siler.'};
   pnl.innerHTML=`<div class="kp-araclar">${Object.keys(KALEM_ARAC).map(a=>`<button class="kp-arac ${KALEM.arac===a?'aktif':''}" onclick="kalemAracSec('${a}')">${KALEM_ARAC[a]}</button>`).join('')}<button class="kp-arac kp-geri" onclick="kalemGeriAl()" ${((KALEM.gecmis||{})[KALEM.sayfa]||[]).length?'':'disabled'}>↶ Geri al</button></div>
     <div class="kp-alt"><span class="kp-renkler" ${KALEM.arac==='vurgu'||KALEM.arac==='not'?'':'style="visibility:hidden"'}>${Object.keys(KALEM_RENK).map(k=>`<button class="kp-renk ${KALEM.renk===k?'aktif':''}" style="background:${KALEM_RENK[k]}" onclick="kalemRenkSec('${k}')" aria-label="renk"></button>`).join('')}</span>
     <span class="kp-yard">${yard[KALEM.arac]}</span>
@@ -88,8 +88,15 @@ function kalemGeriAl(){
 function kalemAralikKaydet(r, renk, notla){
   const t=r.toString().trim(); if(t.length<2) return;
   /* seçimden önce kökte kaç kez geçiyor → n */
-  const pre=document.createRange(); pre.setStart(KALEM.kok,0); pre.setEnd(r.startContainer,r.startOffset);
-  const n=kalemSay(kalemDuz(pre.toString()), kalemDuz(t));
+  /* öncesindeki metin, kalemBul ile AYNI kuralla (şema/not kutusu hariç) toplanır → doğru eşleşme sırası */
+  const w=document.createTreeWalker(KALEM.kok, NodeFilter.SHOW_TEXT, {acceptNode:nd=> nd.parentNode.closest('svg,script,style,#kalemBar,.kv-notkutu') ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT});
+  let pre='', nd;
+  while((nd=w.nextNode())){
+    if(nd===r.startContainer){ pre+=nd.nodeValue.slice(0,r.startOffset); break; }
+    if(r.comparePoint(nd,0)<0) pre+=nd.nodeValue; else break;
+  }
+  const lead=r.toString().length-r.toString().trimStart().length;
+  const n=kalemSay(kalemDuz(pre+r.toString().slice(0,lead)), kalemDuz(t));
   kalemAnlik();
   const list=DB.vurgu[KALEM.sayfa]=DB.vurgu[KALEM.sayfa]||[];
   list.push({t, n, r:renk, not:''}); persist();
@@ -99,7 +106,7 @@ function kalemAralikKaydet(r, renk, notla){
 
 /* ---------- fosforlu kalem: parmak / Apple Pencil / fare ile sürükle ----------
    Vurgula/Not: metnin üstünde YANA doğru sürükle → boyar (sonra aşağı da inebilirsin).
-                Yukarı-aşağı kaydırma sayfayı kaydırır. Tek dokunuş → cümleyi boyar.
+                Yukarı-aşağı kaydırma sayfayı kaydırır. Tek dokunuş boyamaz.
    Silgi: vurguların üstünden geç veya dokun → siler.
    Çiz: şemaya dokun → çizim ekranı. */
 let KS=null;   /* aktif sürükleme */
@@ -137,7 +144,7 @@ document.addEventListener('pointerdown', e=>{
   if(e.target.closest('#kalemPanel,#kalemFab,#kalemMenu,.zoom')) return;
   if(KALEM.arac!=='sil' && !KALEM.kok.contains(e.target)) return;   /* silgi kenardan da başlayabilir */
   KS={x:e.clientX, y:e.clientY, t:Date.now(), hedef:e.target, bas:null, akti:false, sil:new Set(), id:e.pointerId};
-  if(kalemYazMod() && !e.target.closest('mark.kv,button,a,input,textarea,select,.figwrap,.opt,summary,[onclick]')) KS.bas=kalemNokta(e.clientX,e.clientY);
+  if(kalemYazMod() && !e.target.closest('button,input,textarea,select,.figwrap,.opt,summary')) KS.bas=kalemNokta(e.clientX,e.clientY);
   if(KALEM.arac==='sil' || KS.bas){ if(e.pointerType==='mouse') e.preventDefault(); }
 }, true);
 document.addEventListener('pointermove', e=>{
@@ -166,6 +173,13 @@ document.addEventListener('pointerup', e=>{
   if(Date.now()-d.t>600) return;   /* uzun basma: dokunma sayılmaz */
   if(kalemDokun(d.hedef, e.clientX, e.clientY)) KALEM._tapT=Date.now();
 }, true);
+/* Apple Pencil: boyarken sayfa kaymasın (parmak kaydırmaya devam eder) */
+document.addEventListener('touchstart', e=>{
+  if(!KALEM.mod || !KALEM.kok || !(kalemYazMod() || KALEM.arac==='sil')) return;
+  const t=e.touches[0]; if(!t || t.touchType!=='stylus') return;
+  if(e.target.closest && e.target.closest('#kalemPanel,#kalemFab,#kalemMenu,.zoom,button,a')) return;
+  if(KALEM.kok.contains(e.target) || KALEM.arac==='sil') e.preventDefault();
+}, {passive:false, capture:true});
 document.addEventListener('pointercancel', ()=>{ KS=null; const o=el('kalemOnizleme'); if(o) o.remove(); }, true);
 
 /* tek dokunuşun işi. true dönerse olay tüketildi. */
@@ -175,13 +189,7 @@ function kalemDokun(tg, x, y){
   if(KALEM.arac==='ciz'){ if(f){ kalemCizimAc(+f.dataset.kci); return true; } return false; }
   const m=tg.closest('mark.kv');
   if(m){ kalemVurguMenu(m); return true; }
-  if(kalemYazMod()){
-    if(f || tg.closest('button,a,input,textarea,select,svg,.kv-notkutu,.opt,summary,[onclick]')) return false;
-    const c=kalemNokta(x,y); if(!c) return false;
-    const r=kalemCumle(c[0], c[1]); if(!r) return false;
-    kalemAralikKaydet(r, KALEM.renk, KALEM.arac==='not'); return true;
-  }
-  return false;
+  return false;   /* tek dokunuş boyamaz: boyama yalnız sürükleyerek */
 }
 /* pointer ile işlenen dokunuşun ardından gelen tıklamayı yut (şema büyütme açılmasın) */
 document.addEventListener('click', e=>{
