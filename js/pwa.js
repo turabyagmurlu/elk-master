@@ -1,7 +1,9 @@
 /* ELK MASTER — PWA: service worker kaydı, güncelleme, kurulum ipucu */
 let PWA_DEFER=null, PWA_YENI=null;
 if('serviceWorker' in navigator && location.protocol!=='file:'){
-  navigator.serviceWorker.register('sw.js').then(reg=>{
+  navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(reg=>{
+    reg.update().catch(()=>{});
+    document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible') reg.update().catch(()=>{}); });
     reg.addEventListener('updatefound',()=>{ const nw=reg.installing; nw&&nw.addEventListener('statechange',()=>{ if(nw.state==='installed' && navigator.serviceWorker.controller){ PWA_YENI=nw; pwaYeniBildir(); } }); });
   }).catch(()=>{});
   navigator.serviceWorker.addEventListener('controllerchange',()=>{ if(PWA_YENI){ location.reload(); } });
