@@ -208,7 +208,7 @@ textarea{min-height:170px;resize:vertical}
 mark.kv{padding:0 1px;border-radius:2px;cursor:pointer;color:inherit}
 mark.kv-s{background:#fff176} mark.kv-y{background:#a5d6a7} mark.kv-p{background:#f8bbd0}
 mark.kv-notlu{border-bottom:2px solid var(--acc)}
-#kalemBar{position:absolute;z-index:70;display:flex;gap:6px;background:#1c232d;padding:6px 8px;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+#kalemBar{position:fixed;left:50%;transform:translateX(-50%);z-index:70;display:flex;gap:6px;background:#1c232d;padding:6px 8px;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,.25)}
 #kalemBar .kb-ana{border:0;border-radius:8px;color:#1c232d;font:inherit;font-size:15px;font-weight:800;padding:8px 16px;cursor:pointer}
 #kalemMenu{position:absolute;z-index:70;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px;box-shadow:0 8px 24px rgba(0,0,0,.18);max-width:320px}
 #kalemMenu .km-t{font-size:13px;color:var(--soft);margin-bottom:4px}
@@ -256,3 +256,11 @@ body:not(.kalem-acik) mark.kv{cursor:text}
 #kalemFab{transition:bottom .15s}
 @media (max-width:720px){ body.kalem-ciz .fighead::after{content:" · çizmek için dokun";color:var(--acc);font-weight:700} }
 body.kalem-ciz .fighead::before{content:""}
+
+/* ===== v18.2: iPad dokunuş düzeltmesi — iOS yalnız cursor:pointer olana tıklama iletir ===== */
+@media (hover:none){
+  .lessonbody .figwrap,.dersbody .figwrap,mark.kv,.kv-notkutu,
+  body.kalem-ciz .lessonbody .figwrap,body.kalem-ciz .dersbody .figwrap,body.kalem-sil mark.kv,
+  body.kalem-yaz .lessonbody,body.kalem-yaz .dersbody{cursor:pointer}
+}
+body.kalem-yaz .lessonbody,body.kalem-yaz .dersbody{-webkit-tap-highlight-color:transparent}

@@ -49,7 +49,7 @@ function kalemModKapat(){
 }
 function kalemPanelCiz(){
   const pnl=el('kalemPanel'); if(!pnl) return;
-  const yard={vurgu:'Metni seç → <b>Vurgula</b>.', not:'Metni seç → <b>Not ekle</b>. Vurguya dokunup not da eklenir.', ciz:'Bir <b>şemaya</b> dokun, üstüne çiz.', sil:'Silmek istediğin <b>vurguya</b> dokun.'};
+  const yard={vurgu:'<b>Cümleye dokun</b> → vurgulanır. Kısmi için basılı tut, sürükle.', not:'<b>Cümleye dokun</b> → vurgula + not yaz. Vurguya dokunup not da eklenir.', ciz:'Bir <b>şemaya</b> dokun, üstüne çiz.', sil:'Silmek istediğin <b>vurguya</b> dokun.'};
   pnl.innerHTML=`<div class="kp-araclar">${Object.keys(KALEM_ARAC).map(a=>`<button class="kp-arac ${KALEM.arac===a?'aktif':''}" onclick="kalemAracSec('${a}')">${KALEM_ARAC[a]}</button>`).join('')}</div>
     <div class="kp-alt"><span class="kp-renkler" ${KALEM.arac==='vurgu'||KALEM.arac==='not'?'':'style="visibility:hidden"'}>${Object.keys(KALEM_RENK).map(k=>`<button class="kp-renk ${KALEM.renk===k?'aktif':''}" style="background:${KALEM_RENK[k]}" onclick="kalemRenkSec('${k}')" aria-label="renk"></button>`).join('')}</span>
     <span class="kp-yard">${yard[KALEM.arac]}</span>
@@ -68,33 +68,80 @@ function kalemAracUygula(){
 }
 function kalemSayfaKey(){ return KALEM.sayfa; }
 
-/* ---------- metin seçimi → araç çubuğu ---------- */
-document.addEventListener('selectionchange', ()=>{ clearTimeout(KALEM._t); KALEM._t=setTimeout(kalemSecimKontrol, 180); });
+/* ---------- metin seçimi → araç çubuğu ----------
+   iPad: butona dokununca iOS seçimi siler. Bu yüzden seçim her değiştiğinde aralık saklanır,
+   çubuk ekranın altında (iOS'un kopyala menüsünden uzakta) sabit durur. */
+document.addEventListener('selectionchange', ()=>{ clearTimeout(KALEM._t); KALEM._t=setTimeout(kalemSecimKontrol, 150); });
+document.addEventListener('pointerdown', e=>{
+  KALEM._barBas = !!(e.target.closest && e.target.closest('#kalemBar'));
+  const s=window.getSelection(); KALEM._secVardi = !!(s && !s.isCollapsed);
+}, true);
 function kalemSecimKontrol(){
   const bar=el('kalemBar'); const sel=window.getSelection();
-  if(!KALEM.mod || !(KALEM.arac==='vurgu'||KALEM.arac==='not') || !KALEM.kok || !sel || sel.isCollapsed || !sel.rangeCount){ if(bar) bar.remove(); return; }
+  const yazMod = KALEM.mod && (KALEM.arac==='vurgu'||KALEM.arac==='not') && KALEM.kok;
+  if(!yazMod){ if(bar) bar.remove(); KALEM._rng=null; return; }
+  if(!sel || sel.isCollapsed || !sel.rangeCount){ if(KALEM._barBas) return; if(bar) bar.remove(); KALEM._rng=null; return; }
   const r=sel.getRangeAt(0); const t=sel.toString().trim();
-  if(t.length<2 || t.length>600 || !KALEM.kok.contains(r.commonAncestorContainer)){ if(bar) bar.remove(); return; }
+  if(t.length<2 || t.length>600 || !KALEM.kok.contains(r.commonAncestorContainer)){ if(bar) bar.remove(); KALEM._rng=null; return; }
   if(r.commonAncestorContainer.nodeType===1 && r.commonAncestorContainer.closest('svg')) return;
-  const rect=r.getBoundingClientRect();
+  KALEM._rng=r.cloneRange();
   let b=bar; if(!b){ b=document.createElement('div'); b.id='kalemBar'; document.body.appendChild(b); }
-  b.innerHTML = KALEM.arac==='not'
-    ? `<button class="kb-ana" style="background:${KALEM_RENK[KALEM.renk]}" onmousedown="event.preventDefault()" onclick="kalemVurgula(KALEM.renk,true)">Not ekle</button>`
-    : `<button class="kb-ana" style="background:${KALEM_RENK[KALEM.renk]}" onmousedown="event.preventDefault()" onclick="kalemVurgula(KALEM.renk)">Vurgula</button>`;
-  const y=rect.top+window.scrollY-50, x=Math.max(8, Math.min(window.innerWidth-130, rect.left+rect.width/2-55));
-  b.style.top=(y<window.scrollY+60 ? rect.bottom+window.scrollY+8 : y)+'px'; b.style.left=x+'px';
+  const etk = KALEM.arac==='not' ? 'Seçimi vurgula + not ekle' : 'Seçimi vurgula';
+  b.innerHTML=`<button class="kb-ana" style="background:${KALEM_RENK[KALEM.renk]}" onmousedown="event.preventDefault()" onclick="kalemVurgula(KALEM.renk,${KALEM.arac==='not'})">${etk}</button>`;
+  const p=el('kalemPanel'); b.style.bottom=((p?p.offsetHeight:0)+80)+'px';
 }
 function kalemVurgula(renk, notla){
-  const sel=window.getSelection(); if(!sel||sel.isCollapsed) return;
-  const t=sel.toString().trim(); const r=sel.getRangeAt(0);
+  const sel=window.getSelection();
+  const r = (sel && !sel.isCollapsed && sel.rangeCount) ? sel.getRangeAt(0) : KALEM._rng;
+  KALEM._barBas=false; KALEM._rng=null;
+  if(!r) return;
+  kalemAralikKaydet(r, renk, notla);
+}
+function kalemAralikKaydet(r, renk, notla){
+  const t=r.toString().trim(); if(t.length<2) return;
   /* seçimden önce kökte kaç kez geçiyor → n */
   const pre=document.createRange(); pre.setStart(KALEM.kok,0); pre.setEnd(r.startContainer,r.startOffset);
   const n=kalemSay(kalemDuz(pre.toString()), kalemDuz(t));
   const list=DB.vurgu[KALEM.sayfa]=DB.vurgu[KALEM.sayfa]||[];
-  const item={t, n, r:renk, not:''};
-  list.push(item); persist(); sel.removeAllRanges(); const bar=el('kalemBar'); if(bar) bar.remove();
+  list.push({t, n, r:renk, not:''}); persist();
+  try{ window.getSelection().removeAllRanges(); }catch(e){}
+  const bar=el('kalemBar'); if(bar) bar.remove();
   kalemUygula();
-  if(notla) kalemNotDuzenle(list.length-1);
+  if(notla) kalemNotDuzenle(list.length-1); else toast('Vurgulandı');
+}
+
+/* ---------- dokun → cümleyi vurgula (iPad'de seçim zahmetli) ---------- */
+document.addEventListener('click', e=>{
+  if(!(KALEM.mod && (KALEM.arac==='vurgu'||KALEM.arac==='not') && KALEM.kok)) return;
+  if(KALEM._secVardi) return;                       /* seçimi kapatan dokunuş */
+  const s=window.getSelection(); if(s && !s.isCollapsed) return;  /* fareyle sürükleyip seçti */
+  const tg=e.target; if(!tg.closest || !KALEM.kok.contains(tg)) return;
+  if(tg.closest('mark.kv,button,a,input,textarea,select,.figwrap,svg,.kv-notkutu,.opt,summary,[onclick]')) return;
+  const c = document.caretRangeFromPoint ? document.caretRangeFromPoint(e.clientX,e.clientY)
+          : (document.caretPositionFromPoint ? (p=>{ if(!p) return null; const r=document.createRange(); r.setStart(p.offsetNode,p.offset); return r; })(document.caretPositionFromPoint(e.clientX,e.clientY)) : null);
+  if(!c || c.startContainer.nodeType!==3) return;
+  const r=kalemCumle(c.startContainer, c.startOffset); if(!r) return;
+  kalemAralikKaydet(r, KALEM.renk, KALEM.arac==='not');
+});
+function kalemBlok(nd){
+  let x=nd.parentNode;
+  while(x && x!==KALEM.kok){ const d=getComputedStyle(x).display; if(d!=='inline' && d!=='inline-block' && d!=='contents') return x; x=x.parentNode; }
+  return KALEM.kok;
+}
+function kalemCumle(node, off){
+  const blok=kalemBlok(node);
+  const w=document.createTreeWalker(blok, NodeFilter.SHOW_TEXT, {acceptNode:nd=> nd.parentNode.closest('svg,script,style,.kv-notkutu') ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT});
+  const parts=[]; let full='', nd, at=-1;
+  while((nd=w.nextNode())){ if(nd===node) at=full.length+off; parts.push([nd, full.length]); full+=nd.nodeValue; }
+  if(at<0 || !full.trim()) return null;
+  /* cümle sınırı: . ! ? … ; sonrası boşluk. Ondalık sayı (2.5) bölünmez. */
+  let a=0; for(let i=Math.min(at,full.length)-1;i>0;i--){ if(/[.!?…;]/.test(full[i-1]) && /\s/.test(full[i])){ a=i; break; } }
+  let b=full.length; for(let i=at;i<full.length;i++){ if(/[.!?…;]/.test(full[i]) && (i+1>=full.length || /\s/.test(full[i+1]))){ b=i+1; break; } }
+  while(a<b && /\s/.test(full[a])) a++; while(b>a && /\s/.test(full[b-1])) b--;
+  if(b-a<2) return null; if(b-a>600) b=a+600;
+  const loc=o=>{ for(let k=parts.length-1;k>=0;k--){ if(o>=parts[k][1]) return [parts[k][0], Math.min(o-parts[k][1], parts[k][0].nodeValue.length)]; } return null; };
+  const s=loc(a), t=loc(b); if(!s||!t) return null;
+  const r=document.createRange(); r.setStart(s[0],s[1]); r.setEnd(t[0],t[1]); return r;
 }
 function kalemDuz(s){ return s.replace(/\s+/g,' '); }
 function kalemSay(hay, needle){ let n=0,i=0; while((i=hay.indexOf(needle,i))>=0){ n++; i+=needle.length; } return n; }
