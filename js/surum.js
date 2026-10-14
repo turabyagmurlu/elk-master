@@ -1,1 +1,1 @@
-const ELK_SURUM='d243ce9b7a';
+const ELK_SURUM='36dc396c71';

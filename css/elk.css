@@ -258,9 +258,21 @@ body:not(.kalem-acik) mark.kv{cursor:text}
 body.kalem-ciz .fighead::before{content:""}
 
 /* ===== v18.2: iPad dokunuş düzeltmesi — iOS yalnız cursor:pointer olana tıklama iletir ===== */
-@media (hover:none){
+@media all{
   .lessonbody .figwrap,.dersbody .figwrap,mark.kv,.kv-notkutu,
   body.kalem-ciz .lessonbody .figwrap,body.kalem-ciz .dersbody .figwrap,body.kalem-sil mark.kv,
   body.kalem-yaz .lessonbody,body.kalem-yaz .dersbody{cursor:pointer}
 }
 body.kalem-yaz .lessonbody,body.kalem-yaz .dersbody{-webkit-tap-highlight-color:transparent}
+.kp-surum{font-size:11px;color:var(--soft)}
+body.kalem-acik .lessonbody,body.kalem-acik .dersbody{-webkit-touch-callout:default}
+
+/* ===== v18.3: fosforlu kalem sürükleme ===== */
+body.kalem-yaz #app,body.kalem-sil #app{touch-action:pan-y}
+body.kalem-yaz .lessonbody,body.kalem-yaz .dersbody,body.kalem-sil .lessonbody,body.kalem-sil .dersbody{touch-action:pan-y;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+#kalemOnizleme{position:fixed;inset:0;pointer-events:none;z-index:60}
+#kalemOnizleme i{position:absolute;opacity:.55;border-radius:2px;mix-blend-mode:multiply}
+mark.kv-silinecek{opacity:.3;text-decoration:line-through}
+.kp-geri{margin-left:auto}
+.kp-arac:disabled{opacity:.4}
+#kalemCizDlg,#kalemNotDlg{z-index:90}

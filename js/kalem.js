@@ -49,11 +49,11 @@ function kalemModKapat(){
 }
 function kalemPanelCiz(){
   const pnl=el('kalemPanel'); if(!pnl) return;
-  const yard={vurgu:'<b>Cümleye dokun</b> → vurgulanır. Kısmi için basılı tut, sürükle.', not:'<b>Cümleye dokun</b> → vurgula + not yaz. Vurguya dokunup not da eklenir.', ciz:'Bir <b>şemaya</b> dokun, üstüne çiz.', sil:'Silmek istediğin <b>vurguya</b> dokun.'};
-  pnl.innerHTML=`<div class="kp-araclar">${Object.keys(KALEM_ARAC).map(a=>`<button class="kp-arac ${KALEM.arac===a?'aktif':''}" onclick="kalemAracSec('${a}')">${KALEM_ARAC[a]}</button>`).join('')}</div>
+  const yard={vurgu:'Metnin üstünde <b>yana sürükle</b> → boyar. Dokun → cümleyi boyar.', not:'<b>Sürükle</b> veya cümleye dokun → boya + not yaz.', ciz:'Bir <b>şemaya</b> dokun, üstüne çiz.', sil:'Vurguların <b>üstünden geç</b> veya dokun → siler.'};
+  pnl.innerHTML=`<div class="kp-araclar">${Object.keys(KALEM_ARAC).map(a=>`<button class="kp-arac ${KALEM.arac===a?'aktif':''}" onclick="kalemAracSec('${a}')">${KALEM_ARAC[a]}</button>`).join('')}<button class="kp-arac kp-geri" onclick="kalemGeriAl()" ${((KALEM.gecmis||{})[KALEM.sayfa]||[]).length?'':'disabled'}>↶ Geri al</button></div>
     <div class="kp-alt"><span class="kp-renkler" ${KALEM.arac==='vurgu'||KALEM.arac==='not'?'':'style="visibility:hidden"'}>${Object.keys(KALEM_RENK).map(k=>`<button class="kp-renk ${KALEM.renk===k?'aktif':''}" style="background:${KALEM_RENK[k]}" onclick="kalemRenkSec('${k}')" aria-label="renk"></button>`).join('')}</span>
     <span class="kp-yard">${yard[KALEM.arac]}</span>
-    <button class="kp-link" onclick="kalemModKapat();go('notlar')">Notlarım</button><button class="kp-kapat" onclick="kalemModKapat()" aria-label="Kapat">✕</button></div>`;
+    <button class="kp-link" onclick="kalemModKapat();go('notlar')">Notlarım</button><span class="kp-surum">${typeof ELK_SURUM!=="undefined"?ELK_SURUM.slice(0,4):""}</span><button class="kp-kapat" onclick="kalemModKapat()" aria-label="Kapat">✕</button></div>`;
 }
 function kalemAracSec(a){ KALEM.arac=a; kalemKaydetAyar(); kalemPanelCiz(); kalemAracUygula(); kalemFabKonum(); }
 /* ikon, açık panelin hemen üstünde dursun */
@@ -68,61 +68,128 @@ function kalemAracUygula(){
 }
 function kalemSayfaKey(){ return KALEM.sayfa; }
 
-/* ---------- metin seçimi → araç çubuğu ----------
-   iPad: butona dokununca iOS seçimi siler. Bu yüzden seçim her değiştiğinde aralık saklanır,
-   çubuk ekranın altında (iOS'un kopyala menüsünden uzakta) sabit durur. */
-document.addEventListener('selectionchange', ()=>{ clearTimeout(KALEM._t); KALEM._t=setTimeout(kalemSecimKontrol, 150); });
-document.addEventListener('pointerdown', e=>{
-  KALEM._barBas = !!(e.target.closest && e.target.closest('#kalemBar'));
-  const s=window.getSelection(); KALEM._secVardi = !!(s && !s.isCollapsed);
-}, true);
-function kalemSecimKontrol(){
-  const bar=el('kalemBar'); const sel=window.getSelection();
-  const yazMod = KALEM.mod && (KALEM.arac==='vurgu'||KALEM.arac==='not') && KALEM.kok;
-  if(!yazMod){ if(bar) bar.remove(); KALEM._rng=null; return; }
-  if(!sel || sel.isCollapsed || !sel.rangeCount){ if(KALEM._barBas) return; if(bar) bar.remove(); KALEM._rng=null; return; }
-  const r=sel.getRangeAt(0); const t=sel.toString().trim();
-  if(t.length<2 || t.length>600 || !KALEM.kok.contains(r.commonAncestorContainer)){ if(bar) bar.remove(); KALEM._rng=null; return; }
-  if(r.commonAncestorContainer.nodeType===1 && r.commonAncestorContainer.closest('svg')) return;
-  KALEM._rng=r.cloneRange();
-  let b=bar; if(!b){ b=document.createElement('div'); b.id='kalemBar'; document.body.appendChild(b); }
-  const etk = KALEM.arac==='not' ? 'Seçimi vurgula + not ekle' : 'Seçimi vurgula';
-  b.innerHTML=`<button class="kb-ana" style="background:${KALEM_RENK[KALEM.renk]}" onmousedown="event.preventDefault()" onclick="kalemVurgula(KALEM.renk,${KALEM.arac==='not'})">${etk}</button>`;
-  const p=el('kalemPanel'); b.style.bottom=((p?p.offsetHeight:0)+80)+'px';
+/* ---------- geri al ----------
+   Her değişiklikten önce o sayfanın vurgu+çizim durumu yığına alınır. */
+KALEM.gecmis={};
+function kalemAnlik(){
+  const k=KALEM.sayfa; if(!k) return;
+  const y=KALEM.gecmis[k]=KALEM.gecmis[k]||[];
+  y.push(JSON.stringify({v:DB.vurgu[k]||[], c:DB.cizim[k]||{}})); if(y.length>50) y.shift();
+  kalemPanelCiz();
 }
-function kalemVurgula(renk, notla){
-  const sel=window.getSelection();
-  const r = (sel && !sel.isCollapsed && sel.rangeCount) ? sel.getRangeAt(0) : KALEM._rng;
-  KALEM._barBas=false; KALEM._rng=null;
-  if(!r) return;
-  kalemAralikKaydet(r, renk, notla);
+function kalemGeriAl(){
+  const k=KALEM.sayfa; const y=(KALEM.gecmis[k]||[]); if(!y.length){ toast('Geri alınacak işlem yok'); return; }
+  const o=JSON.parse(y.pop()); DB.vurgu[k]=o.v; DB.cizim[k]=o.c; persist();
+  ['kalemMenu','kalemOnizleme'].forEach(id=>{ const x=el(id); if(x) x.remove(); });
+  kalemUygula();
+  KALEM.kok.querySelectorAll('.figwrap').forEach(f=>{ f.querySelectorAll('.kc-rozet,.kc-onizleme').forEach(x=>x.remove()); delete f.dataset.kc; });
+  kalemCizimYukle(); kalemPanelCiz(); toast('Geri alındı');
 }
 function kalemAralikKaydet(r, renk, notla){
   const t=r.toString().trim(); if(t.length<2) return;
   /* seçimden önce kökte kaç kez geçiyor → n */
   const pre=document.createRange(); pre.setStart(KALEM.kok,0); pre.setEnd(r.startContainer,r.startOffset);
   const n=kalemSay(kalemDuz(pre.toString()), kalemDuz(t));
+  kalemAnlik();
   const list=DB.vurgu[KALEM.sayfa]=DB.vurgu[KALEM.sayfa]||[];
   list.push({t, n, r:renk, not:''}); persist();
-  try{ window.getSelection().removeAllRanges(); }catch(e){}
-  const bar=el('kalemBar'); if(bar) bar.remove();
   kalemUygula();
-  if(notla) kalemNotDuzenle(list.length-1); else toast('Vurgulandı');
+  if(notla) kalemNotDuzenle(list.length-1);
 }
 
-/* ---------- dokun → cümleyi vurgula (iPad'de seçim zahmetli) ---------- */
+/* ---------- fosforlu kalem: parmak / Apple Pencil / fare ile sürükle ----------
+   Vurgula/Not: metnin üstünde YANA doğru sürükle → boyar (sonra aşağı da inebilirsin).
+                Yukarı-aşağı kaydırma sayfayı kaydırır. Tek dokunuş → cümleyi boyar.
+   Silgi: vurguların üstünden geç veya dokun → siler.
+   Çiz: şemaya dokun → çizim ekranı. */
+let KS=null;   /* aktif sürükleme */
+function kalemNokta(x,y){
+  let c=null;
+  if(document.caretRangeFromPoint) c=document.caretRangeFromPoint(x,y);
+  else if(document.caretPositionFromPoint){ const p=document.caretPositionFromPoint(x,y); if(p){ c=document.createRange(); c.setStart(p.offsetNode,p.offset); } }
+  if(!c || c.startContainer.nodeType!==3 || !KALEM.kok.contains(c.startContainer)) return null;
+  if(c.startContainer.parentNode.closest('svg,.kv-notkutu,button')) return null;
+  return [c.startContainer, c.startOffset];
+}
+function kalemKelime(nd,o,sona){
+  const v=nd.nodeValue;
+  if(sona){ while(o<v.length && !/\s/.test(v[o])) o++; } else { while(o>0 && !/\s/.test(v[o-1])) o--; }
+  return o;
+}
+function kalemSurukAralik(a,b){
+  const r=document.createRange(); r.setStart(a[0],a[1]); r.collapse(true);
+  const r2=document.createRange(); r2.setStart(b[0],b[1]); r2.collapse(true);
+  let s=a,e=b; if(r.compareBoundaryPoints(Range.START_TO_START,r2)>0){ s=b; e=a; }
+  const out=document.createRange();
+  out.setStart(s[0], kalemKelime(s[0],s[1],false)); out.setEnd(e[0], kalemKelime(e[0],e[1],true));
+  return out;
+}
+function kalemOnizle(r){
+  let o=el('kalemOnizleme'); if(!o){ o=document.createElement('div'); o.id='kalemOnizleme'; document.body.appendChild(o); }
+  const renk=KALEM_RENK[KALEM.renk];
+  o.innerHTML=[...r.getClientRects()].filter(q=>q.width>1).map(q=>`<i style="left:${q.left}px;top:${q.top}px;width:${q.width}px;height:${q.height}px;background:${renk}"></i>`).join('');
+}
+function kalemYazMod(){ return KALEM.mod && KALEM.kok && (KALEM.arac==='vurgu'||KALEM.arac==='not'); }
+
+document.addEventListener('pointerdown', e=>{
+  KS=null;
+  if(!KALEM.mod || !KALEM.kok || !e.target.closest || e.button>0) return;
+  if(e.target.closest('#kalemPanel,#kalemFab,#kalemMenu,.zoom')) return;
+  if(KALEM.arac!=='sil' && !KALEM.kok.contains(e.target)) return;   /* silgi kenardan da başlayabilir */
+  KS={x:e.clientX, y:e.clientY, t:Date.now(), hedef:e.target, bas:null, akti:false, sil:new Set(), id:e.pointerId};
+  if(kalemYazMod() && !e.target.closest('mark.kv,button,a,input,textarea,select,.figwrap,.opt,summary,[onclick]')) KS.bas=kalemNokta(e.clientX,e.clientY);
+  if(KALEM.arac==='sil' || KS.bas){ if(e.pointerType==='mouse') e.preventDefault(); }
+}, true);
+document.addEventListener('pointermove', e=>{
+  if(!KS || e.pointerId!==KS.id) return;
+  const dx=e.clientX-KS.x, dy=e.clientY-KS.y;
+  if(!KS.akti){ if(Math.hypot(dx,dy)<8) return; KS.akti=true; }
+  if(KALEM.arac==='sil'){
+    const m=document.elementFromPoint(e.clientX,e.clientY); const mk=m&&m.closest&&m.closest('mark.kv');
+    if(mk && KALEM.kok.contains(mk)){ KS.sil.add(+mk.dataset.i); mk.classList.add('kv-silinecek'); }
+    return;
+  }
+  if(!KS.bas) return;
+  const b=kalemNokta(e.clientX,e.clientY); if(!b) return;
+  KS.son=b; kalemOnizle(kalemSurukAralik(KS.bas,b));
+}, true);
+document.addEventListener('pointerup', e=>{
+  const d=KS; KS=null; if(!d || e.pointerId!==d.id) return;
+  const o=el('kalemOnizleme'); if(o) o.remove();
+  if(d.akti){
+    if(KALEM.arac==='sil' && d.sil.size){
+      kalemAnlik(); const list=DB.vurgu[KALEM.sayfa]||[];
+      [...d.sil].sort((x,y)=>y-x).forEach(i=>list.splice(i,1)); persist(); kalemUygula(); toast(d.sil.size+' vurgu silindi');
+    } else if(d.bas && d.son){ kalemAralikKaydet(kalemSurukAralik(d.bas,d.son), KALEM.renk, KALEM.arac==='not'); }
+    KALEM._tapT=Date.now(); return;
+  }
+  if(Date.now()-d.t>600) return;   /* uzun basma: dokunma sayılmaz */
+  if(kalemDokun(d.hedef, e.clientX, e.clientY)) KALEM._tapT=Date.now();
+}, true);
+document.addEventListener('pointercancel', ()=>{ KS=null; const o=el('kalemOnizleme'); if(o) o.remove(); }, true);
+
+/* tek dokunuşun işi. true dönerse olay tüketildi. */
+function kalemDokun(tg, x, y){
+  if(!KALEM.mod || !KALEM.kok || !tg || !tg.closest || !KALEM.kok.contains(tg)) return false;
+  const f=tg.closest('.figwrap');
+  if(KALEM.arac==='ciz'){ if(f){ kalemCizimAc(+f.dataset.kci); return true; } return false; }
+  const m=tg.closest('mark.kv');
+  if(m){ kalemVurguMenu(m); return true; }
+  if(kalemYazMod()){
+    if(f || tg.closest('button,a,input,textarea,select,svg,.kv-notkutu,.opt,summary,[onclick]')) return false;
+    const c=kalemNokta(x,y); if(!c) return false;
+    const r=kalemCumle(c[0], c[1]); if(!r) return false;
+    kalemAralikKaydet(r, KALEM.renk, KALEM.arac==='not'); return true;
+  }
+  return false;
+}
+/* pointer ile işlenen dokunuşun ardından gelen tıklamayı yut (şema büyütme açılmasın) */
 document.addEventListener('click', e=>{
-  if(!(KALEM.mod && (KALEM.arac==='vurgu'||KALEM.arac==='not') && KALEM.kok)) return;
-  if(KALEM._secVardi) return;                       /* seçimi kapatan dokunuş */
-  const s=window.getSelection(); if(s && !s.isCollapsed) return;  /* fareyle sürükleyip seçti */
+  if(!KALEM.mod || !KALEM.kok) return;
   const tg=e.target; if(!tg.closest || !KALEM.kok.contains(tg)) return;
-  if(tg.closest('mark.kv,button,a,input,textarea,select,.figwrap,svg,.kv-notkutu,.opt,summary,[onclick]')) return;
-  const c = document.caretRangeFromPoint ? document.caretRangeFromPoint(e.clientX,e.clientY)
-          : (document.caretPositionFromPoint ? (p=>{ if(!p) return null; const r=document.createRange(); r.setStart(p.offsetNode,p.offset); return r; })(document.caretPositionFromPoint(e.clientX,e.clientY)) : null);
-  if(!c || c.startContainer.nodeType!==3) return;
-  const r=kalemCumle(c.startContainer, c.startOffset); if(!r) return;
-  kalemAralikKaydet(r, KALEM.renk, KALEM.arac==='not');
-});
+  if((KALEM._tapT && Date.now()-KALEM._tapT<900) || (KALEM.arac==='ciz' && tg.closest('.figwrap'))){ e.stopPropagation(); e.preventDefault(); }
+}, true);
+
 function kalemBlok(nd){
   let x=nd.parentNode;
   while(x && x!==KALEM.kok){ const d=getComputedStyle(x).display; if(d!=='inline' && d!=='inline-block' && d!=='contents') return x; x=x.parentNode; }
@@ -190,11 +257,11 @@ function kalemMetinDugumleri(rng){
   return out;
 }
 
-/* ---------- vurguya tıkla → sil / not ---------- */
-document.addEventListener('click', e=>{
-  const m=e.target.closest && e.target.closest('mark.kv'); if(!m || !KALEM.mod || m.closest('.notlist')) return;
+/* ---------- vurguya dokun → sil / not menüsü ---------- */
+function kalemVurguMenu(m){
+  if(m.closest('.notlist')) return;
   const i=+m.dataset.i; const v=(DB.vurgu[KALEM.sayfa]||[])[i]; if(!v) return;
-  if(KALEM.arac==='sil'){ kalemSil(i); toast('Vurgu silindi'); e.stopPropagation(); return; }
+  if(KALEM.arac==='sil'){ kalemSil(i); toast('Vurgu silindi'); return; }
   const old=el('kalemMenu'); if(old) old.remove();
   const d=document.createElement('div'); d.id='kalemMenu';
   d.innerHTML=`<div class="km-t">"${esc(v.t.slice(0,60))}${v.t.length>60?'…':''}"</div>
@@ -202,10 +269,10 @@ document.addEventListener('click', e=>{
     ${Object.keys(KALEM_RENK).map(k=>`<button class="km-r" style="background:${KALEM_RENK[k]}" onclick="kalemRenk(${i},'${k}')"></button>`).join('')}
     <button class="btn ghost sm" onclick="kalemSil(${i})">Vurguyu kaldır</button><button class="btn ghost sm" onclick="el('kalemMenu').remove()">Kapat</button></div>`;
   const r=m.getBoundingClientRect(); d.style.top=(r.bottom+window.scrollY+6)+'px'; d.style.left=Math.max(8,Math.min(window.innerWidth-330,r.left))+'px';
-  document.body.appendChild(d); e.stopPropagation();
-});
-function kalemRenk(i,k){ DB.vurgu[KALEM.sayfa][i].r=k; persist(); el('kalemMenu')&&el('kalemMenu').remove(); kalemUygula(); }
-function kalemSil(i){ DB.vurgu[KALEM.sayfa].splice(i,1); persist(); el('kalemMenu')&&el('kalemMenu').remove(); kalemUygula(); }
+  document.body.appendChild(d);
+}
+function kalemRenk(i,k){ kalemAnlik(); DB.vurgu[KALEM.sayfa][i].r=k; persist(); el('kalemMenu')&&el('kalemMenu').remove(); kalemUygula(); }
+function kalemSil(i){ kalemAnlik(); DB.vurgu[KALEM.sayfa].splice(i,1); persist(); el('kalemMenu')&&el('kalemMenu').remove(); kalemUygula(); }
 function kalemNotDuzenle(i){
   const v=DB.vurgu[KALEM.sayfa][i]; el('kalemMenu')&&el('kalemMenu').remove();
   const d=document.createElement('div'); d.className='zoom'; d.id='kalemNotDlg';
@@ -214,7 +281,7 @@ function kalemNotDuzenle(i){
     <div class="row"><button class="btn" onclick="kalemNotKaydet(${i})">Kaydet</button>${v.not?`<button class="btn ghost" onclick="kalemNotKaydet(${i},true)">Notu sil</button>`:''}</div></div>`;
   document.body.appendChild(d); setTimeout(()=>el('kalemNotTa').focus(),50);
 }
-function kalemNotKaydet(i,sil){ DB.vurgu[KALEM.sayfa][i].not = sil?'':(el('kalemNotTa').value.trim()); persist(); el('kalemNotDlg').remove(); kalemUygula(); }
+function kalemNotKaydet(i,sil){ kalemAnlik(); DB.vurgu[KALEM.sayfa][i].not = sil?'':(el('kalemNotTa').value.trim()); persist(); el('kalemNotDlg').remove(); kalemUygula(); }
 function kalemNotlariCiz(){
   KALEM.kok.querySelectorAll('.kv-notkutu').forEach(x=>x.remove());
   const list=DB.vurgu[KALEM.sayfa]||[];
@@ -242,14 +309,9 @@ function kalemCizimYukle(){
     if(saved[i]){ const im=document.createElement('img'); im.className='kc-onizleme'; im.src=saved[i]; f.querySelector('figure').appendChild(im); }
   });
 }
-/* çiz aracında şemaya dokunmak çizimi açar (büyütme yerine) */
-document.addEventListener('click', e=>{
-  if(!(KALEM.mod && KALEM.arac==='ciz')) return;
-  const f=e.target.closest && e.target.closest('.figwrap'); if(!f || !KALEM.kok || !KALEM.kok.contains(f)) return;
-  e.stopPropagation(); e.preventDefault(); kalemCizimAc(+f.dataset.kci);
-}, true);
 let CZ=null;
 function kalemCizimAc(i){
+  if(el('kalemCizDlg')) return;
   const f=KALEM.kok.querySelectorAll('.figwrap')[i]; const svg=f.querySelector('svg'); if(!svg) return;
   const vb=(svg.getAttribute('viewBox')||'0 0 460 220').split(/[ ,]+/).map(Number);
   const W=vb[2], H=vb[3]; const scale=Math.max(0.6, Math.min((window.innerWidth-44)/W, (window.innerHeight-190)/H, 2.5));
@@ -283,6 +345,7 @@ function kalemCizYenile(){
 function kalemCizGeri(){ CZ.yollar.pop(); kalemCizYenile(); }
 function kalemCizTemizle(){ CZ.yollar=[]; CZ.taban=null; kalemCizYenile(); }
 function kalemCizKaydet(i){
+  kalemAnlik();
   const {cv}=CZ; const bos=!CZ.yollar.length && !CZ.taban;
   DB.cizim[KALEM.sayfa]=DB.cizim[KALEM.sayfa]||{};
   if(bos) delete DB.cizim[KALEM.sayfa][i]; else DB.cizim[KALEM.sayfa][i]=cv.toDataURL('image/png');
