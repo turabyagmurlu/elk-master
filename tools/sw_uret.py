@@ -2,7 +2,7 @@
 Her commit öncesi: python3 tools/sw_uret.py"""
 import hashlib, os, json
 root=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-files=['index.html','foy.html','manifest.json','css/elk.css','js/veri.js','js/elk.js','js/ders.js','js/kalem.js','js/pwa.js','js/icerik-yukle.js','img/icon-192.png','img/icon-512.png','img/apple-touch-icon.png']
+files=['index.html','foy.html','manifest.json','css/elk.css','js/veri.js','js/elk.js','js/ders.js','js/kalem.js','js/sor.js','js/pwa.js','js/icerik-yukle.js','img/icon-192.png','img/icon-512.png','img/apple-touch-icon.png']
 for d in ('icerik','dersler'):
     files+=sorted(d+'/'+f for f in os.listdir(os.path.join(root,d)) if f.endswith('.js') and not f.startswith('_'))
 h=hashlib.sha1()

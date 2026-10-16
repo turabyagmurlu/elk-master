@@ -23,11 +23,13 @@ function kalemBagla(sayfa, kokSecici){
 function kalemGizle(){
   KALEM.sayfa=null; KALEM.kok=null; kalemModKapat();
   ['kalemFab','kalemIpucu'].forEach(id=>{ const x=el(id); if(x) x.remove(); });
+  if(typeof sorGizle==='function') sorGizle();
 }
 function kalemIkonGoster(){
   let f=el('kalemFab');
   if(!f){ f=document.createElement('button'); f.id='kalemFab'; f.setAttribute('aria-label','Kalem'); f.innerHTML=KALEM_IKON; f.onclick=kalemModDegistir; document.body.appendChild(f); }
   f.classList.toggle('acik', KALEM.mod);
+  if(typeof sorIkonGoster==='function') sorIkonGoster();
   try{ if(!el('kalemIpucu') && localStorage.getItem('elk_kalem_ipucu')!=='1'){ const t=document.createElement('div'); t.id='kalemIpucu'; t.innerHTML='Kalem: vurgula, not al, şemaya çiz. <b>Dokun, başla.</b>'; t.onclick=()=>t.remove(); document.body.appendChild(t); localStorage.setItem('elk_kalem_ipucu','1'); setTimeout(()=>{ const x=el('kalemIpucu'); if(x) x.remove(); },6000); } }catch(e){}
 }
 function kalemModDegistir(){ KALEM.mod ? kalemModKapat() : kalemModAc(); }

@@ -327,7 +327,7 @@ function renderSettings(){
     <div class="stats"><div><b>${moduleDone()}/${MODS.length}</b><span>tamamlanan modül</span></div><div><b>%${avgScore()}</b><span>ortalama puan</span></div><div><b>${dueReviews().length}</b><span>tekrar bekleyen</span></div><div><b>${DB.exams.length+DB.myk.length}</b><span>sınav denemesi</span></div></div>
     <div class="row"><button class="btn" onclick="exportData()">Yedek al (JSON)</button>
     <label class="btn ghost">Geri yükle<input type="file" accept="application/json,.json" style="display:none" onchange="importData(this)"></label>
-    <button class="btn danger" onclick="resetData()">İlerlemeyi sıfırla</button></div></div>`;
+    <button class="btn danger" onclick="resetData()">İlerlemeyi sıfırla</button></div></div>`+(typeof sorAyarHtml==='function'?sorAyarHtml():'');
 }
 
 /* ===================== ŞEMA BÜYÜTME ===================== */
