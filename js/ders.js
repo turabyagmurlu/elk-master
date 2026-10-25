@@ -57,6 +57,7 @@ function openDers(n){
   });
   h+=`<section class="parca"><h3 class="sechead"><span class="secno">✓</span>İşlenmiş örnek: ${d.ornek.baslik}</h3>
       <ol class="adimlar">${d.ornek.adimlar.map(a=>`<li>${a}</li>`).join('')}</ol>${fig(d.ornek.sema, 'Örnek şekli — '+d.ornek.baslik)}<div class="sonuc"><b>Sonuç:</b> ${d.ornek.sonuc}</div></section>
+    ${(d.ek||[]).length?`<section class="parca ek"><h3 class="sechead"><span class="secno">+</span>Sahadan görsel notlar</h3>${d.ek.map((e,j)=>`<div class="ek-kart"><h4 class="ek-bas">${e.baslik}</h4><div class="ptext">${e.metin}</div>${fig(e.sema,'Ek '+(j+1)+' — '+e.baslik)}<div class="akilda"><span>Akılda kalsın</span>${e.akilda}</div></div>`).join('')}</section>`:''}
     ${d.usta?`<section class="usta"><div class="usta-h">Usta gibi söyle</div>${(d.usta.soz||[]).map(x=>`<p class="usta-soz">${x}</p>`).join('')}${d.usta.deme?`<p class="usta-deme"><b>Şunu deme:</b> ${d.usta.deme}</p>`:''}</section>`:''}
     <section class="parca yokla"><h3 class="sechead"><span class="secno">?</span>Kendini yokla</h3>
       <p class="muted small">Cevabı önce kafanda kur (gerekirse kâğıda yaz), sonra aç. "Tekrar sor" dediklerin aralıklı tekrar listene girer.</p>

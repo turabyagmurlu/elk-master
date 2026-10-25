@@ -303,3 +303,9 @@ body.kalem-acik #sorFab{display:none}
 .sor-giris{display:flex;gap:8px;align-items:flex-end}
 .sor-giris textarea{flex:1;min-height:0;height:58px;font:inherit;font-size:16px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;resize:none}
 @media print{#sorFab{display:none!important}}
+
+/* ===== v20: sahadan görsel notlar ===== */
+.parca.ek{border-top:3px solid var(--acc)}
+.ek-kart{margin:6px 0 22px}
+.ek-kart+.ek-kart{border-top:1px dashed var(--line);padding-top:16px}
+.ek-bas{font-size:17px;margin:4px 0 8px;color:var(--ink)}
